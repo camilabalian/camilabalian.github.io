@@ -11,6 +11,7 @@
     :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #B8BCEF; }
     html { scroll-behavior: smooth; }
     * { cursor: none !important; }
+    @media (max-width: 768px), (pointer: coarse), (hover: none) { * { cursor: auto !important; } .cursor-dot { display: none !important; } }
     body { background: var(--bg); color: var(--cream); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
 
     /* CURSOR */

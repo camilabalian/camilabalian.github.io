@@ -11,6 +11,7 @@
     :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #E2FFA3; --bosque: #003939; --lima: #E2FFA3; --aciano: #C3D4FF; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
     html { scroll-behavior: smooth; }
     * { cursor: none !important; }
+    @media (max-width: 768px), (pointer: coarse), (hover: none) { * { cursor: auto !important; } .cursor-dot { display: none !important; } }
     body { background: var(--bg); color: var(--cream); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
 
     /* CURSOR */

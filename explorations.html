@@ -11,6 +11,7 @@
     :root { --bg:#0C0C0C; --cream:#EFEBE5; --line:rgba(239,235,229,.07); }
     html { scroll-behavior:smooth; }
     * { cursor:none !important; }
+    @media (max-width:768px), (pointer:coarse), (hover:none) { * { cursor:auto !important; } .cursor-dot { display:none !important; } }
     body { background:var(--bg); color:var(--cream); font-family:"Manrope",sans-serif; overflow-x:hidden; }
 
     .cursor-dot { position:fixed; width:10px; height:10px; background:white; border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s, height .2s, opacity .3s; mix-blend-mode:difference; }
