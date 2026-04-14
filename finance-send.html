@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Money — Camila Balian</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; overflow: hidden; }
+  .phone-wrap {
+    width: 212px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .phone-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  /* Blinking cursor overlay — positioned on the amount field */
+  .cursor-blink {
+    position: absolute;
+    top: 36.6%;
+    left: 62.5%;
+    width: 1.5px;
+    height: 22px;
+    background: #fff;
+    border-radius: 1px;
+    animation: blink 1s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  /* Numpad key press highlights */
+  .key-highlight {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    transform: scale(0);
+    pointer-events: none;
+  }
+  .key-highlight.flash {
+    animation: keyFlash 0.5s ease-out forwards;
+  }
+  @keyframes keyFlash {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  /* Key positions on the numpad (approximate) */
+  .k1 { top: 46.5%; left: 14%;  width: 52px; height: 52px; }
+  .k2 { top: 46.5%; left: 38%;  width: 52px; height: 52px; }
+  .k3 { top: 46.5%; left: 62%;  width: 52px; height: 52px; }
+  .k4 { top: 55.5%; left: 14%;  width: 52px; height: 52px; }
+  .k5 { top: 55.5%; left: 38%;  width: 52px; height: 52px; }
+  .k6 { top: 55.5%; left: 62%;  width: 52px; height: 52px; }
+  .k7 { top: 64.5%; left: 14%;  width: 52px; height: 52px; }
+  .k8 { top: 64.5%; left: 38%;  width: 52px; height: 52px; }
+  .k9 { top: 64.5%; left: 62%;  width: 52px; height: 52px; }
+  .k0 { top: 73.5%; left: 38%;  width: 52px; height: 52px; }
+</style>
+</head>
+<body>
+  <div class="phone-wrap">
+    <img src="finance-9.svg" alt="Send Money screen">
+    <div class="cursor-blink"></div>
+    <div class="key-highlight k8" id="kh0"></div>
+    <div class="key-highlight k9" id="kh1"></div>
+    <div class="key-highlight k0" id="kh2"></div>
+    <div class="key-highlight k0" id="kh3"></div>
+  </div>
+  <script>
+    // Subtle key press sequence that loops
+    const keys = ['kh0','kh1','kh2','kh3'];
+    const delays = [0, 600, 1200, 1600]; // ms between presses
+    const LOOP = 5000;
+
+    function flashKeys() {
+      keys.forEach((id, i) => {
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          el.classList.remove('flash');
+          void el.offsetHeight;
+          el.classList.add('flash');
+        }, delays[i]);
+      });
+    }
+
+    flashKeys();
+    setInterval(flashKeys, LOOP);
+  </script>
+</body>
+</html>

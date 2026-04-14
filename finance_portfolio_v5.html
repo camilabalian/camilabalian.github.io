@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif}
+
+.stage{
+  width:100%;background:#06050D;border-radius:20px;
+  display:flex;flex-direction:column;align-items:center;
+  padding:44px 16px 36px;position:relative;overflow:hidden;
+  min-height:620px;
+  transform-origin:top center;
+  zoom:0.72;
+}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px)}
+.row{display:flex;align-items:center;justify-content:center;gap:28px;position:relative;z-index:2;width:100%}
+
+.phone{width:236px;height:498px;border-radius:40px;position:relative;flex-shrink:0;overflow:hidden;will-change:transform,opacity}
+.phone-inner{position:absolute;inset:5px;border-radius:35px;overflow:hidden}
+.phone-ring{position:absolute;inset:0;border-radius:40px;pointer-events:none;z-index:30}
+.dark-shell{background:#13112A;box-shadow:0 0 0 1.5px rgba(255,255,255,0.07),0 28px 60px rgba(0,0,0,0.85),0 0 80px rgba(99,57,220,0.15)}
+.dark-shell .phone-ring{border:1.5px solid rgba(255,255,255,0.07)}
+.light-shell{background:#C8C0EC;box-shadow:0 0 0 1.5px rgba(99,57,220,0.18),0 28px 60px rgba(99,57,220,0.2),0 8px 20px rgba(0,0,0,0.06)}
+.light-shell .phone-ring{border:1.5px solid rgba(99,57,220,0.18)}
+
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:72px;height:20px;border-radius:14px;background:#000;z-index:25;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;gap:3px}
+.i-cam{width:7px;height:7px;border-radius:50%;background:#111}
+.i-led{width:3.5px;height:3.5px;border-radius:50%;background:#00E676;animation:led 2.8s infinite}
+@keyframes led{0%,85%,100%{opacity:.7}90%{opacity:.15}}
+
+.screen{width:100%;height:100%;overflow:hidden;position:relative;font-family:'Inter',sans-serif}
+.dark-bg{background:#06050D}
+.light-bg{background:#EEE9FB}
+
+.sbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:11px 16px 5px;backdrop-filter:blur(16px)}
+.sbar-d{background:rgba(6,5,13,.9);color:rgba(255,255,255,.55)}
+.sbar-l{background:rgba(238,233,251,.9);color:rgba(13,10,30,.45)}
+.sbar-r{display:flex;align-items:center;gap:5px}
+.sigs{display:flex;gap:1.5px;align-items:flex-end}
+.sb{width:2.5px;border-radius:.8px}
+
+.body{overflow-y:scroll;scrollbar-width:none;height:100%}
+.body::-webkit-scrollbar{display:none}
+.body-pad{padding-bottom:70px}
+
+.greet{padding:10px 15px 5px;display:flex;justify-content:space-between;align-items:center}
+.g-sub{font-size:10px;font-weight:600;margin-bottom:2px;letter-spacing:.02em}
+.g-name{font-size:21px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.av{width:34px;height:34px;border-radius:12px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+.bal{margin:4px 13px 0;border-radius:18px;padding:14px 15px 12px;position:relative;overflow:hidden}
+.bal-d{background:linear-gradient(140deg,#1A1438 0%,#221A4A 100%);border:1px solid rgba(99,57,220,.22)}
+.bal-l{background:linear-gradient(140deg,#6339DC 0%,#8B63F5 100%)}
+.bal-glow{position:absolute;border-radius:50%;filter:blur(40px);pointer-events:none;top:-25px;right:-20px;width:90px;height:90px}
+.bal-d .bal-glow{background:rgba(99,57,220,.55)}
+.bal-l .bal-glow{background:rgba(255,255,255,.22)}
+.bal-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.bal-d .bal-lbl{color:rgba(255,255,255,.4)}
+.bal-l .bal-lbl{color:rgba(255,255,255,.65)}
+.bal-amt{font-size:27px;font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff}
+.bal-pill{display:inline-flex;align-items:center;gap:3px;margin-top:5px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.04em}
+.bal-d .bal-pill{background:rgba(0,200,150,.14);color:#00C896}
+.bal-l .bal-pill{background:rgba(255,255,255,.2);color:rgba(255,255,255,.92)}
+.sparkline{display:flex;align-items:flex-end;gap:2px;margin-top:10px;height:28px}
+.sp{border-radius:2px 2px 0 0;flex:1}
+.bal-d .sp{background:rgba(99,57,220,.28)}
+.bal-d .sp.hi{background:#6339DC}
+.bal-l .sp{background:rgba(255,255,255,.2)}
+.bal-l .sp.hi{background:rgba(255,255,255,.75)}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 13px 0}
+.st{border-radius:13px;padding:11px 11px 10px}
+.st-d{background:#0F0E20;border:1px solid rgba(255,255,255,.05)}
+.st-l{background:#fff;box-shadow:0 1px 8px rgba(99,57,220,.07)}
+.st-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.st-ic{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.st-trend{font-size:8px;font-weight:700;letter-spacing:.03em}
+.st-val{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.st-lbl{font-size:8.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+
+.sh{display:flex;justify-content:space-between;align-items:center;padding:12px 15px 6px}
+.sh-t{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.sh-a{font-size:9px;font-weight:700;color:#6339DC}
+
+/* ── CHART: single canvas approach to avoid gradient flash ── */
+.cw{margin:0 13px;border-radius:14px;padding:11px 12px 8px}
+.cw-d{background:#0F0E20;border:1px solid rgba(255,255,255,.05)}
+.cw-l{background:#fff;box-shadow:0 1px 8px rgba(99,57,220,.07)}
+.ctabs{display:flex;gap:3px;margin-bottom:8px}
+.ct{padding:4px 10px;border-radius:8px;font-size:9px;font-weight:800;letter-spacing:.04em;cursor:default}
+.ct-sel{background:#6339DC;color:#fff}
+.chart-canvas{width:100%;height:54px;display:block}
+
+.txns{padding:0 13px;display:flex;flex-direction:column;gap:6px}
+.tx{border-radius:12px;padding:9px 10px;display:flex;align-items:center;gap:9px;position:relative;overflow:hidden}
+.tx-d{background:#0F0E20;border:1px solid rgba(255,255,255,.05)}
+.tx-l{background:#fff;box-shadow:0 1px 7px rgba(99,57,220,.07)}
+.tx-ic{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tx-info{flex:1;min-width:0}
+.tx-n{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-m{font-size:9px;font-weight:500;margin-top:2px}
+.tx-r{text-align:right;flex-shrink:0}
+.tx-amt{font-size:12px;font-weight:800;letter-spacing:-.01em}
+.tx-tag{font-size:8px;font-weight:800;letter-spacing:.05em;padding:2px 6px;border-radius:5px;margin-top:3px;display:inline-block}
+
+.bk{margin:0 13px;border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px}
+.bk-d{background:#0F0E20;border:1px solid rgba(255,255,255,.05)}
+.bk-l{background:#fff;box-shadow:0 1px 8px rgba(99,57,220,.07)}
+.bk-legs{display:flex;flex-direction:column;gap:7px;flex:1}
+.bk-row{display:flex;align-items:center;gap:7px}
+.bk-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.bk-name{font-size:9.5px;font-weight:500;flex:1}
+.bk-pct{font-size:9.5px;font-weight:800}
+
+/* ── NAV BAR ── */
+.bnav{
+  position:absolute;bottom:0;left:0;right:0;z-index:22;
+  display:flex;align-items:center;
+  padding:0 8px 12px;height:62px;
+}
+.bnav-d{background:rgba(6,5,13,.96);border-top:1px solid rgba(255,255,255,.06)}
+.bnav-l{background:rgba(238,233,251,.97);border-top:1px solid rgba(99,57,220,.08)}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:100%;padding-top:4px}
+.bn-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* NAV TEXT: smaller */
+.bn-lbl{font-size:7px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.bn-pip{width:3px;height:3px;border-radius:50%;margin-top:1px}
+
+.footer{margin-top:20px;display:flex;align-items:center;gap:16px;z-index:2;position:relative}
+.f-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.18)}
+.f-sep{width:1px;height:10px;background:rgba(255,255,255,.07)}
+.f-badge{display:flex;align-items:center;gap:5px}
+.f-dot{width:5px;height:5px;border-radius:50%}
+
+.prog-wrap{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:100px;height:2px;border-radius:2px;background:rgba(255,255,255,.07);z-index:5;overflow:hidden}
+.prog-bar{height:100%;border-radius:2px;background:rgba(99,57,220,.6);width:0%}
+</style>
+
+<div class="stage" id="stage">
+  <div class="orb" style="width:320px;height:320px;top:-60px;left:-50px;background:rgba(99,57,220,.1)"></div>
+  <div class="orb" style="width:260px;height:260px;bottom:-40px;right:-30px;background:rgba(0,200,150,.05)"></div>
+
+  <div class="row">
+
+    <!-- ══ DARK ══ -->
+    <div class="phone dark-shell" id="pD">
+      <div class="phone-ring"></div>
+      <div class="island"><div class="i-cam"></div><div class="i-led"></div></div>
+      <div class="phone-inner">
+        <div class="screen dark-bg">
+          <div class="sbar sbar-d">
+            <span style="font-size:10px;font-weight:700">9:41</span>
+            <div class="sbar-r">
+              <div class="sigs"><div class="sb" style="height:4px;background:rgba(255,255,255,.45)"></div><div class="sb" style="height:6px;background:rgba(255,255,255,.45)"></div><div class="sb" style="height:9px;background:rgba(255,255,255,.45)"></div><div class="sb" style="height:12px;background:rgba(255,255,255,.45)"></div></div>
+              <svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x=".5" y=".5" width="16" height="9" rx="2" stroke="rgba(255,255,255,.3)"/><rect x="1.5" y="1.5" width="11" height="7" rx="1" fill="rgba(255,255,255,.6)"/></svg>
+            </div>
+          </div>
+          <div class="body" id="bD">
+            <div class="body-pad">
+              <div class="greet">
+                <div><div class="g-sub" style="color:rgba(255,255,255,.35)">Good morning</div><div class="g-name" style="color:#fff">Alex Rivera</div></div>
+                <div class="av" style="background:rgba(99,57,220,.2);color:#9B77FF">AR</div>
+              </div>
+              <div class="bal bal-d">
+                <div class="bal-glow"></div>
+                <div class="bal-lbl">Total balance</div>
+                <div class="bal-amt">€24,391</div>
+                <div class="bal-pill">↑ +4.2% this month</div>
+                <div class="sparkline"><div class="sp" style="height:25%"></div><div class="sp" style="height:38%"></div><div class="sp" style="height:30%"></div><div class="sp" style="height:55%"></div><div class="sp" style="height:44%"></div><div class="sp" style="height:68%"></div><div class="sp" style="height:52%"></div><div class="sp" style="height:80%"></div><div class="sp" style="height:65%"></div><div class="sp hi" style="height:100%"></div></div>
+              </div>
+              <div class="stats">
+                <div class="st st-d"><div class="st-row"><div class="st-ic" style="background:rgba(0,200,150,.12)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#00C896" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#00C896">↑3.2%</span></div><div class="st-val" style="color:#fff">€4,820</div><div class="st-lbl" style="color:rgba(255,255,255,.35)">Income</div></div>
+                <div class="st st-d"><div class="st-row"><div class="st-ic" style="background:rgba(240,78,55,.12)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="#F04E37" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#F04E37">↓1.8%</span></div><div class="st-val" style="color:#fff">€1,964</div><div class="st-lbl" style="color:rgba(255,255,255,.35)">Expenses</div></div>
+                <div class="st st-d"><div class="st-row"><div class="st-ic" style="background:rgba(59,130,246,.12)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#3B82F6" stroke-width="1.3"/><path d="M6 4v2.5l1.5 1.5" stroke="#3B82F6" stroke-width="1.1" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#3B82F6">+€200</span></div><div class="st-val" style="color:#fff">€3,200</div><div class="st-lbl" style="color:rgba(255,255,255,.35)">Savings</div></div>
+                <div class="st st-d"><div class="st-row"><div class="st-ic" style="background:rgba(245,166,35,.12)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M7.5 2H10v2.5" stroke="#F5A623" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="st-trend" style="color:#F5A623">↑6.1%</span></div><div class="st-val" style="color:#fff">€892</div><div class="st-lbl" style="color:rgba(255,255,255,.35)">Invested</div></div>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(255,255,255,.3)">Cashflow</div><div class="sh-a">Details</div></div>
+              <div class="cw cw-d">
+                <div class="ctabs">
+                  <div class="ct ct-sel" id="dT1">1W</div>
+                  <div class="ct" style="color:rgba(255,255,255,.28)" id="dT2">1M</div>
+                  <div class="ct" style="color:rgba(255,255,255,.28)" id="dT3">3M</div>
+                  <div class="ct" style="color:rgba(255,255,255,.28)">1Y</div>
+                </div>
+                <canvas class="chart-canvas" id="cD" width="200" height="54"></canvas>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(255,255,255,.3)">Recent</div><div class="sh-a">See all</div></div>
+              <div class="txns">
+                <div class="tx tx-d" id="dTx1"><div class="tx-ic" style="background:rgba(0,200,150,.12)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#00C896" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#fff">Salary deposit</div><div class="tx-m" style="color:rgba(255,255,255,.3)">Today · Income</div></div><div class="tx-r"><div class="tx-amt" style="color:#00C896">+€3,200</div><div class="tx-tag" style="background:rgba(0,200,150,.1);color:#00C896">INCOME</div></div></div>
+                <div class="tx tx-d" id="dTx2"><div class="tx-ic" style="background:rgba(240,78,55,.1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2.5" y="4.5" width="9" height="7" rx="1.5" stroke="#F04E37" stroke-width="1.3"/><path d="M5 4.5V3.5a2 2 0 014 0v1" stroke="#F04E37" stroke-width="1.3"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#fff">Netflix</div><div class="tx-m" style="color:rgba(255,255,255,.3)">Yesterday · Subscriptions</div></div><div class="tx-r"><div class="tx-amt" style="color:#F04E37">−€15.99</div><div class="tx-tag" style="background:rgba(240,78,55,.1);color:#F04E37">BILL</div></div></div>
+                <div class="tx tx-d" id="dTx3"><div class="tx-ic" style="background:rgba(59,130,246,.1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11L7 2.5 11.5 11M4 8.5h6" stroke="#3B82F6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#fff">Groceries</div><div class="tx-m" style="color:rgba(255,255,255,.3)">Dec 4 · Food</div></div><div class="tx-r"><div class="tx-amt" style="color:rgba(255,255,255,.5)">−€62.40</div><div class="tx-tag" style="background:rgba(59,130,246,.1);color:#3B82F6">FOOD</div></div></div>
+                <div class="tx tx-d" id="dTx4"><div class="tx-ic" style="background:rgba(245,166,35,.1)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M8.5 2H12v3.5" stroke="#F5A623" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#fff">S&amp;P 500 ETF</div><div class="tx-m" style="color:rgba(255,255,255,.3)">Dec 3 · Investment</div></div><div class="tx-r"><div class="tx-amt" style="color:rgba(255,255,255,.5)">−€892</div><div class="tx-tag" style="background:rgba(245,166,35,.1);color:#F5A623">INVEST</div></div></div>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(255,255,255,.3)">Breakdown</div></div>
+              <div class="bk bk-d">
+                
+                <div class="bk-legs"><div class="bk-row"><div class="bk-dot" style="background:#F04E37"></div><span class="bk-name" style="color:rgba(255,255,255,.4)">Bills</span><span class="bk-pct" style="color:#fff">35%</span></div><div class="bk-row"><div class="bk-dot" style="background:#3B82F6"></div><span class="bk-name" style="color:rgba(255,255,255,.4)">Food</span><span class="bk-pct" style="color:#fff">28%</span></div><div class="bk-row"><div class="bk-dot" style="background:#F5A623"></div><span class="bk-name" style="color:rgba(255,255,255,.4)">Transport</span><span class="bk-pct" style="color:#fff">22%</span></div><div class="bk-row"><div class="bk-dot" style="background:#00C896"></div><span class="bk-name" style="color:rgba(255,255,255,.4)">Other</span><span class="bk-pct" style="color:#fff">15%</span></div></div>
+              </div>
+              <div style="height:8px"></div>
+            </div>
+          </div>
+          <div class="bnav bnav-d">
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="8" height="8" rx="2.5" fill="#6339DC"/><rect x="12" y="2" width="8" height="8" rx="2.5" fill="rgba(255,255,255,.12)"/><rect x="2" y="12" width="8" height="8" rx="2.5" fill="rgba(255,255,255,.12)"/><rect x="12" y="12" width="8" height="8" rx="2.5" fill="rgba(255,255,255,.12)"/></svg></div><div class="bn-lbl" style="color:#6339DC">Home</div><div class="bn-pip" style="background:#6339DC"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 11.5L7 7l4 5 3.5-7L19 11" stroke="rgba(255,255,255,.2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bn-lbl" style="color:rgba(255,255,255,.22)">Stats</div><div class="bn-pip" style="background:transparent"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="7" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/><circle cx="11" cy="11" r="3.5" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/><circle cx="11" cy="11" r="1" fill="rgba(255,255,255,.2)"/></svg></div><div class="bn-lbl" style="color:rgba(255,255,255,.22)">Goals</div><div class="bn-pip" style="background:transparent"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3.5" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/><path d="M4 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="rgba(255,255,255,.2)" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="bn-lbl" style="color:rgba(255,255,255,.22)">Profile</div><div class="bn-pip" style="background:transparent"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ══ LIGHT ══ -->
+    <div class="phone light-shell" id="pL">
+      <div class="phone-ring"></div>
+      <div class="island"><div class="i-cam"></div><div class="i-led"></div></div>
+      <div class="phone-inner">
+        <div class="screen light-bg">
+          <div class="sbar sbar-l">
+            <span style="font-size:10px;font-weight:700">9:41</span>
+            <div class="sbar-r">
+              <div class="sigs"><div class="sb" style="height:4px;background:rgba(13,10,30,.38)"></div><div class="sb" style="height:6px;background:rgba(13,10,30,.38)"></div><div class="sb" style="height:9px;background:rgba(13,10,30,.38)"></div><div class="sb" style="height:12px;background:rgba(13,10,30,.38)"></div></div>
+              <svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x=".5" y=".5" width="16" height="9" rx="2" stroke="rgba(13,10,30,.25)"/><rect x="1.5" y="1.5" width="11" height="7" rx="1" fill="rgba(13,10,30,.42)"/></svg>
+            </div>
+          </div>
+          <div class="body" id="bL">
+            <div class="body-pad">
+              <div class="greet">
+                <div><div class="g-sub" style="color:rgba(13,10,30,.35)">Good morning</div><div class="g-name" style="color:#0D0A1E">Alex Rivera</div></div>
+                <div class="av" style="background:rgba(99,57,220,.1);color:#6339DC">AR</div>
+              </div>
+              <div class="bal bal-l">
+                <div class="bal-glow"></div>
+                <div class="bal-lbl">Total balance</div>
+                <div class="bal-amt">€24,391</div>
+                <div class="bal-pill">↑ +4.2% this month</div>
+                <div class="sparkline"><div class="sp" style="height:25%"></div><div class="sp" style="height:38%"></div><div class="sp" style="height:30%"></div><div class="sp" style="height:55%"></div><div class="sp" style="height:44%"></div><div class="sp" style="height:68%"></div><div class="sp" style="height:52%"></div><div class="sp" style="height:80%"></div><div class="sp" style="height:65%"></div><div class="sp hi" style="height:100%"></div></div>
+              </div>
+              <div class="stats">
+                <div class="st st-l"><div class="st-row"><div class="st-ic" style="background:rgba(0,200,150,.1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#00C896" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#00C896">↑3.2%</span></div><div class="st-val" style="color:#0D0A1E">€4,820</div><div class="st-lbl" style="color:rgba(13,10,30,.35)">Income</div></div>
+                <div class="st st-l"><div class="st-row"><div class="st-ic" style="background:rgba(240,78,55,.08)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="#F04E37" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#F04E37">↓1.8%</span></div><div class="st-val" style="color:#0D0A1E">€1,964</div><div class="st-lbl" style="color:rgba(13,10,30,.35)">Expenses</div></div>
+                <div class="st st-l"><div class="st-row"><div class="st-ic" style="background:rgba(59,130,246,.08)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#3B82F6" stroke-width="1.3"/><path d="M6 4v2.5l1.5 1.5" stroke="#3B82F6" stroke-width="1.1" stroke-linecap="round"/></svg></div><span class="st-trend" style="color:#3B82F6">+€200</span></div><div class="st-val" style="color:#0D0A1E">€3,200</div><div class="st-lbl" style="color:rgba(13,10,30,.35)">Savings</div></div>
+                <div class="st st-l"><div class="st-row"><div class="st-ic" style="background:rgba(245,166,35,.08)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M7.5 2H10v2.5" stroke="#F5A623" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="st-trend" style="color:#F5A623">↑6.1%</span></div><div class="st-val" style="color:#0D0A1E">€892</div><div class="st-lbl" style="color:rgba(13,10,30,.35)">Invested</div></div>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(13,10,30,.28)">Cashflow</div><div class="sh-a">Details</div></div>
+              <div class="cw cw-l">
+                <div class="ctabs">
+                  <div class="ct ct-sel" id="lT1">1W</div>
+                  <div class="ct" style="color:rgba(13,10,30,.25)" id="lT2">1M</div>
+                  <div class="ct" style="color:rgba(13,10,30,.25)" id="lT3">3M</div>
+                  <div class="ct" style="color:rgba(13,10,30,.25)">1Y</div>
+                </div>
+                <canvas class="chart-canvas" id="cL" width="200" height="54"></canvas>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(13,10,30,.28)">Recent</div><div class="sh-a">See all</div></div>
+              <div class="txns">
+                <div class="tx tx-l" id="lTx1"><div class="tx-ic" style="background:rgba(0,200,150,.09)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#00C896" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#0D0A1E">Salary deposit</div><div class="tx-m" style="color:rgba(13,10,30,.35)">Today · Income</div></div><div class="tx-r"><div class="tx-amt" style="color:#009970">+€3,200</div><div class="tx-tag" style="background:rgba(0,200,150,.09);color:#009970">INCOME</div></div></div>
+                <div class="tx tx-l" id="lTx2"><div class="tx-ic" style="background:rgba(240,78,55,.07)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2.5" y="4.5" width="9" height="7" rx="1.5" stroke="#F04E37" stroke-width="1.3"/><path d="M5 4.5V3.5a2 2 0 014 0v1" stroke="#F04E37" stroke-width="1.3"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#0D0A1E">Netflix</div><div class="tx-m" style="color:rgba(13,10,30,.35)">Yesterday · Subscriptions</div></div><div class="tx-r"><div class="tx-amt" style="color:#C93520">−€15.99</div><div class="tx-tag" style="background:rgba(240,78,55,.08);color:#C93520">BILL</div></div></div>
+                <div class="tx tx-l" id="lTx3"><div class="tx-ic" style="background:rgba(59,130,246,.07)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 11L7 2.5 11.5 11M4 8.5h6" stroke="#3B82F6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#0D0A1E">Groceries</div><div class="tx-m" style="color:rgba(13,10,30,.35)">Dec 4 · Food</div></div><div class="tx-r"><div class="tx-amt" style="color:rgba(13,10,30,.45)">−€62.40</div><div class="tx-tag" style="background:rgba(59,130,246,.08);color:#2563EB">FOOD</div></div></div>
+                <div class="tx tx-l" id="lTx4"><div class="tx-ic" style="background:rgba(245,166,35,.07)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M8.5 2H12v3.5" stroke="#F5A623" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="tx-info"><div class="tx-n" style="color:#0D0A1E">S&amp;P 500 ETF</div><div class="tx-m" style="color:rgba(13,10,30,.35)">Dec 3 · Investment</div></div><div class="tx-r"><div class="tx-amt" style="color:rgba(13,10,30,.45)">−€892</div><div class="tx-tag" style="background:rgba(245,166,35,.08);color:#B07800">INVEST</div></div></div>
+              </div>
+              <div class="sh"><div class="sh-t" style="color:rgba(13,10,30,.28)">Breakdown</div></div>
+              <div class="bk bk-l">
+                
+                <div class="bk-legs"><div class="bk-row"><div class="bk-dot" style="background:#F04E37"></div><span class="bk-name" style="color:rgba(13,10,30,.4)">Bills</span><span class="bk-pct" style="color:#0D0A1E">35%</span></div><div class="bk-row"><div class="bk-dot" style="background:#3B82F6"></div><span class="bk-name" style="color:rgba(13,10,30,.4)">Food</span><span class="bk-pct" style="color:#0D0A1E">28%</span></div><div class="bk-row"><div class="bk-dot" style="background:#F5A623"></div><span class="bk-name" style="color:rgba(13,10,30,.4)">Transport</span><span class="bk-pct" style="color:#0D0A1E">22%</span></div><div class="bk-row"><div class="bk-dot" style="background:#00C896"></div><span class="bk-name" style="color:rgba(13,10,30,.4)">Other</span><span class="bk-pct" style="color:#0D0A1E">15%</span></div></div>
+              </div>
+              <div style="height:8px"></div>
+            </div>
+          </div>
+          <div class="bnav bnav-l">
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="8" height="8" rx="2.5" fill="#6339DC"/><rect x="12" y="2" width="8" height="8" rx="2.5" fill="rgba(99,57,220,.13)"/><rect x="2" y="12" width="8" height="8" rx="2.5" fill="rgba(99,57,220,.13)"/><rect x="12" y="12" width="8" height="8" rx="2.5" fill="rgba(99,57,220,.13)"/></svg></div><div class="bn-lbl" style="color:#6339DC">Home</div><div class="bn-pip" style="background:#6339DC"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 11.5L7 7l4 5 3.5-7L19 11" stroke="rgba(13,10,30,.18)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bn-lbl" style="color:rgba(13,10,30,.2)">Stats</div><div class="bn-pip" style="background:transparent"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="7" stroke="rgba(13,10,30,.18)" stroke-width="1.5"/><circle cx="11" cy="11" r="3.5" stroke="rgba(13,10,30,.18)" stroke-width="1.5"/><circle cx="11" cy="11" r="1" fill="rgba(13,10,30,.18)"/></svg></div><div class="bn-lbl" style="color:rgba(13,10,30,.2)">Goals</div><div class="bn-pip" style="background:transparent"></div></div>
+            <div class="bn-item"><div class="bn-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3.5" stroke="rgba(13,10,30,.18)" stroke-width="1.5"/><path d="M4 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="rgba(13,10,30,.18)" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="bn-lbl" style="color:rgba(13,10,30,.2)">Profile</div><div class="bn-pip" style="background:transparent"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="display:none">
+    <div class="f-badge"><div class="f-dot" style="background:#6339DC"></div><span class="f-lbl">Finance App</span></div>
+    <div class="f-sep"></div>
+    <div class="f-badge"><div class="f-dot" id="fDot" style="background:rgba(255,255,255,.15)"></div><span class="f-lbl" id="fLbl">Dark &amp; Light</span></div>
+    <div class="f-sep"></div>
+    <div class="f-badge"><div class="f-dot" style="background:#00C896"></div><span class="f-lbl">2025</span></div>
+  </div>
+</div>
+
+<script>
+const pD=document.getElementById('pD'),pL=document.getElementById('pL');
+const bD=document.getElementById('bD'),bL=document.getElementById('bL');
+const prog={style:{width:''}};
+const fDot=document.getElementById('fDot'),fLbl=document.getElementById('fLbl');
+const dT1=document.getElementById('dT1'),dT2=document.getElementById('dT2'),dT3=document.getElementById('dT3');
+const lT1=document.getElementById('lT1'),lT2=document.getElementById('lT2'),lT3=document.getElementById('lT3');
+const cD=document.getElementById('cD'),cL=document.getElementById('cL');
+
+// ── CHART: canvas-based so no SVG gradient artifacts ──
+const W=200,H=54;
+
+// point sets for each period
+const curves={
+  w:[[0,46],[40,38],[70,30],[105,17],[140,24],[175,18],[200,3]],
+  m:[[0,50],[35,44],[65,28],[100,32],[135,22],[170,14],[200,14]],
+  q:[[0,44],[30,36],[60,50],[100,30],[135,18],[165,22],[200,6]]
+};
+
+let currentPts=curves.w.map(p=>[...p]);
+let targetPts=curves.w.map(p=>[...p]);
+let animProg=1;
+const ANIM_DUR=400; // ms
+let animStart=0;
+
+function lerp(a,b,t){return a+(b-a)*t}
+function easeInOut(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+
+function drawChart(canvas,pts,isDark){
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  if(canvas.width!==W*dpr){canvas.width=W*dpr;canvas.height=H*dpr;ctx.scale(dpr,dpr)}
+  ctx.clearRect(0,0,W,H);
+
+  // build smooth path via catmull-rom
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(i-1,0)];
+    const p1=pts[i];
+    const p2=pts[i+1];
+    const p3=pts[Math.min(i+2,pts.length-1)];
+    const cp1x=p1[0]+(p2[0]-p0[0])/6;
+    const cp1y=p1[1]+(p2[1]-p0[1])/6;
+    const cp2x=p2[0]-(p3[0]-p1[0])/6;
+    const cp2y=p2[1]-(p3[1]-p1[1])/6;
+    ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,p2[0],p2[1]);
+  }
+
+  // stroke
+  ctx.strokeStyle='#6339DC';
+  ctx.lineWidth=2;
+  ctx.lineJoin='round';
+  ctx.lineCap='round';
+  ctx.stroke();
+
+  // fill — create gradient from current top of curve to bottom
+  const minY=Math.min(...pts.map(p=>p[1]));
+  const grad=ctx.createLinearGradient(0,minY,0,H);
+  if(isDark){
+    grad.addColorStop(0,'rgba(99,57,220,0.38)');
+    grad.addColorStop(1,'rgba(99,57,220,0)');
+  } else {
+    grad.addColorStop(0,'rgba(99,57,220,0.14)');
+    grad.addColorStop(1,'rgba(99,57,220,0)');
+  }
+  ctx.lineTo(W,H);
+  ctx.lineTo(0,H);
+  ctx.closePath();
+  ctx.fillStyle=grad;
+  ctx.fill();
+
+  // dot at end
+  const last=pts[pts.length-1];
+  ctx.beginPath();
+  ctx.arc(last[0],last[1],3.5,0,Math.PI*2);
+  ctx.fillStyle='#6339DC';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(last[0],last[1],6.5,0,Math.PI*2);
+  ctx.fillStyle='rgba(99,57,220,0.2)';
+  ctx.fill();
+}
+
+function animateChart(ts){
+  if(animProg>=1){
+    drawChart(cD,currentPts,true);
+    drawChart(cL,currentPts,false);
+    return;
+  }
+  const raw=Math.min((ts-animStart)/ANIM_DUR,1);
+  const t=easeInOut(raw);
+  const interp=currentPts.map((p,i)=>[
+    lerp(p[0],targetPts[i][0],t),
+    lerp(p[1],targetPts[i][1],t)
+  ]);
+  drawChart(cD,interp,true);
+  drawChart(cL,interp,false);
+  if(raw<1) requestAnimationFrame(animateChart);
+  else{currentPts=targetPts.map(p=>[...p]);animProg=1}
+}
+
+function switchCurve(key,ts){
+  currentPts=currentPts.map((p,i)=>{
+    const cur=cD.getContext('2d');
+    return[...p];
+  });
+  // capture current rendered state as starting point
+  targetPts=curves[key].map(p=>[...p]);
+  animProg=0;
+  animStart=ts||performance.now();
+  requestAnimationFrame(animateChart);
+}
+
+function setTab(active,isDark){
+  const tabs=isDark?[dT1,dT2,dT3]:[lT1,lT2,lT3];
+  const muted=isDark?'rgba(255,255,255,.28)':'rgba(13,10,30,.25)';
+  tabs.forEach(t=>{t.className='ct';t.style.background='transparent';t.style.color=muted});
+  active.className='ct ct-sel';active.style.background='#6339DC';active.style.color='#fff';
+}
+
+function scrollBoth(to){bD.scrollTo({top:to,behavior:'smooth'});bL.scrollTo({top:to,behavior:'smooth'})}
+function scrollInstant(to){bD.scrollTop=to;bL.scrollTop=to}
+
+function phone(el,scale,y,opacity,shadow){
+  el.style.transition='transform .5s cubic-bezier(.34,1.1,.64,1),opacity .45s ease,box-shadow .45s ease';
+  el.style.transform=`scale(${scale}) translateY(${y}px)`;
+  el.style.opacity=opacity;
+  if(shadow) el.style.boxShadow=shadow;
+}
+
+function hl(el,on){
+  el.style.transition='transform .25s cubic-bezier(.34,1.3,.64,1),box-shadow .25s ease';
+  el.style.transform=on?'scale(1.025) translateX(2px)':'scale(1) translateX(0)';
+  el.style.boxShadow=on?'0 4px 16px rgba(99,57,220,.15)':'none';
+}
+
+const LOOP=9000;
+let t0=null;
+
+const TL=[
+  [0,(_,ts)=>{
+    scrollInstant(0);
+    pD.style.transition='none';pL.style.transition='none';
+    pD.style.transform='scale(.92) translateY(30px)';pD.style.opacity='0';
+    pL.style.transform='scale(.92) translateY(30px)';pL.style.opacity='0';
+    setTab(dT1,true);setTab(lT1,false);
+    currentPts=curves.w.map(p=>[...p]);
+    targetPts=curves.w.map(p=>[...p]);
+    drawChart(cD,currentPts,true);
+    drawChart(cL,currentPts,false);
+    fDot.style.background='rgba(255,255,255,.15)';fLbl.textContent='Dark & Light';
+  }],
+  [80,()=>{
+    phone(pD,1.04,-7,1,'0 0 0 1.5px rgba(255,255,255,.08),0 28px 60px rgba(0,0,0,.85),0 0 90px rgba(99,57,220,.18)');
+    phone(pL,.95,5,.5,'0 0 0 1.5px rgba(99,57,220,.12),0 10px 24px rgba(99,57,220,.08)');
+  }],
+  [700,()=>{ hl(document.getElementById('dTx1'),true);hl(document.getElementById('lTx1'),true) }],
+  [1050,()=>{ hl(document.getElementById('dTx1'),false);hl(document.getElementById('lTx1'),false);hl(document.getElementById('dTx2'),true);hl(document.getElementById('lTx2'),true) }],
+  [1380,()=>{ hl(document.getElementById('dTx2'),false);hl(document.getElementById('lTx2'),false) }],
+  [1500,()=>{ scrollBoth(120) }],
+  [2100,(el,ts)=>{ setTab(dT2,true);setTab(lT2,false);switchCurve('m',ts) }],
+  [2700,()=>{ scrollBoth(280) }],
+  [3300,(el,ts)=>{ setTab(dT3,true);setTab(lT3,false);switchCurve('q',ts) }],
+  [3900,()=>{
+    phone(pD,.95,5,.45,'0 0 0 1.5px rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.5)');
+    phone(pL,1.04,-7,1,'0 0 0 2px rgba(99,57,220,.35),0 28px 60px rgba(99,57,220,.25),0 6px 20px rgba(0,0,0,.06)');
+    fDot.style.background='#EEE9FB';fLbl.textContent='Light Mode';
+  }],
+  [4600,()=>{ scrollBoth(0) }],
+  [5100,(el,ts)=>{ setTab(dT1,true);setTab(lT1,false);switchCurve('w',ts) }],
+  [5500,()=>{ hl(document.getElementById('lTx3'),true) }],
+  [5800,()=>{ hl(document.getElementById('lTx3'),false);hl(document.getElementById('lTx4'),true) }],
+  [6100,()=>{ hl(document.getElementById('lTx4'),false) }],
+  [6400,()=>{
+    phone(pD,1.0,0,.88,'0 0 0 1.5px rgba(255,255,255,.07),0 20px 44px rgba(0,0,0,.7),0 0 60px rgba(99,57,220,.12)');
+    phone(pL,1.0,0,.88,'0 0 0 1.5px rgba(99,57,220,.15),0 20px 44px rgba(99,57,220,.15)');
+    fDot.style.background='rgba(255,255,255,.3)';fLbl.textContent='Dark & Light';
+  }],
+  [6900,()=>{ scrollBoth(80) }],
+  [7500,()=>{
+    phone(pD,1.04,-7,1,'0 0 0 1.5px rgba(255,255,255,.08),0 28px 60px rgba(0,0,0,.85),0 0 90px rgba(99,57,220,.18)');
+    phone(pL,.95,5,.45,'0 0 0 1.5px rgba(99,57,220,.12),0 10px 24px rgba(99,57,220,.08)');
+    fDot.style.background='#131128';fLbl.textContent='Dark Mode';
+  }],
+  [8200,()=>{ scrollBoth(0) }],
+  [8700,()=>{
+    pD.style.transition='opacity .3s ease';pL.style.transition='opacity .3s ease';
+    pD.style.opacity='.6';pL.style.opacity='.3';
+  }],
+];
+
+function tick(ts){
+  if(!t0) t0=ts;
+  const el=(ts-t0)%LOOP;
+  const prev=(ts-t0-16.7);
+  const prevEl=prev<0?LOOP-1:prev%LOOP;
+  prog.style.width=((el/LOOP)*100)+'%';
+  TL.forEach(([t,fn])=>{
+    if(el>=t && prevEl<t) fn(el,ts);
+    if(el<20 && t===0) fn(el,ts);
+  });
+  requestAnimationFrame(tick);
+}
+
+// init draw
+drawChart(cD,currentPts,true);
+drawChart(cL,currentPts,false);
+setTimeout(()=>requestAnimationFrame(tick),100);
+</script>
+
+</body>
+</html>

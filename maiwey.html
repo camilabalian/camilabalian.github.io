@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maiwey  - Camila Balian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #E2FFA3; --bosque: #003939; --lima: #E2FFA3; --aciano: #C3D4FF; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+    html { scroll-behavior: smooth; }
+    * { cursor: none !important; }
+    body { background: var(--bg); color: var(--cream); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
+
+    /* CURSOR */
+    .cursor-dot { position: fixed; width: 10px; height: 10px; background: white; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, opacity .3s; mix-blend-mode: difference; }
+
+    /* PROGRESS */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 300; width: 0%; opacity: .6; transition: width .1s linear; }
+
+    /* NAV */
+    nav { position: fixed; inset: 0 0 auto 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 22px 40px; background: rgba(12,12,12,0.55); backdrop-filter: blur(18px); }
+    .nav-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .nav-back { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color .25s; }
+    .nav-back:hover { color: var(--cream); }
+
+    /* HERO */
+    .project-hero { min-height: 100vh; padding: clamp(180px,26vh,260px) clamp(64px,8vw,140px) clamp(60px,8vh,100px) clamp(80px,12vw,200px); position: relative; background: linear-gradient(180deg, var(--bosque) 0px, var(--bosque) 440px, var(--bg) 880px); }
+    .hero-content { position: relative; z-index: 1; max-width: 1100px; }
+    .hero-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(72px,12vw,180px); line-height: 1; letter-spacing: -.03em; color: var(--cream); margin: 0 0 18px; }
+    .hero-desc { font-size: clamp(16px,1.5vw,22px); font-weight: 300; line-height: 1.55; color: rgba(239,235,229,.62); max-width: 620px; margin: 0 0 52px; }
+    .hero-meta-row { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 48px; max-width: 820px; }
+    .hero-meta-k { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 10px; }
+    .hero-meta-v { font-size: 17px; color: var(--cream); font-weight: 400; line-height: 1.4; }
+
+    /* HERO IMAGE */
+    .hero-image { position: relative; z-index: 1; margin: clamp(80px,12vh,140px) auto 0; max-width: 1000px; }
+    .hero-image::before { content: ''; position: absolute; inset: -20% -30%; background: radial-gradient(ellipse at 50% 55%, rgba(0,57,57,.35) 0%, rgba(226,255,163,.06) 40%, transparent 60%); border-radius: 50%; filter: blur(70px); z-index: -1; pointer-events: none; }
+    .hero-image img { width: 100%; border-radius: 8px; display: block; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: rgba(239,235,229,0.08); margin: 0 64px; }
+
+    /* SECTIONS */
+    .section { padding: 80px 64px; }
+    .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 48px; }
+    .section-heading { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); line-height: 1.1; color: var(--cream); margin-bottom: 32px; overflow: visible; }
+    .section-text { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.65); margin-bottom: 22px; }
+    .section-text:last-child { margin-bottom: 0; }
+    .section-text strong { color: rgba(239,235,229,.9); font-weight: 500; }
+
+    /* FULL BLEED IMAGES */
+    .full-image { padding: 0 64px; }
+    .full-image img { width: 100%; border-radius: 16px; display: block; }
+    .full-image.dark-frame { background: transparent; }
+    .full-image.dark-frame img { border: 1px solid rgba(239,235,229,.06); background: var(--bg); }
+
+    /* SIDE-BY-SIDE IMAGE GRID */
+    .image-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 64px; }
+    .image-pair img { width: 100%; border-radius: 16px; display: block; }
+    .image-pair.dark-frame img { border: 1px solid rgba(239,235,229,.06); background: var(--bg); }
+
+    /* CHAPTER TINT */
+    .chapter-tinted { background: rgba(0,57,57,.04); }
+
+    /* FLOW SECTIONS */
+    .flow-section { padding: 65px 64px; }
+    .flow-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .flow-number { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+    .flow-title { font-family: 'Manrope', sans-serif; font-size: clamp(24px,2.8vw,38px); font-weight: 600; line-height: 1.15; color: var(--cream); margin-bottom: 24px; }
+    .flow-body { font-size: clamp(14px,1.3vw,18px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
+    .flow-visual img { width: 100%; border-radius: 12px; display: block; }
+
+    /* BEAUTY SHOT */
+    .beauty-shot { padding: 40px 0; }
+    .beauty-shot img { width: 100%; display: block; }
+
+    /* IMPACT */
+    .impact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 0 64px; }
+    .impact-cell { padding: 52px 36px; background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; transition: border-color .4s, background .4s; }
+    .impact-cell:hover { border-color: rgba(0,57,57,.35); background: rgba(0,57,57,.06); }
+    .impact-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(226,255,163,.55); }
+    .impact-headline { font-family: 'Archivo Black', sans-serif; font-size: clamp(30px,3.4vw,48px); line-height: 1.1; color: var(--cream); margin-top: 32px; }
+    .impact-sub { font-size: 12px; font-weight: 400; line-height: 1.6; color: rgba(239,235,229,.5); margin-top: 18px; }
+
+    /* REFLECTION */
+    .reflection { padding: 91px 64px; max-width: 720px; margin: 0 auto; text-align: center; }
+    .reflection .section-label { margin-bottom: 28px; }
+    .reflection .section-heading { font-size: clamp(30px,3.4vw,52px); margin-bottom: 48px; }
+    .reflection-item { margin-bottom: 36px; }
+    .reflection-item:last-child { margin-bottom: 0; }
+    .reflection-lead { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--cream); margin-bottom: 10px; line-height: 1.4; }
+    .reflection-body { font-size: clamp(15px,1.4vw,19px); font-weight: 300; line-height: 1.85; color: rgba(239,235,229,.55); }
+
+    /* NEXT PROJECT */
+    .next-project { padding: 65px 64px 78px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; transition: opacity .2s; }
+    .next-project:hover { opacity: .7; }
+    .next-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 16px; }
+    .next-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); color: var(--cream); }
+    .next-arrow { font-size: 48px; color: rgba(239,235,229,.3); }
+
+    /* CONTACT OVERLAY */
+    .contact-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: none; flex-direction: column; padding: 40px 64px 48px; opacity: 0; transform: translateY(32px); transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1); overflow-y: auto; }
+    .contact-overlay.open { opacity: 1; transform: translateY(0); }
+    .contact-overlay-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 52px; }
+    .contact-overlay-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .contact-close { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); background: none; border: none; padding: 0; transition: color .25s; }
+    .contact-close:hover { color: var(--cream); }
+    .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; flex: 1; align-items: start; }
+    .contact-heading { font-family: 'Manrope', sans-serif; font-size: clamp(64px,10vw,140px); font-weight: 500; line-height: .95; letter-spacing: -.03em; color: var(--cream); }
+    .contact-heading em { font-style: italic; color: rgba(239,235,229,.22); font-weight: 300; }
+    .contact-links { margin-top: 78px; display: flex; flex-direction: column; gap: 18px; }
+    .contact-info-link { font-family: 'Manrope', sans-serif; font-size: clamp(16px,1.6vw,22px); font-weight: 300; color: rgba(239,235,229,.6); text-decoration: none; border-bottom: 1px solid rgba(239,235,229,.15); padding-bottom: 3px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; transition: color .2s, border-color .2s; }
+    .contact-info-link:hover { color: var(--cream); border-color: rgba(239,235,229,.5); }
+    .contact-form { display: flex; flex-direction: column; gap: 28px; padding-top: 8px; }
+    .form-field { display: flex; flex-direction: column; gap: 10px; }
+    .form-field label { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.35); }
+    .form-field input, .form-field textarea { background: none; border: none; border-bottom: 1px solid rgba(239,235,229,.15); padding: 12px 0; font-family: 'Manrope', sans-serif; font-size: clamp(18px,2vw,26px); font-weight: 300; color: var(--cream); outline: none; resize: none; transition: border-color .25s; width: 100%; }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(239,235,229,.18); }
+    .form-field input:focus, .form-field textarea:focus { border-color: rgba(239,235,229,.5); }
+    .form-field textarea { min-height: 100px; }
+    .form-submit { display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 15px 40px; background: var(--cream); color: var(--dark); border: none; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; transition: background .2s; margin-top: 8px; }
+    .form-submit:hover { background: rgba(239,235,229,.88); }
+    .form-success { display: none; flex-direction: column; gap: 20px; padding-top: 8px; }
+    .form-success.visible { display: flex; }
+    .form-success-icon { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(239,235,229,.3); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--cream); }
+    .form-success-title { font-family: 'Manrope', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 500; color: var(--cream); line-height: 1.1; }
+    .form-success-sub { font-size: 14px; font-weight: 300; color: rgba(239,235,229,.45); line-height: 1.7; }
+
+    /* MOTION */
+    .reveal { opacity: 0; transform: translateY(48px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger > * { opacity: 0; transform: translateY(36px); transition: opacity .95s var(--ease), transform .95s var(--ease); }
+    .stagger.visible > * { opacity:1; transform:translateY(0); }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: .08s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: .16s; }
+    .scale-in > * { opacity: 0; transform: translateY(24px) scale(.97); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .scale-in.visible > * { opacity: 1; transform: translateY(0) scale(1); }
+    .scale-in.visible > *:nth-child(1) { transition-delay: 0s; }
+    .scale-in.visible > *:nth-child(2) { transition-delay: .09s; }
+    .scale-in.visible > *:nth-child(3) { transition-delay: .18s; }
+    .word-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; padding-right: .08em; padding-bottom: .1em; }
+    .word-inner { display: inline-block; transform: translateY(110%); transition: transform 1s var(--ease); }
+    .word-reveal.visible .word-inner { transform: translateY(0); }
+    .word-reveal .word-wrap:nth-child(1) .word-inner { transition-delay: 0s; }
+    .word-reveal .word-wrap:nth-child(2) .word-inner { transition-delay: .05s; }
+    .word-reveal .word-wrap:nth-child(3) .word-inner { transition-delay: .1s; }
+    .word-reveal .word-wrap:nth-child(4) .word-inner { transition-delay: .15s; }
+    .word-reveal .word-wrap:nth-child(5) .word-inner { transition-delay: .2s; }
+    .word-reveal .word-wrap:nth-child(6) .word-inner { transition-delay: .25s; }
+    .word-reveal .word-wrap:nth-child(7) .word-inner { transition-delay: .3s; }
+    .word-reveal .word-wrap:nth-child(n+8) .word-inner { transition-delay: .35s; }
+
+    /* Hero entrance */
+    .project-hero .hero-title { opacity: 0; transform: translateY(40px); filter: blur(8px); transition: opacity .9s var(--ease), transform 1s var(--ease), filter .8s var(--ease); }
+    .project-hero.loaded .hero-title { opacity: 1; transform: translateY(0); filter: blur(0); transition-delay: .1s; }
+    .project-hero .hero-desc, .project-hero .hero-meta-row > div { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .project-hero.loaded .hero-desc { opacity: 1; transform: translateY(0); transition-delay: .35s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: .5s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: .56s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: .62s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: .68s; }
+    .project-hero .hero-image { opacity: 0; transform: translateY(60px) scale(.97); transition: opacity 1.4s var(--ease), transform 1.4s var(--ease); }
+    .project-hero.loaded .hero-image { opacity: 1; transform: translateY(0) scale(1); transition-delay: .7s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .project-hero { padding: 140px 24px 60px; background: linear-gradient(180deg, var(--bosque) 0px, var(--bosque) 320px, var(--bg) 640px); }
+      .hero-title { font-size: clamp(48px,16vw,100px); }
+      .hero-desc { font-size: 15px; margin-bottom: 56px; }
+      .hero-meta-row { grid-template-columns: repeat(2,1fr); gap: 28px 32px; }
+      .hero-image { margin-top: 60px; }
+      .divider { margin: 0 24px; }
+      .section { padding: 52px 24px; }
+      .full-image { padding: 0 24px; }
+      .flow-section { padding: 39px 24px; }
+      .flow-layout { grid-template-columns: 1fr; gap: 40px; }
+      .image-pair { grid-template-columns: 1fr; padding: 0 24px; }
+      .impact-grid { grid-template-columns: 1fr; margin: 0 24px; }
+      .reflection { padding: 52px 24px; }
+      .next-project { padding: 52px 24px; }
+      .contact-overlay { padding: 32px 24px 48px; }
+      .contact-body { grid-template-columns: 1fr; gap: 31px; }
+      .contact-links { margin-top: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="progress-bar" id="progressBar"></div>
+
+  <nav>
+    <a class="nav-logo" href="cami-balian-portfolio.html">CB</a>
+    <a class="nav-back" href="cami-balian-portfolio.html">&larr; Back</a>
+  </nav>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="project-hero" id="projectHero">
+    <div class="hero-content">
+      <h1 class="hero-title">Maiwey</h1>
+      <p class="hero-desc">A financial group with 30 years of expertise but zero digital presence needed everything built from scratch: brand, public website, investment platform, and mobile app. All to compete in Spain's saturated savings market.</p>
+      <div class="hero-meta-row">
+        <div><div class="hero-meta-k">Client</div><div class="hero-meta-v">A&G</div></div>
+        <div><div class="hero-meta-k">Role</div><div class="hero-meta-v">Product Designer</div></div>
+        <div><div class="hero-meta-k">Team</div><div class="hero-meta-v">3 designers · 1 PM</div></div>
+        <div><div class="hero-meta-k">Year</div><div class="hero-meta-v">2025</div></div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="maiwey/web-publica-clean.png" alt="Maiwey product  - browser with favicon, mobile account screen showing 20,387€ balance, and laptop with marketing landing page">
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+  <section class="section reveal">
+    <div class="section-label">Overview</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">The challenge</h2>
+      <p class="section-text">Maiwey's parent company had decades of B2B financial experience but had never spoken directly to retail customers. They needed everything from scratch: brand, public marketing website, private investment platform, and mobile app. In a market where incumbents already owned the "simple fintech" positioning.</p>
+      <p class="section-text">The team was three designers: a UX researcher, a designer who doubled as PM, and me as product designer across the full scope: research, brand, product UI, and documentation.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ DISCOVERY ═══════════════════ -->
+  <section class="section reveal">
+    <div class="section-label">Discovery</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">What the research told us.</h2>
+      <p class="section-text">I ran workshops with stakeholders and interviews with potential users. Three findings shaped every decision after:</p>
+      <p class="section-text"><strong>People didn't distrust fintech. They distrusted complexity.</strong> The barrier was jargon, hidden fees, and interfaces that assumed financial literacy.</p>
+      <p class="section-text"><strong>Transparency was the missing feature.</strong> Users said they'd move their money if they could actually see what was happening to it: real numbers, clear timelines, no surprises.</p>
+      <p class="section-text"><strong>Trust was earned screen by screen.</strong> No amount of brand messaging would convince someone to deposit money. The product itself had to feel trustworthy.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FLOW 01: PUBLIC SITE -->
+  <div class="flow-section chapter-tinted reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">01 Public marketing site</div>
+        <h3 class="flow-title">The brand had to sell itself before users ever logged in.</h3>
+        <p class="flow-body">No physical branches, no ads at launch. The website was the only way in. I led with a savings simulator so visitors could see real numbers before signing up, and replaced industry jargon with plain-language explainers. Every section answers one question: "why should I move my money here?"</p>
+      </div>
+      <div class="flow-visual">
+        <img src="maiwey/web-marketing-clean.png" alt="Maiwey public marketing website  - landing page with savings simulator, product explainers, and investment fund comparison">
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 02: SAVINGS + DEPOSITS -->
+  <div class="flow-section reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">02 Savings + deposits</div>
+        <h3 class="flow-title">People needed to see their money growing, not just sitting.</h3>
+        <p class="flow-body">I made the earned amount the largest number on the screen. That's the one people actually care about. Push notifications for bonuses and balance changes surface progress without opening the app, turning passive savings into something that feels alive.</p>
+      </div>
+      <div class="flow-visual">
+        <img src="maiwey/deposits-lifestyle.png" alt="Mobile deposit detail screen showing 110.40€ interest earned on a 6-month deposit, alongside lifestyle photography with push notification for +2,000€ bonus">
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 03: INVESTMENT DASHBOARD -->
+  <div class="flow-section chapter-tinted reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">03 Investment dashboard</div>
+        <h3 class="flow-title">Users couldn't tell if their money was doing well or not.</h3>
+        <p class="flow-body">Competitors showed fund performance as a single percentage. I designed charts that show returns over time, with the data density adapting per breakpoint: desktop shows the full picture, mobile keeps the trend line and key numbers. A glance on any screen should answer "am I up or down?"</p>
+      </div>
+      <div class="flow-visual">
+        <img src="maiwey/portfolio-deposits-clean.png" alt="Investment dashboard across desktop, tablet, and mobile  - portfolio overview with fund performance charts, holdings, and deposit comparison rates">
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 04: RISK PROFILE -->
+  <div class="flow-section reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">04 Risk profile</div>
+        <h3 class="flow-title">Regulators required a suitability test. Users hated forms.</h3>
+        <p class="flow-body">Most platforms bury this mandatory test in a 30-field form. I broke it into three progressive sections with one question at a time, a progress indicator, and a "why are we asking this?" link at every step. If users don't understand why you're collecting data, they drop off.</p>
+      </div>
+      <div class="flow-visual">
+        <img src="maiwey/suitability-test.png" alt="Suitability test  - web form showing progressive sections (objectives, experience, financial situation) with one question visible at a time, alongside lifestyle photography">
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL PRODUCT OVERVIEW -->
+  <div class="full-image dark-frame reveal" style="padding-top: 40px; padding-bottom: 40px;">
+    <img src="maiwey/product-multidevice.png" alt="Full product ecosystem  - investment dashboard on desktop, fund detail on iPad, mobile portfolio, suitability test, and deposit screens across all breakpoints">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ BRAND IDENTITY ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 48px;">
+    <div class="section-label">Brand identity</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">The arrow in the "a".</h2>
+      <p class="section-text">Brand and product were built at the same time, so every identity decision had to work on a screen. I modified the typeface Nohemi in three places: the "a" became an upward arrow, the "m" flipped into a "w", the "i" lost its dot. That arrow became the app icon, the favicon, and the one element users recognize at any size. I tested it at 32px before it ever went on a billboard.</p>
+    </div>
+  </section>
+
+  <div class="image-pair dark-frame reveal" style="padding-bottom: 24px;">
+    <img src="maiwey/app-icon.png" alt="Maiwey app icon and favicon on black background  - the arrow symbol as a standalone brand mark">
+    <img src="maiwey/product-composite.png" alt="Brand ecosystem  - logo on dark green, app icon on iPhone home screen, brand manual spread, and marketing website on MacBook">
+  </div>
+
+  <!-- ═══════════════════ BRAND IN THE WILD ═══════════════════ -->
+  <div class="image-pair dark-frame reveal" style="padding-top: 24px; padding-bottom: 24px;">
+    <img src="maiwey/app-stores-clean.png" alt="Maiwey app icon on iOS home screen, App Store listing with 4.9 rating, and push notification design">
+    <img src="maiwey/social-media-clean.png" alt="Social media grid  - six Instagram posts mixing product screens, lifestyle photography, and branded cards">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ IMPACT ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 32px;">
+    <div class="section-label">Impact</div>
+    <h2 class="section-heading word-reveal" style="max-width: 740px;">What I shipped.</h2>
+  </section>
+  <div class="impact-grid scale-in">
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Strategy</div>
+      <div class="impact-headline">Brand approved first round</div>
+      <div class="impact-sub">I presented three directions. The client chose one immediately. No revision cycles, no second-guessing. That early alignment saved weeks and let me move straight into product.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Product</div>
+      <div class="impact-headline">60+ screens across 2 products</div>
+      <div class="impact-sub">A public marketing website and a private investment platform, both responsive across desktop, tablet, and mobile. Shared component system, one design language, all designed and handed off in 4 months.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">System</div>
+      <div class="impact-headline">40-page brand manual</div>
+      <div class="impact-sub">Everything the client needed to scale the brand without us: logo, colour, typography, photography, patterns, social templates, and app store assets. Built to outlast the project.</div>
+    </div>
+  </div>
+
+  <div style="height: 80px;"></div>
+
+  <!-- ═══════════════════ TAKEAWAYS ═══════════════════ -->
+  <section class="reflection reveal">
+    <div class="section-label">Takeaways</div>
+    <h2 class="section-heading word-reveal">What this project taught me.</h2>
+    <div class="reflection-items stagger">
+      <div class="reflection-item">
+        <p class="reflection-lead">When you build brand and product together, both get better.</p>
+        <p class="reflection-body">Every visual decision had to survive a 320px screen. That constraint made the whole system stronger.</p>
+      </div>
+      <div class="reflection-item">
+        <p class="reflection-lead">In fintech, clarity is the feature.</p>
+        <p class="reflection-body">The UI that explains itself is the UI people finish.</p>
+      </div>
+      <div class="reflection-item">
+        <p class="reflection-lead">Research doesn't slow you down, it speeds you up.</p>
+        <p class="reflection-body">Two weeks of interviews meant the client approved the brand in one round and I never had to rethink a major product decision.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="height: 1px; background: rgba(239,235,229,0.06); margin: 0 64px;"></div>
+
+  <!-- NEXT PROJECT -->
+  <a class="next-project reveal" href="misip.html">
+    <div>
+      <div class="next-label">Next project</div>
+      <div class="next-title">MiSIP</div>
+    </div>
+    <div class="next-arrow">&rarr;</div>
+  </a>
+
+  <!-- CONTACT OVERLAY -->
+  <div class="contact-overlay" id="contactOverlay">
+    <div class="contact-overlay-nav">
+      <a class="contact-overlay-logo" href="#" id="overlayLogo">CB</a>
+      <button class="contact-close" id="contactClose">Close</button>
+    </div>
+    <div class="contact-body">
+      <div>
+        <h2 class="contact-heading">Hi there,<br><em>say hello :)</em></h2>
+        <div class="contact-links">
+          <a href="mailto:cbalianr@gmail.com" class="contact-info-link">cbalianr@gmail.com</a>
+          <a href="https://es.linkedin.com/in/camilabalian" target="_blank" class="contact-info-link">LinkedIn</a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="hidden" name="access_key" value="1f610c8a-f0c1-4518-ac63-18b415fa3bd4">
+        <input type="hidden" name="subject" value="New message from your portfolio">
+        <div class="form-field"><label>Your name</label><input type="text" name="name" placeholder="Your name" required></div>
+        <div class="form-field"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-field"><label>Message</label><textarea name="message" placeholder="Say something nice…" rows="4" required></textarea></div>
+        <button class="form-submit" type="submit">Send message</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <h3 class="form-success-title">Message sent!</h3>
+        <p class="form-success-sub">Thanks for reaching out, I'll get back to you soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Cursor */
+    const dot = document.getElementById('cursorDot');
+    window.addEventListener('mousemove', e => { dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
+
+    /* Progress */
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => { bar.style.width = (window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'; }, {passive:true});
+
+    /* Hero entrance */
+    const hero = document.getElementById('projectHero');
+    if (hero) requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('loaded')));
+
+    /* Word-split .word-reveal headings */
+    document.querySelectorAll('.word-reveal').forEach(el => {
+      if (el.children.length > 0) return;
+      const text = el.textContent.trim();
+      if (!text) return;
+      const words = text.split(/\s+/);
+      el.textContent = '';
+      words.forEach((w, i) => {
+        const wrap = document.createElement('span');
+        wrap.className = 'word-wrap';
+        const inner = document.createElement('span');
+        inner.className = 'word-inner';
+        inner.textContent = w;
+        wrap.appendChild(inner);
+        el.appendChild(wrap);
+        if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+    });
+
+    /* IntersectionObserver */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.reveal, .stagger, .scale-in, .word-reveal').forEach(el => obs.observe(el));
+
+    /* Contact overlay */
+    const overlay = document.getElementById('contactOverlay');
+    const closeBtn = document.getElementById('contactClose');
+    const overlayLogo = document.getElementById('overlayLogo');
+    function closeOverlay(e){ e&&e.preventDefault(); overlay.classList.remove('open'); setTimeout(()=>{overlay.style.display='none';},450); document.body.style.overflow=''; }
+    if(closeBtn) closeBtn.addEventListener('click', closeOverlay);
+    if(overlayLogo) overlayLogo.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeOverlay(); });
+    /* Contact form */
+    const cForm = document.getElementById('contactForm');
+    const fSuccess = document.getElementById('formSuccess');
+    if(cForm) cForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(cForm) });
+        if(res.ok){ cForm.style.display='none'; fSuccess.classList.add('visible'); }
+      } catch(err){}
+    });
+  </script>
+</body>
+</html>

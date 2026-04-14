@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Tasks — Camila Balian</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+    }
+
+    .t{transition:background-color 1.1s ease,border-color 1.1s ease,color 1.1s ease;}
+    .tl{transition:background-color 1.1s ease;}
+    @keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.55;transform:scale(1.5)}}
+    .pls{animation:pd 2.4s ease-in-out infinite;}
+  </style>
+</head>
+<body>
+
+<div style="padding:32px 14px 36px;background:#07091A;border-radius:22px;display:flex;flex-direction:column;align-items:center;gap:16px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;max-width:780px;margin:0 auto;box-shadow:none;">
+<div style="background:#1C1C1E;border-radius:22px;border:1px solid #3A3A3C;padding:9px 9px 16px;width:min(710px,100%);">
+<div style="display:flex;justify-content:center;margin-bottom:6px;"><div style="width:5px;height:5px;border-radius:50%;background:#2C2C2E;"></div></div>
+
+<div id="scr" class="t" style="position:relative;width:100%;height:418px;border-radius:13px;overflow:hidden;background:#F8FCFF;">
+
+  <!-- LEFT SIDEBAR -->
+  <div id="sb" class="t" style="position:absolute;left:11px;top:11px;width:33px;bottom:11px;border-radius:16px;background:#FFFFFF;display:flex;flex-direction:column;align-items:center;padding:8px 0;z-index:5;">
+    <!-- Avatar -->
+    <div id="av" class="t" style="width:23px;height:23px;border-radius:50%;background:#9769F6;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid transparent;box-sizing:border-box;">
+      <span style="font-size:7.5px;color:white;font-weight:700;letter-spacing:-0.3px;">JD</span>
+    </div>
+    <div id="avdiv" class="tl" style="width:18px;height:1px;background:#E8EEF4;margin:8px 0;flex-shrink:0;"></div>
+
+    <!-- ACTIVE: Board — intentionally filled violet -->
+    <div id="sbi1" class="t" style="width:25px;height:25px;border-radius:7px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="13" height="13" viewBox="0 0 13 13">
+        <rect x="1.5" y="1.5" width="4" height="4" rx="0.8" fill="#9769F6"/>
+        <rect x="7.5" y="1.5" width="4" height="4" rx="0.8" fill="#9769F6" opacity="0.45"/>
+        <rect x="1.5" y="7.5" width="4" height="4" rx="0.8" fill="#9769F6" opacity="0.45"/>
+        <rect x="7.5" y="7.5" width="4" height="4" rx="0.8" fill="#9769F6" opacity="0.45"/>
+      </svg>
+    </div>
+
+    <!-- Gantt icon — lines only, fill:none inline on each element -->
+    <div style="width:25px;height:25px;display:flex;align-items:center;justify-content:center;margin-top:10px;flex-shrink:0;">
+      <svg width="13" height="13" viewBox="0 0 13 13">
+        <line id="gi1" x1="2" y1="4"  x2="8.5" y2="4"  style="fill:none;stroke:#C4CAD4;stroke-width:1.8;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line id="gi2" x1="4.5" y1="7"  x2="11"  y2="7"  style="fill:none;stroke:#C4CAD4;stroke-width:1.8;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line id="gi3" x1="2"   y1="10" x2="7"   y2="10" style="fill:none;stroke:#C4CAD4;stroke-width:1.8;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+      </svg>
+    </div>
+
+    <!-- Calendar icon — rect + lines, all fill:none inline -->
+    <div style="width:25px;height:25px;display:flex;align-items:center;justify-content:center;margin-top:10px;flex-shrink:0;">
+      <svg width="13" height="13" viewBox="0 0 13 13">
+        <rect  id="ci1" x="1.5" y="2.5" width="10" height="9.5" rx="1.5" style="fill:none;stroke:#C4CAD4;stroke-width:1;transition:stroke 1.1s ease;"/>
+        <line  id="ci2" x1="1.5" y1="5.5" x2="11.5" y2="5.5"   style="fill:none;stroke:#C4CAD4;stroke-width:1;transition:stroke 1.1s ease;"/>
+        <line  id="ci3" x1="4.5" y1="1.5" x2="4.5"  y2="4"     style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line  id="ci4" x1="8.5" y1="1.5" x2="8.5"  y2="4"     style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+      </svg>
+    </div>
+
+    <div style="flex:1;"></div>
+
+    <!-- Settings — circle + 8 lines, all fill:none inline -->
+    <div style="width:25px;height:25px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="13" height="13" viewBox="0 0 13 13">
+        <circle id="sg1" cx="6.5" cy="6.5" r="2"   style="fill:none;stroke:#C4CAD4;stroke-width:1.1;transition:stroke 1.1s ease;"/>
+        <line   id="sg2" x1="6.5" y1="1"   x2="6.5" y2="3"   style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg3" x1="6.5" y1="10"  x2="6.5" y2="12"  style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg4" x1="1"   y1="6.5" x2="3"   y2="6.5" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg5" x1="10"  y1="6.5" x2="12"  y2="6.5" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg6" x1="2.7" y1="2.7" x2="4.1" y2="4.1" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg7" x1="8.9" y1="8.9" x2="10.3" y2="10.3" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg8" x1="2.7" y1="10.3" x2="4.1" y2="8.9" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+        <line   id="sg9" x1="8.9" y1="4.1" x2="10.3" y2="2.7" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+      </svg>
+    </div>
+
+    <!-- Sign out — polyline + polyline + line, all fill:none inline -->
+    <div style="width:25px;height:25px;display:flex;align-items:center;justify-content:center;margin-top:6px;flex-shrink:0;">
+      <svg width="13" height="13" viewBox="0 0 13 13">
+        <polyline id="lo1" points="5,2.5 3,2.5 2,3.5 2,9.5 3,10.5 5,10.5" style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;transition:stroke 1.1s ease;"/>
+        <polyline id="lo2" points="8.5,4.5 11,6.5 8.5,8.5"                style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;transition:stroke 1.1s ease;"/>
+        <line     id="lo3" x1="11" y1="6.5" x2="5" y2="6.5"              style="fill:none;stroke:#C4CAD4;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div id="srch" class="t" style="position:absolute;left:52px;right:44px;top:11px;height:22px;border-radius:11px;background:#FFFFFF;display:flex;align-items:center;padding:0 9px;gap:5px;z-index:5;">
+    <svg width="9" height="9" viewBox="0 0 9 9" style="flex-shrink:0;">
+      <circle id="si1" cx="4"   cy="4"   r="2.5"             style="fill:none;stroke:#BCC4D0;stroke-width:1;transition:stroke 1.1s ease;"/>
+      <line   id="si2" x1="6.2" y1="6.2" x2="8.5" y2="8.5"  style="fill:none;stroke:#BCC4D0;stroke-width:1;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+    </svg>
+    <span id="sph" class="t" style="font-size:9.5px;color:#9CA3AF;flex:1;">Search tasks, projects, people...</span>
+    <div style="display:flex;gap:3px;flex-shrink:0;">
+      <span id="ta1" class="t" style="font-size:7.5px;padding:1.5px 5px;background:#F3F4F6;border-radius:3px;color:#6B7280;">All</span>
+      <span id="ta2" class="t" style="font-size:7.5px;padding:1.5px 5px;background:#EDE9FE;border-radius:3px;color:#7C3AED;font-weight:600;">My tasks</span>
+      <span id="ta3" class="t" style="font-size:7.5px;padding:1.5px 5px;background:#F3F4F6;border-radius:3px;color:#6B7280;">Team</span>
+    </div>
+  </div>
+
+  <!-- BELL — paths with fill:none inline -->
+  <div id="bell" class="t" style="position:absolute;right:11px;top:11px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;z-index:5;">
+    <svg width="11" height="12" viewBox="0 0 11 12">
+      <path id="bl1" d="M5.5 1C4 1 3 2.2 3 3.5V6.5L1.5 7.5V8.5H9.5V7.5L8 6.5V3.5C8 2.2 7 1 5.5 1Z" style="fill:none;stroke:#94A3B8;stroke-width:0.9;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+      <path id="bl2" d="M4.5 8.5C4.5 9.05 4.95 9.5 5.5 9.5C6.05 9.5 6.5 9.05 6.5 8.5"              style="fill:none;stroke:#94A3B8;stroke-width:0.9;stroke-linecap:round;transition:stroke 1.1s ease;"/>
+    </svg>
+  </div>
+
+  <!-- BODY -->
+  <div style="position:absolute;left:52px;right:11px;top:40px;bottom:11px;display:flex;overflow:hidden;">
+
+    <!-- GANTT -->
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:baseline;gap:6px;height:20px;padding:0 2px;flex-shrink:0;">
+        <span id="stit" class="t" style="font-size:10.5px;font-weight:700;color:#1E293B;letter-spacing:-0.02em;">April 2026</span>
+        <span id="ssub" class="t" style="font-size:8.5px;color:#94A3B8;">Project Timeline</span>
+        <div style="margin-left:auto;"><div id="wv" class="t" style="height:15px;padding:0 7px;border-radius:4px;background:#F3F4F6;display:flex;align-items:center;"><span id="wvt" class="t" style="font-size:7.5px;color:#6B7280;">Month</span></div></div>
+      </div>
+      <div style="flex:1;display:flex;min-height:0;">
+        <div style="width:68px;flex-shrink:0;display:flex;flex-direction:column;">
+          <div style="height:20px;"></div>
+          <div id="lb1" class="t" style="flex:1;border-bottom:1px solid #EEF2F6;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln1" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">Auth System</span><span id="ls1" class="t" style="font-size:7px;color:#94A3B8;">Active</span></div>
+          <div id="lb2" class="t" style="flex:1;border-bottom:1px solid #EEF2F6;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln2" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">Data Pipeline</span><span id="ls2" class="t" style="font-size:7px;color:#94A3B8;">Active</span></div>
+          <div id="lb3" class="t" style="flex:1;border-bottom:1px solid #EEF2F6;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln3" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">API Gateway</span><span id="ls3" class="t" style="font-size:7px;color:#94A3B8;">On track</span></div>
+          <div id="lb4" class="t" style="flex:1;border-bottom:1px solid #EEF2F6;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln4" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">Load Testing</span><span id="ls4" class="t" style="font-size:7px;color:#94A3B8;">Planned</span></div>
+          <div id="lb5" class="t" style="flex:1;border-bottom:1px solid #EEF2F6;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln5" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">CI/CD Setup</span><span id="ls5" class="t" style="font-size:7px;color:#94A3B8;">Planned</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 3px;"><span id="ln6" class="t" style="font-size:8.5px;font-weight:600;color:#374151;">Production</span><span id="ls6" class="t" style="font-size:7px;color:#94A3B8;">Upcoming</span></div>
+        </div>
+        <div id="grd" style="flex:1;position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;">
+          <div id="ghdr" class="t" style="height:20px;display:flex;flex-shrink:0;border-bottom:1px solid #EEF2F6;">
+            <div id="gh0" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W1</b><span style="opacity:0.7;font-weight:400;">Apr 6</span></div>
+            <div id="gh1"           style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;font-weight:700;color:#9769F6;"><span>W2</span><span style="opacity:0.7;font-weight:400;">Apr 13</span></div>
+            <div id="gh2" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W3</b><span style="opacity:0.7;font-weight:400;">Apr 20</span></div>
+            <div id="gh3" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W4</b><span style="opacity:0.7;font-weight:400;">Apr 27</span></div>
+            <div id="gh4" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W5</b><span style="opacity:0.7;font-weight:400;">May 4</span></div>
+            <div id="gh5" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W6</b><span style="opacity:0.7;font-weight:400;">May 11</span></div>
+            <div id="gh6" class="t" style="flex:1;display:flex;align-items:center;justify-content:center;gap:1.5px;font-size:7.5px;color:#94A3B8;"><b style="font-weight:600;">W7</b><span style="opacity:0.7;font-weight:400;">May 18</span></div>
+          </div>
+          <div id="gr1" class="t" style="flex:1;position:relative;border-bottom:1px solid #EEF2F6;display:flex;align-items:center;"><div style="position:absolute;left:0%;width:42.86%;height:18px;border-radius:9px;background:#9769F6;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">Auth System</span></div></div>
+          <div id="gr2" class="t" style="flex:1;position:relative;border-bottom:1px solid #EEF2F6;display:flex;align-items:center;"><div style="position:absolute;left:14.28%;width:42.86%;height:18px;border-radius:9px;background:#3B82F6;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">Data Pipeline</span></div></div>
+          <div id="gr3" class="t" style="flex:1;position:relative;border-bottom:1px solid #EEF2F6;display:flex;align-items:center;"><div style="position:absolute;left:0%;width:71.42%;height:18px;border-radius:9px;background:#0891B2;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">API Gateway</span></div></div>
+          <div id="gr4" class="t" style="flex:1;position:relative;border-bottom:1px solid #EEF2F6;display:flex;align-items:center;"><div style="position:absolute;left:28.57%;width:42.86%;height:18px;border-radius:9px;background:#C026D3;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">Load Testing</span></div></div>
+          <div id="gr5" class="t" style="flex:1;position:relative;border-bottom:1px solid #EEF2F6;display:flex;align-items:center;"><div style="position:absolute;left:42.86%;width:57.14%;height:18px;border-radius:9px;background:#6366F1;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">CI/CD Setup</span></div></div>
+          <div style="flex:1;position:relative;display:flex;align-items:center;"><div style="position:absolute;left:71.42%;width:28.58%;height:18px;border-radius:9px;background:#DB2777;display:flex;align-items:center;padding:0 8px;z-index:2;"><span style="font-size:7.5px;color:white;font-weight:500;white-space:nowrap;">Production</span></div></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;pointer-events:none;z-index:1;">
+            <div style="flex:1;"></div><div id="vl1" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div><div id="vl2" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div><div id="vl3" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div><div id="vl4" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div><div id="vl5" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div><div id="vl6" class="tl" style="width:1px;background:#EEF2F6;"></div>
+            <div style="flex:1;"></div>
+          </div>
+          <div style="position:absolute;left:20.83%;top:0;bottom:0;width:1px;background:#9769F6;z-index:10;pointer-events:none;">
+            <div class="pls" style="position:absolute;top:18px;left:-2.5px;width:6px;height:6px;border-radius:50%;background:#9769F6;"></div>
+            <div id="tpill" class="t" style="position:absolute;top:1px;left:-24px;width:48px;height:14px;background:white;border-radius:7px;display:flex;align-items:center;justify-content:center;">
+              <span id="tptxt" class="t" style="font-size:7px;color:#64748B;font-weight:500;">Apr 7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="rdiv" class="tl" style="width:1px;background:#E4ECF5;flex-shrink:0;"></div>
+
+    <!-- RIGHT PANEL -->
+    <div id="rp" class="t" style="width:184px;flex-shrink:0;display:flex;flex-direction:column;padding:0 10px;background:#F1F5FA;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;height:20px;flex-shrink:0;margin-bottom:7px;padding-top:1px;">
+        <span id="rpmon" class="t" style="font-size:10px;font-weight:700;color:#1E293B;letter-spacing:-0.02em;">April 2026</span>
+        <div onclick="manualToggle()" style="display:flex;align-items:center;gap:5px;cursor:pointer;user-select:none;">
+          <span id="togtxt" style="font-size:7.5px;color:#9CA3AF;font-weight:500;letter-spacing:0.04em;transition:color 0.5s ease;">Light</span>
+          <div id="tog" class="tl" style="width:30px;height:16px;border-radius:8px;background:#DDE5EF;position:relative;display:flex;align-items:center;padding:2px;">
+            <div id="tthumb" class="tl" style="width:12px;height:12px;border-radius:50%;background:#FFFFFF;transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="cal" class="t" style="background:white;border-radius:10px;padding:7px 5px;margin-bottom:8px;flex-shrink:0;">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:2px;">
+          <div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">M</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">T</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">W</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">T</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">F</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">S</div><div style="height:14px;display:flex;align-items:center;justify-content:center;font-size:6.5px;font-weight:700;color:#94A3B8;">S</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);">
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#CBD5E1;">30</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#CBD5E1;">31</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">1</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">2</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">3</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">4</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">5</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">6</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;"><div style="width:16px;height:16px;border-radius:50%;background:#9769F6;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:7px;color:white;font-weight:700;">7</span></div></div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">8</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">9</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9769F6;font-weight:700;">10</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9769F6;font-weight:700;">11</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9769F6;font-weight:700;">12</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">13</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">14</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">15</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">16</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">17</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">18</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">19</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">20</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">21</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">22</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">23</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">24</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">25</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">26</div>
+          <div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">27</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">28</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">29</div><div style="height:17px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#475569;">30</div>
+          <div style="height:17px;"></div><div style="height:17px;"></div><div style="height:17px;"></div>
+        </div>
+      </div>
+
+      <div id="upt" class="t" style="font-size:9px;font-weight:700;color:#1E293B;margin-bottom:5px;flex-shrink:0;">Upcoming</div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;">
+        <div id="ui1" class="t" style="display:flex;align-items:center;gap:6px;background:white;border-radius:8px;padding:5px 7px;flex-shrink:0;">
+          <div style="width:3px;height:26px;border-radius:2px;background:#9769F6;flex-shrink:0;"></div>
+          <div style="flex:1;min-width:0;"><div id="ui1t" class="t" style="font-size:7.5px;font-weight:600;color:#1E293B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Auth review · Sprint 4</div><div id="ui1s" class="t" style="font-size:6.5px;color:#94A3B8;margin-top:1px;">Tue · 11:00 AM</div></div>
+        </div>
+        <div id="ui2" class="t" style="display:flex;align-items:center;gap:6px;background:white;border-radius:8px;padding:5px 7px;flex-shrink:0;">
+          <div style="width:3px;height:26px;border-radius:2px;background:#3B82F6;flex-shrink:0;"></div>
+          <div style="flex:1;min-width:0;"><div id="ui2t" class="t" style="font-size:7.5px;font-weight:600;color:#1E293B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Pipeline sync</div><div id="ui2s" class="t" style="font-size:6.5px;color:#94A3B8;margin-top:1px;">Wed · 2:00 PM</div></div>
+        </div>
+        <div id="ui3" class="t" style="display:flex;align-items:center;gap:6px;background:white;border-radius:8px;padding:5px 7px;flex-shrink:0;">
+          <div style="width:3px;height:26px;border-radius:2px;background:#C026D3;flex-shrink:0;"></div>
+          <div style="flex:1;min-width:0;"><div id="ui3t" class="t" style="font-size:7.5px;font-weight:600;color:#1E293B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Load test sign-off</div><div id="ui3s" class="t" style="font-size:6.5px;color:#94A3B8;margin-top:1px;">Fri · 10:00 AM</div></div>
+        </div>
+        <div id="dc" class="t" style="background:white;border-radius:13px;padding:9px 10px;flex-shrink:0;margin-top:auto;">
+          <div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;">
+            <div class="pls" style="width:5px;height:5px;border-radius:50%;background:#9769F6;flex-shrink:0;"></div>
+            <span id="dct" class="t" style="font-size:7px;color:#9769F6;font-weight:600;">11:00 AM · Tue 11</span>
+          </div>
+          <div id="dcti" class="t" style="font-size:11px;font-weight:700;color:#1E293B;letter-spacing:-0.02em;margin-bottom:5px;">Auth System</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;">
+              <div style="width:15px;height:15px;border-radius:50%;background:#9769F6;display:flex;align-items:center;justify-content:center;border:1.5px solid white;z-index:3;flex-shrink:0;"><span style="font-size:6px;color:white;font-weight:700;">JD</span></div>
+              <div style="width:15px;height:15px;border-radius:50%;background:#3B82F6;display:flex;align-items:center;justify-content:center;border:1.5px solid white;margin-left:-4px;z-index:2;flex-shrink:0;"><span style="font-size:6px;color:white;font-weight:700;">RK</span></div>
+              <div style="width:15px;height:15px;border-radius:50%;background:#0891B2;display:flex;align-items:center;justify-content:center;border:1.5px solid white;margin-left:-4px;z-index:1;flex-shrink:0;"><span style="font-size:6px;color:white;font-weight:700;">AL</span></div>
+            </div>
+            <div id="dcb" class="t" style="height:15px;padding:0 7px;background:#EDE9FE;border-radius:8px;display:flex;align-items:center;">
+              <span id="dcbt" class="t" style="font-size:7px;color:#7C3AED;font-weight:600;">In Progress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="display:flex;justify-content:center;margin-top:8px;"><div style="width:66px;height:3px;background:#3A3A3C;border-radius:2px;"></div></div>
+</div>
+
+<script>
+let dark=false,tmr=null;
+
+// Every icon element ID — fill:none will be explicitly set on each in JS
+const ICO=['gi1','gi2','gi3','ci1','ci2','ci3','ci4',
+           'sg1','sg2','sg3','sg4','sg5','sg6','sg7','sg8','sg9',
+           'lo1','lo2','lo3'];
+
+const L={
+  scr:'#F8FCFF',sb:'#FFFFFF',srch:'#FFFFFF',bell:'#FFFFFF',
+  sph:'#9CA3AF',si:'#BCC4D0',bl:'#94A3B8',ico:'#C4CAD4',
+  ta1bg:'#F3F4F6',ta1c:'#6B7280',ta2bg:'#EDE9FE',ta2c:'#7C3AED',ta3bg:'#F3F4F6',ta3c:'#6B7280',
+  stit:'#1E293B',ssub:'#94A3B8',wv:'#F3F4F6',wvt:'#6B7280',
+  ghdr:'#EEF2F6',grb:'#EEF2F6',lbb:'#EEF2F6',vl:'#EEF2F6',
+  ln:'#374151',ls:'#94A3B8',gh:'#94A3B8',
+  tpill:'#FFFFFF',tptxt:'#64748B',
+  rdiv:'#E4ECF5',rp:'#F1F5FA',
+  rpmon:'#1E293B',upt:'#1E293B',
+  cal:'#FFFFFF',ui1:'#FFFFFF',ui2:'#FFFFFF',ui3:'#FFFFFF',
+  uit:'#1E293B',uis:'#94A3B8',
+  dc:'#FFFFFF',dct:'#9769F6',dcti:'#1E293B',dcb:'#EDE9FE',dcbt:'#7C3AED',
+  sbi1:'#EDE9FE',av:'#9769F6',avbrd:'transparent',avdiv:'#E8EEF4',
+  togbg:'#DDE5EF',togthumb:'#FFFFFF',togx:0,togtxt:'Light',togtxtc:'#9CA3AF',
+  oind:'#F59E0B',olab:'Light Mode · Auto'
+};
+const D={
+  scr:'#000C1C',sb:'#0A1828',srch:'#162334',bell:'#162334',
+  sph:'#3D5A74',si:'#2E4560',bl:'#4A6A8C',ico:'#5A80A8',
+  ta1bg:'#162334',ta1c:'#5B7A96',ta2bg:'#2A1A4A',ta2c:'#A78BFA',ta3bg:'#162334',ta3c:'#5B7A96',
+  stit:'#E2EAF4',ssub:'#5B7A96',wv:'#162334',wvt:'#5B7A96',
+  ghdr:'#0C1E30',grb:'#0C1E30',lbb:'#0C1E30',vl:'#0C1E30',
+  ln:'#C8D8EC',ls:'#5B7A96',gh:'#5B7A96',
+  tpill:'#162334',tptxt:'#6B8BA8',
+  rdiv:'#0C1E30',rp:'#040E1C',
+  rpmon:'#E2EAF4',upt:'#E2EAF4',
+  cal:'#0A1828',ui1:'#0A1828',ui2:'#0A1828',ui3:'#0A1828',
+  uit:'#C8D8EC',uis:'#5B7A96',
+  dc:'#162334',dct:'#9769F6',dcti:'#E2EAF4',dcb:'#2A1A4A',dcbt:'#A78BFA',
+  sbi1:'#2A1A4A',av:'#9769F6',avbrd:'rgba(151,105,246,0.4)',avdiv:'#162334',
+  togbg:'#162334',togthumb:'#9769F6',togx:14,togtxt:'Dark',togtxtc:'#5B7A96',
+  oind:'#9769F6',olab:'Dark Mode · Auto'
+};
+
+const g=id=>document.getElementById(id);
+
+function apply(m){
+  dark=m; const v=m?D:L;
+  g('scr').style.background=v.scr;
+  g('sb').style.background=v.sb;
+  g('srch').style.background=v.srch;
+  g('bell').style.background=v.bell;
+  g('sph').style.color=v.sph;
+  // Search + bell icons — explicitly force fill:none
+  ['si1','si2'].forEach(id=>{const e=g(id);if(e){e.style.stroke=v.si;e.style.fill='none';}});
+  ['bl1','bl2'].forEach(id=>{const e=g(id);if(e){e.style.stroke=v.bl;e.style.fill='none';}});
+  // All sidebar icons — explicitly force fill:none on every element
+  ICO.forEach(id=>{const e=g(id);if(e){e.style.stroke=v.ico;e.style.fill='none';}});
+  g('ta1').style.background=v.ta1bg; g('ta1').style.color=v.ta1c;
+  g('ta2').style.background=v.ta2bg; g('ta2').style.color=v.ta2c;
+  g('ta3').style.background=v.ta3bg; g('ta3').style.color=v.ta3c;
+  g('stit').style.color=v.stit; g('ssub').style.color=v.ssub;
+  g('wv').style.background=v.wv; g('wvt').style.color=v.wvt;
+  g('ghdr').style.borderBottomColor=v.ghdr;
+  ['gr1','gr2','gr3','gr4','gr5'].forEach(id=>{const e=g(id);if(e)e.style.borderBottomColor=v.grb;});
+  ['lb1','lb2','lb3','lb4','lb5'].forEach(id=>{const e=g(id);if(e)e.style.borderBottomColor=v.lbb;});
+  ['ln1','ln2','ln3','ln4','ln5','ln6'].forEach(id=>{const e=g(id);if(e)e.style.color=v.ln;});
+  ['ls1','ls2','ls3','ls4','ls5','ls6'].forEach(id=>{const e=g(id);if(e)e.style.color=v.ls;});
+  ['gh0','gh2','gh3','gh4','gh5','gh6'].forEach(id=>{const e=g(id);if(e)e.style.color=v.gh;});
+  ['vl1','vl2','vl3','vl4','vl5','vl6'].forEach(id=>g(id).style.background=v.vl);
+  g('tpill').style.background=v.tpill; g('tptxt').style.color=v.tptxt;
+  g('rdiv').style.background=v.rdiv; g('rp').style.background=v.rp;
+  g('rpmon').style.color=v.rpmon; g('upt').style.color=v.upt;
+  g('cal').style.background=v.cal;
+  g('ui1').style.background=v.ui1; g('ui2').style.background=v.ui2; g('ui3').style.background=v.ui3;
+  ['ui1t','ui2t','ui3t'].forEach(id=>{const e=g(id);if(e)e.style.color=v.uit;});
+  ['ui1s','ui2s','ui3s'].forEach(id=>{const e=g(id);if(e)e.style.color=v.uis;});
+  g('dc').style.background=v.dc; g('dct').style.color=v.dct; g('dcti').style.color=v.dcti;
+  g('dcb').style.background=v.dcb; g('dcbt').style.color=v.dcbt;
+  g('sbi1').style.background=v.sbi1;
+  g('av').style.background=v.av; g('av').style.borderColor=v.avbrd;
+  g('avdiv').style.background=v.avdiv;
+  g('tog').style.background=v.togbg; g('tthumb').style.background=v.togthumb;
+  g('tthumb').style.transform=`translateX(${v.togx}px)`;
+  g('togtxt').textContent=v.togtxt; g('togtxt').style.color=v.togtxtc;
+  var _oi=g('oind');if(_oi)_oi.style.background=v.oind;var _ol=g('olab');if(_ol)_ol.textContent=v.olab;
+}
+
+function manualToggle(){clearTimeout(tmr);apply(!dark);startLoop();}
+function startLoop(){tmr=setTimeout(()=>{apply(!dark);startLoop();},4400);}
+setTimeout(()=>{apply(false);startLoop();},2000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entertainment App — Camila Balian</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; overflow: hidden; width: 100%; height: 100%; }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+
+  /* Moving background — slow pan */
+  .bg {
+    position: absolute;
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+    z-index: 0;
+  }
+  .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: panX 37s ease-in-out infinite alternate, panY 29s ease-in-out infinite alternate;
+  }
+  @keyframes panX {
+    0%   { translate: 0 0; }
+    33%  { translate: -7% 0; }
+    66%  { translate: 4% 0; }
+    100% { translate: -3% 0; }
+  }
+  @keyframes panY {
+    0%   { scale: 1; }
+    50%  { scale: 1.04; }
+    100% { scale: 1; }
+  }
+
+  /* Phone positioning */
+  .phones {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .phone {
+    flex-shrink: 0;
+  }
+  .phone img {
+    display: block;
+    height: 420px;
+    width: auto;
+  }
+  .phone:nth-child(2) {
+    margin-top: 50px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="bg">
+      <img src="Image%207-4-26%20at%2003.42.png" alt="">
+    </div>
+    <div class="phones">
+      <div class="phone"><img src="entertainment-phone1.svg" alt="Discover screen"></div>
+      <div class="phone"><img src="entertainment-phone2.svg" alt="Ticket screen"></div>
+    </div>
+  </div>
+</body>
+</html>

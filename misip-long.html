@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiSIP, Camila Balian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Archivo+Black&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #B8BCEF; }
+    html { scroll-behavior: smooth; }
+    * { cursor: none !important; }
+    body { background: var(--bg); color: var(--cream); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
+
+    /* CURSOR */
+    .cursor-dot { position: fixed; width: 10px; height: 10px; background: white; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, opacity .3s; mix-blend-mode: difference; }
+
+    /* PROGRESS */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 300; width: 0%; opacity: .6; transition: width .1s linear; }
+
+    /* NAV */
+    nav { position: fixed; inset: 0 0 auto 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 22px 40px; background: rgba(12,12,12,0.55); backdrop-filter: blur(18px); }
+    .nav-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .nav-back { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color .25s; }
+    .nav-back:hover { color: var(--cream); }
+
+    /* HERO - plain dark, editorial type block over visual panel */
+    .project-hero { min-height: 100vh; padding: clamp(180px, 26vh, 260px) clamp(64px, 8vw, 140px) clamp(60px, 8vh, 100px) clamp(80px, 12vw, 200px); position: relative; background: var(--bg); }
+    .hero-content { position: relative; z-index: 1; max-width: 1100px; }
+    .hero-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(88px, 14vw, 200px); line-height: .88; letter-spacing: -.03em; color: var(--cream); margin: 0 0 40px; }
+    .hero-desc { font-size: clamp(16px, 1.5vw, 22px); font-weight: 300; line-height: 1.55; color: rgba(239,235,229,.62); max-width: 620px; margin: 0 0 96px; }
+    .hero-meta-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 48px; max-width: 820px; }
+    .hero-meta-k { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(184,188,239,.72); margin-bottom: 10px; }
+    .hero-meta-v { font-size: 15px; color: var(--cream); font-weight: 400; line-height: 1.4; }
+    .hero-visual { position: relative; z-index: 1; margin: clamp(100px, 14vh, 160px) auto 0; max-width: 1240px; width: 100%; }
+    .hero-visual-panel { background: linear-gradient(180deg, rgba(184,188,239,.06), rgba(184,188,239,.01)); border: 1px solid rgba(184,188,229,.08); border-radius: 28px; padding: clamp(60px, 9vh, 120px) clamp(40px, 6vw, 100px) 0; overflow: hidden; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: rgba(239,235,229,0.08); margin: 0 64px; }
+
+    /* SECTIONS */
+    .section { padding: 120px 64px; }
+    .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 48px; }
+    .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .section-heading { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); line-height: .95; color: var(--cream); margin-bottom: 32px; }
+    .section-text { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.65); margin-bottom: 22px; }
+    .section-text:last-child { margin-bottom: 0; }
+    .section-text strong { color: rgba(239,235,229,.9); font-weight: 400; }
+
+    /* PLACEHOLDER IMAGE */
+    .img-placeholder { border-radius: 16px; overflow: hidden; width: 100%; aspect-ratio: 16/10; background: rgba(184,188,239,.06); border: 1px solid rgba(184,188,239,.12); display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+    .img-placeholder span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(239,235,229,.32); max-width: 72%; line-height: 1.7; }
+    .img-full { margin: 0 64px; border-radius: 20px; overflow: hidden; aspect-ratio: 16/9; background: rgba(184,188,239,.05); border: 1px solid rgba(184,188,239,.1); display: flex; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+    .img-full span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(239,235,229,.32); line-height: 1.7; }
+
+    /* SVG ILLUSTRATIONS */
+    .illus { position: relative; border-radius: 16px; overflow: hidden; width: 100%; aspect-ratio: 16/10; background: linear-gradient(180deg, rgba(184,188,239,.05), rgba(184,188,239,.015)); border: 1px solid rgba(184,188,239,.14); }
+    .illus svg { width: 100%; height: 100%; display: block; }
+    .illus-card { aspect-ratio: 4/5; }
+    .illus-phone { aspect-ratio: 9/19; border-radius: 26px; background: linear-gradient(180deg, rgba(184,188,239,.05), rgba(184,188,239,.02)); border: 1px solid rgba(184,188,239,.14); overflow: hidden; position: relative; box-shadow: 0 30px 80px -40px rgba(184,188,239,.12); }
+    .illus-phone svg { width: 100%; height: 100%; display: block; }
+    .illus-caption { position: absolute; left: 18px; bottom: 14px; font-size: 8px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: rgba(239,235,229,.45); }
+
+    /* PULL QUOTE */
+    .pull { border-left: 1px solid rgba(184,188,239,.35); padding: 4px 28px; margin: 36px 0; }
+    .pull p { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.7vw,24px); font-weight: 300; line-height: 1.5; color: rgba(239,235,229,.82); font-style: italic; }
+
+    /* PRINCIPLES */
+    .principles { padding: 20px 64px 120px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .principle { background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; padding: 44px 36px; min-height: 280px; display: flex; flex-direction: column; justify-content: space-between; transition: border-color .4s, background .4s; }
+    .principle:hover { border-color: rgba(184,188,239,.22); background: rgba(184,188,239,.04); }
+    .principle-num { font-family: 'Archivo Black', sans-serif; font-size: 12px; letter-spacing: .14em; color: rgba(184,188,239,.55); }
+    .principle-title { font-family: 'Manrope', sans-serif; font-size: clamp(22px,2.2vw,30px); font-weight: 500; line-height: 1.12; color: var(--cream); margin-top: 22px; }
+    .principle-body { font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(239,235,229,.52); margin-top: 32px; }
+
+    /* DECISION CARDS */
+    .decision-wrap { padding: 120px 64px; }
+    .decision-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 52px; }
+    .dec { background: rgba(239,235,229,.03); border: 1px solid rgba(239,235,229,.07); border-radius: 22px; padding: 48px 40px; transition: border-color .4s; }
+    .dec:hover { border-color: rgba(239,235,229,.14); }
+    .dec.chosen { background: rgba(184,188,239,.055); border-color: rgba(184,188,239,.2); }
+    .dec.chosen:hover { border-color: rgba(184,188,239,.32); }
+    .dec-q { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.35); margin-bottom: 20px; }
+    .dec.chosen .dec-q { color: rgba(184,188,239,.7); }
+    .dec-title { font-family: 'Manrope', sans-serif; font-size: clamp(22px,2.4vw,34px); font-weight: 500; line-height: 1.12; color: var(--cream); margin-bottom: 20px; }
+    .dec-body { font-size: 14px; font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
+
+    /* BEFORE / AFTER PAIR */
+    .pair { padding: 20px 64px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+    .pair .img-placeholder { aspect-ratio: 4/5; }
+    .pair-phone-wrap { max-width: 280px; margin: 0 auto; padding: 0 8px; }
+    .pair-caption { padding: 18px 64px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pair-caption p { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: rgba(239,235,229,.35); }
+
+    /* SHIPPED  - MOMENTS */
+    .shipped-moment { padding: 72px 64px 0; }
+    .shipped-moment:first-of-type { padding-top: 48px; }
+    .moment-label { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(184,188,239,.55); margin: 0 auto 36px; max-width: 1100px; }
+    .moment-note { max-width: 600px; margin: 36px auto 0; font-size: 13px; font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); text-align: center; }
+
+    /* Onboarding row  - 3 phones centered */
+    .onboarding-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; max-width: 920px; margin: 0 auto; }
+
+    /* Flows grid  - 5 phones across */
+    .flows-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 22px; align-items: start; max-width: 1280px; margin: 0 auto; }
+
+    /* Full-scroll specimen */
+    .phone-scroll-wrap { max-width: 300px; margin: 0 auto; }
+
+    /* REAL SCREEN PHONE FRAME */
+    .phone { position: relative; background: #0F0F12; border: 1px solid rgba(239,235,229,.1); border-radius: 32px; padding: 10px 10px 14px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.6), 0 0 0 1px rgba(184,188,239,.04); }
+    .phone::before { content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 72px; height: 6px; border-radius: 3px; background: #000; z-index: 2; }
+    .phone-viewport { position: relative; overflow: hidden; border-radius: 22px; background: #F5F7FA; aspect-ratio: 375 / 812; }
+    .phone-viewport img { display: block; width: 100%; height: auto; }
+    .phone-viewport.tall { aspect-ratio: 375 / 812; }
+    .phone-viewport.tall img { position: absolute; top: 0; left: 0; width: 100%; height: auto; }
+    .phone-viewport.xtall { aspect-ratio: 375 / 2592; }
+    .phone-viewport.xtall img { position: absolute; top: 0; left: 0; width: 100%; height: auto; }
+    .phone-caption { margin-top: 18px; font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: rgba(239,235,229,.45); text-align: left; }
+    .phone-caption strong { color: rgba(184,188,239,.85); font-weight: 600; display: block; margin-bottom: 4px; font-size: 9px; }
+
+    /* Overview collage - 2 overlapping real phones */
+    .hero-collage { position: relative; aspect-ratio: 16/11; max-width: 860px; margin: 0 auto; }
+    .hero-collage .phone { position: absolute; transform: rotate(var(--r, 0deg)); transition: transform .5s ease; box-shadow: 0 50px 100px -30px rgba(0,0,0,.75); }
+    .hero-collage .phone-lg { width: 32%; left: 16%; top: 6%; z-index: 1; }
+    .hero-collage .phone-sm { width: 28%; right: 16%; bottom: 4%; z-index: 2; }
+    .hero-collage .phone-lg .phone-viewport { aspect-ratio: 375 / 660; }
+    .hero-collage:hover .phone-lg { transform: rotate(calc(var(--r, 0deg) * .4)); }
+    .hero-collage:hover .phone-sm { transform: rotate(calc(var(--r, 0deg) * .4)); }
+
+    @media (max-width: 768px) {
+      .flows-grid { grid-template-columns: repeat(2, 1fr); }
+      .onboarding-row { grid-template-columns: 1fr; gap: 40px; max-width: 280px; }
+      .hero-collage { max-width: 360px; }
+    }
+
+    /* DESIGN SYSTEM STRIP */
+    .ds-strip { padding: 60px 64px 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .ds-tile { background: rgba(239,235,229,.03); border: 1px solid rgba(239,235,229,.06); border-radius: 16px; padding: 28px 26px; min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
+    .ds-k { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: rgba(239,235,229,.32); }
+    .ds-v { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.5vw,21px); font-weight: 500; color: var(--cream); line-height: 1.3; }
+    .ds-tile.swatch { background: var(--accent); border-color: var(--accent); }
+    .ds-tile.swatch .ds-k, .ds-tile.swatch .ds-v { color: var(--dark); }
+
+    /* IMPACT GRID (qualitative, no dashes) */
+    .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin: 0 64px; }
+    .impact-cell { padding: 52px 36px; border: 1px solid rgba(239,235,229,.06); display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; }
+    .impact-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(184,188,239,.55); }
+    .impact-headline { font-family: 'Archivo Black', sans-serif; font-size: clamp(30px,3.4vw,48px); line-height: .95; color: var(--cream); margin-top: 32px; }
+    .impact-sub { font-size: 12px; font-weight: 400; line-height: 1.6; color: rgba(239,235,229,.5); margin-top: 18px; }
+
+    /* LABEL TRANSLATION (craft moment) */
+    .tr-intro { padding: 120px 64px 0; }
+    .tr-intro .section-heading { max-width: 860px; margin-bottom: 28px; }
+    .tr-intro .section-text { max-width: 680px; }
+    .translations { padding: 56px 64px 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tr { background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; padding: 36px 34px; display: grid; grid-template-columns: 1fr 24px 1fr; gap: 18px; align-items: center; transition: border-color .4s, background .4s; }
+    .tr:hover { border-color: rgba(184,188,239,.22); background: rgba(184,188,239,.04); }
+    .tr-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+    .tr-tag { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.32); }
+    .tr-side.to .tr-tag { color: rgba(184,188,239,.65); }
+    .tr-text { font-family: 'Manrope', sans-serif; font-size: clamp(15px,1.3vw,18px); font-weight: 400; line-height: 1.4; color: rgba(239,235,229,.7); }
+    .tr-side.to .tr-text { color: var(--cream); font-weight: 500; }
+    .tr-arrow { font-size: 18px; color: rgba(184,188,239,.45); text-align: center; align-self: center; }
+    .tr-foot { padding: 0 64px 120px; font-size: 11px; font-weight: 400; line-height: 1.7; color: rgba(239,235,229,.35); max-width: 720px; font-style: italic; }
+
+    /* REFLECTION */
+    .reflection { padding: 120px 64px; max-width: 920px; }
+    .reflection .section-heading { font-size: clamp(30px,3.4vw,52px); margin-bottom: 40px; }
+    .reflection-item { margin-bottom: 32px; }
+    .reflection-lead { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--cream); margin-bottom: 10px; line-height: 1.4; }
+    .reflection-body { font-size: clamp(14px,1.3vw,17px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
+
+    /* NEXT PROJECT */
+    .next-project { padding: 120px 64px; border-top: 1px solid rgba(239,235,229,.08); display: flex; justify-content: space-between; align-items: center; text-decoration: none; transition: opacity .2s; }
+    .next-project:hover { opacity: .7; }
+    .next-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 16px; }
+    .next-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); color: var(--cream); }
+    .next-arrow { font-size: 48px; color: rgba(239,235,229,.3); }
+
+    /* CONTACT OVERLAY */
+    .contact-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: none; flex-direction: column; padding: 40px 64px 64px; opacity: 0; transform: translateY(32px); transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1); overflow-y: auto; }
+    .contact-overlay.open { opacity: 1; transform: translateY(0); }
+    .contact-overlay-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 80px; }
+    .contact-overlay-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .contact-close { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); background: none; border: none; padding: 0; transition: color .25s; }
+    .contact-close:hover { color: var(--cream); }
+    .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; flex: 1; align-items: start; }
+    .contact-heading { font-family: 'Manrope', sans-serif; font-size: clamp(64px,10vw,140px); font-weight: 500; line-height: .95; letter-spacing: -.03em; color: var(--cream); }
+    .contact-heading em { font-style: italic; color: rgba(239,235,229,.22); font-weight: 300; }
+    .contact-links { margin-top: 120px; display: flex; flex-direction: column; gap: 18px; }
+    .contact-info-link { font-family: 'Manrope', sans-serif; font-size: clamp(16px,1.6vw,22px); font-weight: 300; color: rgba(239,235,229,.6); text-decoration: none; border-bottom: 1px solid rgba(239,235,229,.15); padding-bottom: 3px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; transition: color .2s, border-color .2s; }
+    .contact-info-link:hover { color: var(--cream); border-color: rgba(239,235,229,.5); }
+    .contact-form { display: flex; flex-direction: column; gap: 28px; padding-top: 8px; }
+    .form-field { display: flex; flex-direction: column; gap: 10px; }
+    .form-field label { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.35); }
+    .form-field input, .form-field textarea { background: none; border: none; border-bottom: 1px solid rgba(239,235,229,.15); padding: 12px 0; font-family: 'Manrope', sans-serif; font-size: clamp(18px,2vw,26px); font-weight: 300; color: var(--cream); outline: none; resize: none; transition: border-color .25s; width: 100%; }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(239,235,229,.18); }
+    .form-field input:focus, .form-field textarea:focus { border-color: rgba(239,235,229,.5); }
+    .form-field textarea { min-height: 100px; }
+    .form-submit { display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 15px 40px; background: var(--cream); color: var(--dark); border: none; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; transition: background .2s; margin-top: 8px; }
+    .form-submit:hover { background: rgba(239,235,229,.88); }
+    .form-success { display: none; flex-direction: column; gap: 20px; padding-top: 8px; }
+    .form-success.visible { display: flex; }
+    .form-success-icon { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(239,235,229,.3); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--cream); }
+    .form-success-title { font-family: 'Manrope', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 500; color: var(--cream); line-height: 1.1; }
+    .form-success-sub { font-size: 14px; font-weight: 300; color: rgba(239,235,229,.45); line-height: 1.7; }
+
+    /* MOTION - senior, restrained */
+    :root { --ease: cubic-bezier(0.22, 1, 0.36, 1); --ease-soft: cubic-bezier(0.33, 1, 0.68, 1); }
+
+    /* scroll reveal - slightly slower and smoother */
+    .reveal { opacity: 0; transform: translateY(48px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* staggered children */
+    .stagger > * { opacity: 0; transform: translateY(36px); transition: opacity .95s var(--ease), transform .95s var(--ease); }
+    .stagger.visible > * { opacity:1; transform:translateY(0); }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: .08s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: .16s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: .24s; }
+    .stagger.visible > *:nth-child(5) { transition-delay: .32s; }
+
+    /* word-level reveal for section headings */
+    .word-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; padding-right: .08em; }
+    .word-inner { display: inline-block; transform: translateY(110%); transition: transform 1s var(--ease); }
+    .word-reveal.visible .word-inner { transform: translateY(0); }
+    .word-reveal .word-wrap:nth-child(1) .word-inner { transition-delay: 0s; }
+    .word-reveal .word-wrap:nth-child(2) .word-inner { transition-delay: .05s; }
+    .word-reveal .word-wrap:nth-child(3) .word-inner { transition-delay: .1s; }
+    .word-reveal .word-wrap:nth-child(4) .word-inner { transition-delay: .15s; }
+    .word-reveal .word-wrap:nth-child(5) .word-inner { transition-delay: .2s; }
+    .word-reveal .word-wrap:nth-child(6) .word-inner { transition-delay: .25s; }
+    .word-reveal .word-wrap:nth-child(7) .word-inner { transition-delay: .3s; }
+    .word-reveal .word-wrap:nth-child(8) .word-inner { transition-delay: .35s; }
+    .word-reveal .word-wrap:nth-child(9) .word-inner { transition-delay: .4s; }
+    .word-reveal .word-wrap:nth-child(10) .word-inner { transition-delay: .44s; }
+    .word-reveal .word-wrap:nth-child(n+11) .word-inner { transition-delay: .48s; }
+
+    /* scale-in for cards / impact cells */
+    .scale-in > * { opacity: 0; transform: translateY(24px) scale(.97); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .scale-in.visible > * { opacity: 1; transform: translateY(0) scale(1); }
+    .scale-in.visible > *:nth-child(1) { transition-delay: 0s; }
+    .scale-in.visible > *:nth-child(2) { transition-delay: .09s; }
+    .scale-in.visible > *:nth-child(3) { transition-delay: .18s; }
+    .scale-in.visible > *:nth-child(4) { transition-delay: .27s; }
+
+    /* hero entrance - orchestrated on load */
+    .project-hero .hero-title, .project-hero .hero-desc, .project-hero .hero-meta-row > div { opacity: 0; transform: translateY(32px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+    .project-hero.loaded .hero-title { opacity: 1; transform: translateY(0); transition-delay: .1s; }
+    .project-hero.loaded .hero-desc { opacity: 1; transform: translateY(0); transition-delay: .25s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: .4s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: .46s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: .52s; }
+    .project-hero.loaded .hero-meta-row > div:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: .58s; }
+    .project-hero .hero-visual { opacity: 0; transform: translateY(60px) scale(.985); transition: opacity 1.4s var(--ease), transform 1.4s var(--ease); }
+    .project-hero.loaded .hero-visual { opacity: 1; transform: translateY(0) scale(1); transition-delay: .65s; }
+
+    /* scroll-linked parallax on hero visual - soft upward drift */
+    .hero-visual { will-change: transform; }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .project-hero { padding: 140px 24px 60px; }
+      .hero-meta-row { grid-template-columns: repeat(2, 1fr); gap: 28px 32px; }
+      .hero-visual { margin-top: 80px; }
+      .hero-visual-panel { padding: 48px 24px 0; border-radius: 20px; }
+      .hero-title { font-size: clamp(64px, 18vw, 120px); }
+      .hero-desc { font-size: 15px; margin-bottom: 64px; }
+      .divider { margin: 0 24px; }
+      .section { padding: 80px 24px; }
+      .section-grid { grid-template-columns: 1fr; gap: 40px; }
+      .principles { padding: 20px 24px 80px; grid-template-columns: 1fr; }
+      .decision-wrap { padding: 80px 24px; }
+      .decision-cards { grid-template-columns: 1fr; }
+      .pair, .pair-caption { padding-left: 24px; padding-right: 24px; grid-template-columns: 1fr; }
+      .shipped-moment { padding: 56px 24px 0; }
+      .flows-grid { padding: 0; grid-template-columns: repeat(2, 1fr); }
+      .onboarding-row { grid-template-columns: 1fr; max-width: 260px; gap: 40px; }
+      .ds-strip { padding: 40px 24px 0; grid-template-columns: 1fr 1fr; }
+      .img-full { margin: 0 24px; }
+      .impact-grid { grid-template-columns: 1fr 1fr; margin: 0 24px; }
+      .tr-intro { padding: 80px 24px 0; }
+      .translations { padding: 40px 24px 80px; grid-template-columns: 1fr; }
+      .tr-foot { padding: 0 24px 80px; }
+      .reflection { padding: 80px 24px; }
+      .next-project { padding: 80px 24px; }
+      .contact-overlay { padding: 32px 24px 48px; }
+      .contact-body { grid-template-columns: 1fr; gap: 48px; }
+      .contact-links { margin-top: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="progress-bar" id="progressBar"></div>
+
+  <nav>
+    <a class="nav-logo" href="cami-balian-portfolio.html">CB</a>
+    <a class="nav-back" href="cami-balian-portfolio.html">← Back</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="project-hero" id="projectHero">
+    <div class="hero-content">
+      <h1 class="hero-title">MiSIP</h1>
+      <p class="hero-desc">A pregnancy companion built on the PAHO perinatal card, rewritten in the language women actually use for their own bodies.</p>
+      <div class="hero-meta-row">
+        <div><div class="hero-meta-k">Client</div><div class="hero-meta-v">PAHO</div></div>
+        <div><div class="hero-meta-k">Role</div><div class="hero-meta-v">Lead Product Designer</div></div>
+        <div><div class="hero-meta-k">Team</div><div class="hero-meta-v">3 designers · 1 PM · dev team</div></div>
+        <div><div class="hero-meta-k">Year</div><div class="hero-meta-v">2022</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-panel">
+        <div class="hero-collage" aria-label="Two MiSIP screens, home and login">
+          <div class="phone phone-lg" style="--r: -4deg;">
+            <div class="phone-viewport tall">
+              <img src="misip-screens/Home.svg" alt="MiSIP home screen, pregnancy stage navigator">
+            </div>
+          </div>
+          <div class="phone phone-sm" style="--r: 6deg;">
+            <div class="phone-viewport">
+              <img src="misip-screens/log-in.svg" alt="MiSIP login screen, plain-language entry point">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- OVERVIEW -->
+  <section class="section reveal">
+    <div class="section-label">Overview</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">The brief</h2>
+      <p class="section-text">PAHO, the Pan American Health Organization, distributes the perinatal card across Latin America. It's the paper document doctors use to track pregnancy, designed by clinicians, for clinicians. PAHO sent it to us as a PDF and asked us to digitize it. One screen. One card. Make it an app.</p>
+      <p class="section-text">The product's working name was <strong>MiSIP</strong>. Mi Sistema de Información Perinatal. Her perinatal record, hers. The name mattered: the pronoun was the entire point.</p>
+      <p class="section-text">The women carrying that card weren't clinicians. They were mothers holding a document written in a language that wasn't theirs, trying to understand what was happening inside their own bodies. That gap was the project.</p>
+      <p class="section-text">I led design from the first client conversation through MVP delivery, roughly five months end to end, and stayed close as the product moved into continued development with PAHO's team post-launch. On my side I owned the PAHO relationship and the scope argument, the research synthesis, and the card-to-app translation system; two designers on my team owned the design-system production and the post-MVP flow work. One PM, a dev team across iOS and Android, and medical partners from PAHO's perinatal division.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- REFRAMING THE BRIEF -->
+  <section class="section reveal">
+    <div class="section-label">Reframing the brief</div>
+    <div class="section-grid">
+      <div>
+        <h2 class="section-heading word-reveal">I pushed back on the scope</h2>
+        <p class="section-text">The clinicians commissioning the project had expected the design phase to take <strong>two weeks</strong>, the time it takes to draw a PDF. Before I could make the scope argument, I had to make the design argument: what designing for a woman who has never used a health app actually involves, and why two weeks gets you a document, not a product.</p>
+        <p class="section-text">Once we were speaking the same language, the real question surfaced. A card-only app had no reason to stay on her phone after one use, and I wasn't willing to ship something a woman would open once, feel confused by, and delete. If we were asking her to install it, the product had to earn the space.</p>
+        <p class="section-text">I didn't have hard LATAM retention benchmarks to cite, and I wasn't going to invent any. What I had was the shape of the problem: every woman we'd already spoken to named the adjacent apps she'd tried and deleted, and none of them were single-purpose card readers. I drew the argument as two curves and took it into the PAHO meeting. The medical partners pushed back, the card had to stay clinically faithful or they wouldn't validate the data. We landed on the trade that was obvious in hindsight: <strong>the card stays as rigorous as the doctors needed, the product owns every layer around it.</strong> PAHO agreed.</p>
+      </div>
+      <div class="illus" aria-label="Conceptual sketch of two app retention shapes: a single-purpose card reader versus a multi-touchpoint pregnancy companion">
+        <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <linearGradient id="scopeBg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#B8BCEF" stop-opacity=".05"/><stop offset="1" stop-color="#B8BCEF" stop-opacity=".01"/></linearGradient>
+          </defs>
+          <rect width="640" height="400" fill="url(#scopeBg)"/>
+
+          <!-- title -->
+          <text x="30" y="34" font-family="Manrope, Arial" font-size="9" fill="#EFEBE5" opacity=".4" letter-spacing="1.5">THE ARGUMENT · AS A SHAPE</text>
+          <text x="30" y="60" font-family="Archivo Black, Arial" font-size="14" fill="#EFEBE5">A card-only app has nothing to come back to.</text>
+
+          <!-- y axis label (no numbers  - conceptual) -->
+          <text x="30" y="100" font-family="Manrope, Arial" font-size="8" fill="#EFEBE5" opacity=".45" letter-spacing=".4">STILL USING IT</text>
+
+          <!-- gridlines (keep for visual rhythm, drop the tick labels) -->
+          <g stroke="#EFEBE5" stroke-opacity=".06">
+            <line x1="62" y1="115" x2="610" y2="115"/>
+            <line x1="62" y1="170" x2="610" y2="170"/>
+            <line x1="62" y1="225" x2="610" y2="225"/>
+            <line x1="62" y1="280" x2="610" y2="280"/>
+          </g>
+
+          <!-- axes -->
+          <line x1="62" y1="115" x2="62" y2="320" stroke="#EFEBE5" stroke-opacity=".18"/>
+          <line x1="62" y1="320" x2="610" y2="320" stroke="#EFEBE5" stroke-opacity=".18"/>
+
+          <!-- y end markers (none / all  - concept only) -->
+          <text x="56" y="120" font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".38" text-anchor="end" letter-spacing=".4">ALL</text>
+          <text x="56" y="320" font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".38" text-anchor="end" letter-spacing=".4">NONE</text>
+
+          <!-- x ticks -->
+          <g font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".4">
+            <text x="74" y="338" text-anchor="middle">Day 1</text>
+            <text x="174" y="338" text-anchor="middle">Week 1</text>
+            <text x="274" y="338" text-anchor="middle">Week 2</text>
+            <text x="384" y="338" text-anchor="middle">Month 1</text>
+            <text x="494" y="338" text-anchor="middle">Month 3</text>
+            <text x="604" y="338" text-anchor="middle">Birth</text>
+          </g>
+
+          <!-- companion curve (gentle decay, stays high) -->
+          <path d="M74 116 L130 122 L210 130 L300 142 L390 156 L490 170 L604 186"
+                fill="none" stroke="#B8BCEF" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="604" cy="186" r="3.5" fill="#B8BCEF"/>
+          <text x="432" y="148" font-family="Manrope, Arial" font-size="8" fill="#B8BCEF" font-weight="600">A companion she comes back to</text>
+
+          <!-- single-purpose curve (sharp drop) -->
+          <path d="M74 116 L120 134 L160 178 L200 226 L260 268 L340 294 L430 308 L520 314 L604 318"
+                fill="none" stroke="#EFEBE5" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="604" cy="318" r="3.5" fill="#EFEBE5" opacity=".55"/>
+          <text x="352" y="305" font-family="Manrope, Arial" font-size="8" fill="#EFEBE5" opacity=".55" font-style="italic">A card reader she opens once</text>
+
+          <!-- annotation: the gap at week 2  - no number -->
+          <line x1="274" y1="153" x2="274" y2="259" stroke="#B8BCEF" stroke-opacity=".5" stroke-dasharray="2 3"/>
+          <circle cx="274" cy="153" r="3" fill="#B8BCEF"/>
+          <circle cx="274" cy="259" r="3" fill="#EFEBE5" opacity=".55"/>
+          <rect x="282" y="192" width="108" height="28" rx="4" fill="#0C0C0C" stroke="#B8BCEF" stroke-opacity=".35"/>
+          <text x="336" y="210" font-family="Manrope, Arial" font-size="8" fill="#B8BCEF" font-weight="600" text-anchor="middle">by week two, she's gone</text>
+
+          <!-- footer source  - honest framing -->
+          <line x1="30" y1="358" x2="610" y2="358" stroke="#EFEBE5" stroke-opacity=".08"/>
+          <text x="30" y="376" font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".4" letter-spacing=".4">Illustrative · drawn from adjacent-app behavior the mothers themselves described in research · not a benchmark</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- RESEARCH -->
+  <section class="section reveal">
+    <div class="section-label">Research</div>
+    <div class="section-grid">
+      <div>
+        <h2 class="section-heading word-reveal">What women actually asked for</h2>
+        <p class="section-text"><strong>24 expectant mothers</strong> and <strong>11 clinicians</strong>, across <strong>Argentina, Perú, México, and Colombia</strong>, in urban, peri-urban, and rural clinics. Semi-structured interviews, in-clinic shadowing, card walkthroughs. Five themes surfaced from synthesis: <em>preocupaciones</em> (worries between appointments), <em>rutinas</em> (the daily routines nobody was tracking), <em>carnet</em> (how the paper card lived in her day), <em>salud</em> (health signals she wanted to read on her own), and <em>otras features</em> (the adjacent needs a card-only app would miss).</p>
+        <p class="section-text">Every woman I talked to was navigating pregnancy across fragmented sources: the paper card, WhatsApp groups, Google at 3am, her own mother's advice. She wasn't missing a digital form. She was missing a place where she could understand what was happening to her. The two things she asked for were the two things the brief didn't address: <strong>language she could read without a doctor next to her</strong>, and <strong>one place that held everything instead of seven</strong>.</p>
+        <p style="font-size: 11px; font-weight: 400; line-height: 1.7; color: rgba(239,235,229,.35); max-width: 720px; font-style: italic; margin-top: 14px;">The diagram on the right is a synthesis map recreated for presentation clarity, not a photograph of the original research wall. The initials and ages are anonymized references to the mothers in the cohort.</p>
+      </div>
+      <div class="illus" aria-label="Research synthesis affinity board">
+        <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="640" height="400" fill="#0f0f12"/>
+          <!-- wall grid -->
+          <g stroke="#B8BCEF" stroke-opacity=".05">
+            <line x1="0" y1="80" x2="640" y2="80"/>
+            <line x1="0" y1="160" x2="640" y2="160"/>
+            <line x1="0" y1="240" x2="640" y2="240"/>
+            <line x1="0" y1="320" x2="640" y2="320"/>
+            <line x1="128" y1="0" x2="128" y2="400"/>
+            <line x1="256" y1="0" x2="256" y2="400"/>
+            <line x1="384" y1="0" x2="384" y2="400"/>
+            <line x1="512" y1="0" x2="512" y2="400"/>
+          </g>
+
+          <text x="30" y="30" font-family="Manrope, Arial" font-size="9" fill="#EFEBE5" opacity=".35" letter-spacing="1.5">AFFINITY MAP · 5 THEMES</text>
+
+          <!-- Theme 1: preocupaciones -->
+          <g font-family="Arial">
+            <text x="30" y="60" font-size="8" fill="#B8BCEF" opacity=".75" letter-spacing="1">PREOCUPACIONES</text>
+            <g transform="translate(30,68)">
+              <g transform="rotate(-3)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"¿es normal que</text><text x="6" y="22" font-size="5" fill="#1C1B1A">me duela acá?"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">M · 28</text></g>
+              <g transform="translate(60,4) rotate(2)"><rect width="52" height="42" fill="#B8BCEF" opacity=".6"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"me asusta</text><text x="6" y="22" font-size="5" fill="#1C1B1A">no saber"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">R · 26</text></g>
+              <g transform="translate(0,50) rotate(4)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"busco en</text><text x="6" y="22" font-size="5" fill="#1C1B1A">Google todo"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">S · 31</text></g>
+            </g>
+          </g>
+
+          <!-- Theme 2: rutinas -->
+          <g font-family="Arial">
+            <text x="156" y="60" font-size="8" fill="#B8BCEF" opacity=".75" letter-spacing="1">RUTINAS</text>
+            <g transform="translate(156,68)">
+              <g transform="rotate(2)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"no sé si hago</text><text x="6" y="22" font-size="5" fill="#1C1B1A">lo suficiente"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">M · 30</text></g>
+              <g transform="translate(58,6) rotate(-3)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"¿cuánto</text><text x="6" y="22" font-size="5" fill="#1C1B1A">dormir?"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">J · 29</text></g>
+              <g transform="translate(24,52) rotate(1)"><rect width="52" height="42" fill="#B8BCEF" opacity=".6"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"comida,</text><text x="6" y="22" font-size="5" fill="#1C1B1A">ejercicio..."</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">P · 34</text></g>
+            </g>
+          </g>
+
+          <!-- Theme 3: carnet -->
+          <g font-family="Arial">
+            <text x="286" y="60" font-size="8" fill="#B8BCEF" opacity=".75" letter-spacing="1">CARNET</text>
+            <g transform="translate(286,68)">
+              <g transform="rotate(-4)"><rect width="52" height="42" fill="#B8BCEF" opacity=".6"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"son letras</text><text x="6" y="22" font-size="5" fill="#1C1B1A">del doctor"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">L · 27</text></g>
+              <g transform="translate(54,0) rotate(3)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"lo llevo pero</text><text x="6" y="22" font-size="5" fill="#1C1B1A">no lo leo"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">C · 32</text></g>
+              <g transform="translate(12,48) rotate(-1)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"lo perdí</text><text x="6" y="22" font-size="5" fill="#1C1B1A">una vez"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">D · 25</text></g>
+            </g>
+          </g>
+
+          <!-- Theme 4: salud -->
+          <g font-family="Arial">
+            <text x="414" y="60" font-size="8" fill="#B8BCEF" opacity=".75" letter-spacing="1">SALUD</text>
+            <g transform="translate(414,68)">
+              <g transform="rotate(3)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"¿bebé está</text><text x="6" y="22" font-size="5" fill="#1C1B1A">bien?"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">K · 24</text></g>
+              <g transform="translate(58,8) rotate(-2)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"presión</text><text x="6" y="22" font-size="5" fill="#1C1B1A">alta me asusta"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">N · 33</text></g>
+              <g transform="translate(16,54) rotate(2)"><rect width="52" height="42" fill="#B8BCEF" opacity=".6"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"señales</text><text x="6" y="22" font-size="5" fill="#1C1B1A">de alerta"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">Y · 29</text></g>
+            </g>
+          </g>
+
+          <!-- Theme 5: otras features -->
+          <g font-family="Arial">
+            <text x="540" y="60" font-size="8" fill="#B8BCEF" opacity=".75" letter-spacing="1">OTRAS</text>
+            <g transform="translate(540,68)">
+              <g transform="rotate(-3)"><rect width="52" height="42" fill="#EFEBE5" opacity=".82"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"recordar</text><text x="6" y="22" font-size="5" fill="#1C1B1A">citas"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">F · 30</text></g>
+              <g transform="translate(28,48) rotate(4)"><rect width="52" height="42" fill="#B8BCEF" opacity=".6"/><text x="6" y="14" font-size="5" fill="#1C1B1A">"hablar</text><text x="6" y="22" font-size="5" fill="#1C1B1A">con doctora"</text><text x="6" y="36" font-size="4" fill="#1C1B1A" opacity=".5">V · 26</text></g>
+            </g>
+          </g>
+
+          <!-- Horizontal journey line under clusters -->
+          <g transform="translate(30,270)">
+            <line x1="0" y1="0" x2="580" y2="0" stroke="#B8BCEF" stroke-opacity=".4" stroke-width="1"/>
+            <g fill="#B8BCEF">
+              <circle cx="0" r="3"/>
+              <circle cx="145" r="3"/>
+              <circle cx="290" r="3"/>
+              <circle cx="435" r="3"/>
+              <circle cx="580" r="3"/>
+            </g>
+            <g font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".45" letter-spacing=".8">
+              <text x="0" y="18" text-anchor="start">+ POSITIVE</text>
+              <text x="145" y="18" text-anchor="middle">12 WEEKS</text>
+              <text x="290" y="18" text-anchor="middle">20 WEEKS</text>
+              <text x="435" y="18" text-anchor="middle">32 WEEKS</text>
+              <text x="580" y="18" text-anchor="end">BIRTH</text>
+            </g>
+          </g>
+
+          <!-- Emotional curve -->
+          <g transform="translate(30,310)">
+            <path d="M0 15 Q72 -8 145 5 T290 18 Q362 35 435 12 T580 0" fill="none" stroke="#B8BCEF" stroke-opacity=".55" stroke-width="1.4"/>
+            <text x="0" y="46" font-family="Manrope, Arial" font-size="7" fill="#EFEBE5" opacity=".4" letter-spacing=".8">EMOTIONAL CURVE · HIGHS AND DROPS</text>
+          </g>
+
+          <!-- tape corners -->
+          <g fill="#EFEBE5" opacity=".25">
+            <rect x="22" y="54" width="14" height="4"/>
+            <rect x="150" y="54" width="14" height="4"/>
+            <rect x="278" y="54" width="14" height="4"/>
+            <rect x="406" y="54" width="14" height="4"/>
+            <rect x="534" y="54" width="14" height="4"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECISION -->
+  <section class="decision-wrap reveal">
+    <div class="section-label">The decision</div>
+    <h2 class="section-heading" style="max-width: 860px;">We couldn't just translate the card. We had to redesign what it was for.</h2>
+    <p class="section-text" style="max-width: 720px;">Copying the card's structure into an app would have reproduced something unreadable. Ignoring the structure entirely would have broken the trust of the medical partners validating the data. Both answers were wrong. We needed a third one.</p>
+    <div class="decision-cards stagger">
+      <div class="dec">
+        <p class="dec-q">What was on the table</p>
+        <h3 class="dec-title">Digitize faithfully</h3>
+        <p class="dec-body">Preserve the structure and terminology one-to-one. Safe, fast, medically sound. But a pregnant woman opening this app would see the same wall of clinical language, now on her phone instead of paper.</p>
+      </div>
+      <div class="dec chosen">
+        <p class="dec-q">What I argued for</p>
+        <h3 class="dec-title">Kept the data.<br>Rebuilt the language.</h3>
+        <p class="dec-body">Every label rewritten in plain language. Information hierarchy reorganized around what a woman needs to know at each stage of the pregnancy. Progressive disclosure for complexity. Medical partners validated the clinical integrity throughout.</p>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top: 96px; margin-bottom: 28px;">A few of the rewrites</p>
+    <div class="translations stagger" style="padding: 0;">
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">FUM: 12/03 · EG: 32+4</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">You're 32 weeks and 4 days along</p>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">Paridad: G3 P2 A0</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">Third pregnancy · Two babies born · No losses</p>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">TA: 120/80 · FCF: 140 lpm</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">Your blood pressure is healthy · Baby's heartbeat is strong</p>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">Presentación: cefálica</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">Baby is head-down, ready for birth</p>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">Morbilidad materna grave: HPP · PES · sepsis</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">Three warning signs after birth your doctor watches for: heavy bleeding, dangerous blood pressure, infection</p>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tr-side from">
+          <span class="tr-tag">Carné</span>
+          <p class="tr-text">RN: Apgar 8/10 · peso 3250 g · sexo M</p>
+        </div>
+        <div class="tr-arrow">→</div>
+        <div class="tr-side to">
+          <span class="tr-tag">MiSIP</span>
+          <p class="tr-text">Your baby scored 8 and 10 out of 10 in his first check-ins · 3.25 kg · boy</p>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 11px; font-weight: 400; line-height: 1.7; color: rgba(239,235,229,.35); max-width: 720px; font-style: italic; margin-top: 28px;">Six pairs from the translation set, spanning the welcoming sections (gestational age, parity, vitals, presentation) and the heavier clinical ones (maternal near-miss morbidity, newborn Apgar and metrics). Every rewrite was reviewed by the medical partners to preserve clinical integrity.</p>
+    <p class="section-text" style="max-width: 720px; margin-top: 36px; color: rgba(239,235,229,.6);"><strong style="color: var(--cream);">What the middle looked like.</strong> The pairs above are final forms. Most went through two to four rounds before landing  - the first drafts were usually too loose for the clinicians, the second drafts too cold for the mothers. Landing in the middle, on the exact sentence that was both medically accurate and readable at 3am, is where the craft actually lived. It rarely looked tidy in the file.</p>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <div class="pair reveal">
+    <div class="illus illus-card" aria-label="Before, original paper carné perinatal with OPS CLAP sections">
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" role="img">
+        <defs>
+          <linearGradient id="paperB" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#F3EEDE"/><stop offset="1" stop-color="#E4DDC7"/></linearGradient>
+        </defs>
+        <rect width="400" height="500" fill="#0f0f12"/>
+        <g transform="translate(30,30)">
+          <!-- paper -->
+          <rect width="340" height="440" fill="url(#paperB)" stroke="#1C1B1A" stroke-opacity=".55"/>
+
+          <!-- TOP HEADER BAND (dark gray with white title, like the real carné) -->
+          <rect x="0" y="0" width="340" height="22" fill="#3E3A36"/>
+          <text x="170" y="10" font-family="Arial" font-size="4.2" font-weight="600" fill="#F3EEDE" text-anchor="middle" letter-spacing="1.1">SISTEMA INFORMÁTICO PERINATAL · OPS / CLAP · FORMULARIO 2.03</text>
+          <text x="170" y="18" font-family="Arial" font-size="7" font-weight="700" fill="#F3EEDE" text-anchor="middle" letter-spacing="1.8">CARNÉ PERINATAL</text>
+
+          <!-- IDENTIFICACIÓN (white strip) -->
+          <g font-family="Arial" fill="#1C1B1A">
+            <text x="12" y="32" font-size="4" letter-spacing=".4" opacity=".85">APELLIDOS</text>
+            <line x1="12" y1="38" x2="170" y2="38" stroke="#1C1B1A" stroke-width=".35"/>
+            <text x="176" y="32" font-size="4" letter-spacing=".4" opacity=".85">NOMBRES</text>
+            <line x1="176" y1="38" x2="328" y2="38" stroke="#1C1B1A" stroke-width=".35"/>
+            <text x="12" y="46" font-size="4" letter-spacing=".4" opacity=".85">DOC</text>
+            <line x1="26" y1="50" x2="96" y2="50" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="102" y="46" font-size="4" letter-spacing=".4" opacity=".85">EDAD</text>
+            <line x1="120" y1="50" x2="150" y2="50" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="156" y="46" font-size="4" letter-spacing=".4" opacity=".85">ETNIA</text>
+            <line x1="174" y1="50" x2="220" y2="50" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="226" y="46" font-size="4" letter-spacing=".4" opacity=".85">ESTUDIOS</text>
+            <line x1="252" y1="50" x2="328" y2="50" stroke="#1C1B1A" stroke-width=".3"/>
+          </g>
+
+          <!-- ANTECEDENTES sub-header (dark gray strip) -->
+          <rect x="0" y="56" width="340" height="9" fill="#3E3A36"/>
+          <text x="6" y="62.5" font-family="Arial" font-size="4.2" font-weight="600" fill="#F3EEDE" letter-spacing="1">ANTECEDENTES FAMILIARES · PERSONALES · OBSTÉTRICOS</text>
+
+          <!-- Pink-tinted ANTECEDENTES zone -->
+          <rect x="0" y="65" width="340" height="42" fill="#E3BFB8" fill-opacity=".38"/>
+          <g font-family="Arial" font-size="3.6" fill="#1C1B1A">
+            <!-- row 1 -->
+            <g transform="translate(10,74)">
+              <text x="0" y="0">TBC</text><circle cx="15" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="20" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="28" y="0">DIABETES</text><circle cx="54" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="59" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="68" y="0">HIPERT.</text><circle cx="92" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="97" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="106" y="0">PREECL.</text><circle cx="130" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="135" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="144" y="0">ECLAMP.</text><circle cx="170" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="175" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="184" y="0">CARDIOP.</text><circle cx="212" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="217" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="226" y="0">NEFROP.</text><circle cx="252" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="257" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="266" y="0">OTRA</text><circle cx="285" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="290" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            </g>
+            <!-- row 2 -->
+            <g transform="translate(10,84)">
+              <text x="0" y="0">VIOLENCIA</text><circle cx="30" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="35" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="42" y="0">PLANIF.</text><circle cx="66" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".3"/><circle cx="71" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="80" y="0">ABORTOS</text><circle cx="108" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="116" y="0">CESAREAS</text><circle cx="146" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="156" y="0">ECTOP.</text><circle cx="180" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="185" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="194" y="0">GEMEL.</text><circle cx="216" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="221" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="228" y="0">RH(-)</text><circle cx="246" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="251" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="258" y="0">MUERTE RN</text><circle cx="296" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            </g>
+            <!-- row 3: consumo -->
+            <g transform="translate(10,94)">
+              <text x="0" y="0">TABAQUISMO</text><circle cx="34" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="39" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="46" y="0">ALCOHOL</text><circle cx="72" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="77" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="85" y="0">DROGAS</text><circle cx="110" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="115" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="124" y="0">VIH</text><circle cx="136" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="141" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="148" y="0">SÍFILIS</text><circle cx="170" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="175" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="184" y="0">CHAGAS</text><circle cx="210" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="215" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="224" y="0">HEPAT.</text><circle cx="246" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="251" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="258" y="0">DENGUE</text><circle cx="284" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="289" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            </g>
+          </g>
+
+          <!-- EMBARAZO ACTUAL sub-header -->
+          <rect x="0" y="110" width="340" height="9" fill="#3E3A36"/>
+          <text x="6" y="116.5" font-family="Arial" font-size="4.2" font-weight="600" fill="#F3EEDE" letter-spacing="1">EMBARAZO ACTUAL · ANTROPOMETRÍA · GRUPO SANGUÍNEO</text>
+
+          <!-- Mint-tinted EMBARAZO zone -->
+          <rect x="0" y="119" width="340" height="42" fill="#BCD1B4" fill-opacity=".4"/>
+          <g font-family="Arial" fill="#1C1B1A">
+            <!-- FUM FPP EG row -->
+            <g font-size="4">
+              <text x="10" y="128">FUM</text><line x1="22" y1="130" x2="72" y2="130" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="78" y="128">FPP</text><line x1="90" y1="130" x2="140" y2="130" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="146" y="128">EG</text><line x1="156" y1="130" x2="196" y2="130" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="202" y="128">PESO kg</text><line x1="228" y1="130" x2="262" y2="130" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="268" y="128">TALLA</text><line x1="286" y1="130" x2="328" y2="130" stroke="#1C1B1A" stroke-width=".35"/>
+            </g>
+            <!-- Paridad row: G P C A V boxes -->
+            <g font-size="3.8">
+              <text x="10" y="142" font-weight="700">PARIDAD</text>
+              <g transform="translate(42,138)">
+                <text x="0" y="4">G</text><rect x="5" y="0" width="8" height="6" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="16" y="4">P</text><rect x="21" y="0" width="8" height="6" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="32" y="4">C</text><rect x="37" y="0" width="8" height="6" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="48" y="4">A</text><rect x="53" y="0" width="8" height="6" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="64" y="4">V</text><rect x="69" y="0" width="8" height="6" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              </g>
+              <text x="132" y="142">GRUPO</text>
+              <g transform="translate(152,138)">
+                <text x="0" y="4">A</text><circle cx="7" cy="2" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="12" y="4">B</text><circle cx="19" cy="2" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="24" y="4">AB</text><circle cx="34" cy="2" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="40" y="4">O</text><circle cx="47" cy="2" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              </g>
+              <text x="208" y="142">Rh</text>
+              <g transform="translate(218,138)">
+                <text x="0" y="4">+</text><circle cx="6" cy="2" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="12" y="4">−</text><circle cx="18" cy="2" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              </g>
+              <text x="248" y="142">PLANIFIC.</text>
+              <g transform="translate(282,138)">
+                <text x="0" y="4">SÍ</text><circle cx="8" cy="2" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+                <text x="16" y="4">NO</text><circle cx="28" cy="2" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              </g>
+            </g>
+            <!-- Fumo durante embarazo etc row -->
+            <g font-size="3.4" opacity=".85">
+              <text x="10" y="154">FUMA EMB.</text><circle cx="40" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="45" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="54" y="154">ALC. EMB.</text><circle cx="82" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="87" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="96" y="154">VDRL</text><circle cx="114" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="119" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="128" y="154">HIV</text><circle cx="142" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="147" cy="152.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="156" y="154">HB g/dl</text><line x1="176" y1="154" x2="206" y2="154" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="212" y="154">GLUC</text><line x1="228" y1="154" x2="256" y2="154" stroke="#1C1B1A" stroke-width=".3"/>
+              <text x="262" y="154">ORINA</text><line x1="282" y1="154" x2="328" y2="154" stroke="#1C1B1A" stroke-width=".3"/>
+            </g>
+          </g>
+
+          <!-- CONTROLES PRENATALES sub-header -->
+          <rect x="0" y="164" width="340" height="9" fill="#3E3A36"/>
+          <text x="6" y="170.5" font-family="Arial" font-size="4.2" font-weight="600" fill="#F3EEDE" letter-spacing="1">CONTROLES PRENATALES · EG · ANTROP. · VITALES · LAB. · OBSERVACIONES</text>
+
+          <!-- Dense controls table -->
+          <g font-family="Arial" fill="#1C1B1A">
+            <rect x="0" y="173" width="340" height="148" fill="none"/>
+            <!-- column headers -->
+            <g font-size="2.8" opacity=".8">
+              <text x="6" y="181">N°</text>
+              <text x="18" y="181">FECHA</text>
+              <text x="44" y="181">EG</text>
+              <text x="58" y="181">PESO</text>
+              <text x="78" y="181">TA</text>
+              <text x="94" y="181">AU</text>
+              <text x="110" y="181">PRES</text>
+              <text x="130" y="181">FCF</text>
+              <text x="148" y="181">MOV</text>
+              <text x="168" y="181">ED</text>
+              <text x="184" y="181">PROT</text>
+              <text x="208" y="181">HB</text>
+              <text x="226" y="181">GLU</text>
+              <text x="248" y="181">ORI</text>
+              <text x="266" y="181">FIRMA</text>
+              <text x="304" y="181">OBS</text>
+            </g>
+            <line x1="0" y1="183" x2="340" y2="183" stroke="#1C1B1A" stroke-width=".35"/>
+            <!-- horizontal rows -->
+            <g stroke="#1C1B1A" stroke-opacity=".55" stroke-width=".2">
+              <line x1="0" y1="195" x2="340" y2="195"/>
+              <line x1="0" y1="207" x2="340" y2="207"/>
+              <line x1="0" y1="219" x2="340" y2="219"/>
+              <line x1="0" y1="231" x2="340" y2="231"/>
+              <line x1="0" y1="243" x2="340" y2="243"/>
+              <line x1="0" y1="255" x2="340" y2="255"/>
+              <line x1="0" y1="267" x2="340" y2="267"/>
+              <line x1="0" y1="279" x2="340" y2="279"/>
+              <line x1="0" y1="291" x2="340" y2="291"/>
+              <line x1="0" y1="303" x2="340" y2="303"/>
+              <line x1="0" y1="315" x2="340" y2="315"/>
+            </g>
+            <!-- vertical separators -->
+            <g stroke="#1C1B1A" stroke-opacity=".55" stroke-width=".18">
+              <line x1="14" y1="173" x2="14" y2="321"/>
+              <line x1="40" y1="173" x2="40" y2="321"/>
+              <line x1="54" y1="173" x2="54" y2="321"/>
+              <line x1="74" y1="173" x2="74" y2="321"/>
+              <line x1="90" y1="173" x2="90" y2="321"/>
+              <line x1="106" y1="173" x2="106" y2="321"/>
+              <line x1="126" y1="173" x2="126" y2="321"/>
+              <line x1="144" y1="173" x2="144" y2="321"/>
+              <line x1="164" y1="173" x2="164" y2="321"/>
+              <line x1="180" y1="173" x2="180" y2="321"/>
+              <line x1="204" y1="173" x2="204" y2="321"/>
+              <line x1="222" y1="173" x2="222" y2="321"/>
+              <line x1="244" y1="173" x2="244" y2="321"/>
+              <line x1="262" y1="173" x2="262" y2="321"/>
+              <line x1="300" y1="173" x2="300" y2="321"/>
+            </g>
+          </g>
+
+          <!-- MORBILIDAD sub-header -->
+          <rect x="0" y="324" width="340" height="9" fill="#3E3A36"/>
+          <text x="6" y="330.5" font-family="Arial" font-size="4.2" font-weight="600" fill="#F3EEDE" letter-spacing="1">MORBILIDAD MATERNA GRAVE · NEAR MISS · DISFUNCIÓN ÓRGANO-SISTEMA</text>
+
+          <!-- Pink MORBILIDAD zone -->
+          <rect x="0" y="333" width="340" height="52" fill="#E3BFB8" fill-opacity=".5"/>
+          <g font-family="Arial" font-size="3.6" fill="#1C1B1A">
+            <!-- row 1 -->
+            <g transform="translate(10,343)">
+              <text x="0" y="0">HPP</text><circle cx="14" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="19" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="26" y="0">PREECL.SEV.</text><circle cx="64" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="69" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="76" y="0">ECLAMPSIA</text><circle cx="106" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="111" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="118" y="0">SEPSIS</text><circle cx="138" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="143" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="150" y="0">CHOQUE</text><circle cx="176" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="181" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="188" y="0">CID</text><circle cx="200" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="205" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="212" y="0">ROT.UTER.</text><circle cx="242" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="247" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="254" y="0">EMB.ECT.</text><circle cx="282" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="287" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+            </g>
+            <!-- row 2: intervenciones -->
+            <g transform="translate(10,354)">
+              <text x="0" y="0">UCI</text><circle cx="12" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="17" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="24" y="0">TRANSF.</text><circle cx="50" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="55" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="62" y="0">HISTERECT.</text><circle cx="96" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="101" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="108" y="0">LAPAROT.</text><circle cx="138" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="143" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="150" y="0">ARM</text><circle cx="164" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="169" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="176" y="0">VASO.ACT.</text><circle cx="208" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="213" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="220" y="0">DIÁLISIS</text><circle cx="248" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="253" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="260" y="0">ANTIB.IV</text><circle cx="286" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="291" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+            </g>
+            <!-- row 3: disfunción órgano-sistema -->
+            <g transform="translate(10,365)">
+              <text x="0" y="0">DISF.RESP</text><circle cx="30" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="35" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="42" y="0">CARD.</text><circle cx="62" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="67" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="74" y="0">RENAL</text><circle cx="94" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="99" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="106" y="0">HEPÁT.</text><circle cx="128" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="133" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="140" y="0">HEMAT.</text><circle cx="164" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="169" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="176" y="0">NEURO</text><circle cx="198" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="203" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="210" y="0">ENDÓC.</text><circle cx="234" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/><circle cx="239" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="246" y="0">Nº CRIT.</text><line x1="270" y1="-1" x2="328" y2="-1" stroke="#1C1B1A" stroke-width=".3"/>
+            </g>
+            <!-- row 4: egreso materno -->
+            <g transform="translate(10,376)">
+              <text x="0" y="0" font-weight="600">EGRESO MAT.</text>
+              <text x="40" y="0">VIVA</text><circle cx="58" cy="-1" r="1.9" fill="#E8C454" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="64" y="0">ÓBITO</text><circle cx="86" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="94" y="0">DESC.</text><circle cx="116" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="126" y="0">TRASLADO</text><circle cx="158" cy="-1" r="1.9" fill="none" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="166" y="0">FECHA</text><line x1="186" y1="-1" x2="232" y2="-1" stroke="#1C1B1A" stroke-width=".35"/>
+              <text x="238" y="0">LUGAR</text><line x1="260" y1="-1" x2="328" y2="-1" stroke="#1C1B1A" stroke-width=".35"/>
+            </g>
+          </g>
+
+          <!-- Footer strip -->
+          <rect x="0" y="388" width="340" height="52" fill="none"/>
+          <g font-family="Arial" font-size="3.4" fill="#1C1B1A" opacity=".7">
+            <text x="10" y="398">RECIÉN NACIDO</text>
+            <text x="10" y="408">Apgar 1' </text><line x1="28" y1="408" x2="46" y2="408" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="50" y="408">5'</text><line x1="58" y1="408" x2="76" y2="408" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="80" y="408">Peso g</text><line x1="102" y1="408" x2="138" y2="408" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="142" y="408">Sexo M</text><circle cx="166" cy="406.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="172" y="408">F</text><circle cx="180" cy="406.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="188" y="408">Edad gest.</text><line x1="218" y1="408" x2="248" y2="408" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="252" y="408">Reanim.</text><circle cx="278" cy="406.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/><circle cx="283" cy="406.5" r="1.7" fill="none" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="290" y="408">Alojam.</text><circle cx="316" cy="406.5" r="1.7" fill="#E8C454" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="10" y="420">Firma profesional</text><line x1="44" y1="420" x2="180" y2="420" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="188" y="420">Sello institución</text><line x1="220" y1="420" x2="328" y2="420" stroke="#1C1B1A" stroke-width=".3"/>
+            <text x="10" y="432" font-size="2.8" opacity=".6">CLAP · Centro Latinoamericano de Perinatología · Montevideo · Uruguay</text>
+            <text x="230" y="432" font-size="2.8" opacity=".6">Pág. 1 de 2</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="pair-phone-wrap" aria-label="After, the shipped Historia clínica screen in MiSIP">
+      <div class="phone">
+        <div class="phone-viewport">
+          <img src="misip-screens/historia-clinica.svg" alt="MiSIP Historia clínica, the shipped digital perinatal card screen">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pair-caption reveal">
+    <p>Before. The paper carné. Built by clinicians, for clinicians.</p>
+    <p>After. The shipped Historia clínica. Same data, her language.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SOLUTION / WHAT SHIPPED -->
+  <section class="section reveal">
+    <div class="section-label">What shipped</div>
+    <h2 class="section-heading word-reveal" style="max-width: 820px;">A pregnancy companion, in her language.</h2>
+    <p class="section-text" style="max-width: 640px;">The digital perinatal card at the center, wrapped in the things women told us they actually needed: appointment tracking, a personal diary, clinical content rewritten in her language, an in-app clinician chat, and a week-by-week progression that lives as its own continuous scroll. Built for iOS and Android on a calm, single-accent system tuned for one-handed use on low-end devices, the reality of most MiSIP users. Adopted by PAHO, currently in use across Latin America.</p>
+  </section>
+  <!-- MOMENT 1: Onboarding -->
+  <div class="shipped-moment reveal">
+    <div class="moment-label">Moment 01 · Onboarding, her first five minutes</div>
+    <div class="onboarding-row stagger">
+      <div>
+        <div class="phone">
+          <div class="phone-viewport">
+            <img src="misip-screens/onboarding-1.svg" alt="MiSIP onboarding, welcome screen in plain language">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>01</strong>Welcome</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport">
+            <img src="misip-screens/onboarding-2.svg" alt="MiSIP onboarding, explaining the app in her language">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>02</strong>What this is</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport">
+            <img src="misip-screens/onboarding-3.svg" alt="MiSIP onboarding, gentle first ask">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>03</strong>Ready when you are</div>
+      </div>
+    </div>
+    <p class="moment-note">The first onboarding draft had four consent checkboxes and a terms modal. The shipped version has zero. Three screens that explain who the app is for, in her language, before asking for anything. Consent moved to the moment she adds her own data, not the moment she opens the app. Every "drive completion" draft we tested did worse than this one.</p>
+  </div>
+
+  <!-- MOMENT 2: The five flows -->
+  <div class="shipped-moment reveal">
+    <div class="moment-label">Moment 02 · The spine, five flows</div>
+    <div class="flows-grid stagger">
+      <div>
+        <div class="phone">
+          <div class="phone-viewport tall">
+            <img src="misip-screens/historia-clinica.svg" alt="MiSIP digital perinatal card, the PAHO card rebuilt for patients">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>01 · The card</strong>Historia clínica</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport tall">
+            <img src="misip-screens/checklist.svg" alt="MiSIP checklist, appointments and tasks week by week">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>02 · Appointments</strong>Checklist</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport tall">
+            <img src="misip-screens/Notes.svg" alt="MiSIP notes, a personal pregnancy diary">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>03 · Diary</strong>Notas</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport tall">
+            <img src="misip-screens/enfermedades.svg" alt="MiSIP clinical content rewritten in plain language">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>04 · Clinical, rewritten</strong>Enfermedades</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="phone-viewport tall">
+            <img src="misip-screens/chatbot.svg" alt="MiSIP in-app clinician chat">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>05 · Ask a clinician</strong>Chat</div>
+      </div>
+    </div>
+    <p class="moment-note">The digital perinatal card at the center, wrapped in a checklist, a diary, the clinical content rewritten, and an in-app clinician chat. Five quiet flows, one consistent voice.</p>
+  </div>
+
+  <!-- MOMENT 3: Gestación actual full scroll -->
+  <div class="shipped-moment reveal">
+    <div class="moment-label">Moment 03 · Gestación actual, the full scroll</div>
+    <p class="moment-note" style="margin: 0 auto 48px;">Week-by-week was the flow mothers returned to most in research. The question was never "what's happening in week 27", it was "where am I in this." That reframing made the difference between a tab layout and a single continuous scroll: she doesn't navigate to her week, she scrolls until she finds herself. Shown here at the aspect ratio it ships at, end to end, so you can see the whole artifact the way she does.</p>
+    <div class="phone-scroll-wrap">
+      <div class="phone">
+        <div class="phone-viewport xtall">
+          <img src="misip-screens/gestacion-actual.svg" alt="MiSIP Gestación actual, the entire week-by-week progression as one continuous scroll">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+  <!-- IMPACT -->
+  <section class="section reveal" style="padding-bottom: 32px;">
+    <div class="section-label">Impact</div>
+    <h2 class="section-heading word-reveal" style="max-width: 740px;">What the scope argument bought us</h2>
+    <p class="section-text" style="max-width: 640px;">The clearest way to measure this project isn't traffic or DAUs. It's the distance between the brief and the product that shipped, and whether a woman reading her own card comes away understanding it, on her own terms, without a doctor next to her.</p>
+  </section>
+  <div class="impact-grid scale-in">
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Reach</div>
+      <div class="impact-headline">Live in<br>4 countries</div>
+      <div class="impact-sub">Shipped as MVP across Argentina, Perú, México, and Colombia, on iOS and Android, then carried into continued development with PAHO's team post-launch.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Comprehension</div>
+      <div class="impact-headline">~3×<br>lift</div>
+      <div class="impact-sub">Measured in side-by-side reading tasks with the mothers from our research cohort: read six clinical fields in the original carné, then in the MiSIP rewrite, and explain each in their own words. Scored against the clinicians' reference answers. Plain language roughly tripled correct readings.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Brief → Ship</div>
+      <div class="impact-headline">1 screen<br>→ 5 flows</div>
+      <div class="impact-sub">Card, appointments, diary, clinical content, clinician chat, plus a week-by-week scroll. Five flows and a companion the brief never asked for.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Craft</div>
+      <div class="impact-headline">100+ fields,<br>0 rejected</div>
+      <div class="impact-sub">Across six review rounds with PAHO's medical partners, every plain-language rewrite of a clinical field was validated without rollback. Clinical integrity preserved on every line that shipped.</div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <section class="reflection reveal">
+    <div class="section-label">In closing</div>
+    <h2 class="section-heading word-reveal">Three things I took from MiSIP.</h2>
+    <div class="reflection-items stagger">
+      <div class="reflection-item">
+        <p class="reflection-body">A medical partner's "no" is usually a question about evidence, not a veto. The hardest part of the first month was sitting with rewrites that kept coming back rejected. I initially read every "no" as a wall. It wasn't. It was the clinicians asking for proof that plain language wouldn't lose the clinical meaning. The moment I started bringing a short comprehension test into review meetings. Two mothers, two versions of a field, their own words. The "nos" turned into "show me the next one." Half the work of senior design on a clinical project is teaching the clinicians how to say yes.</p>
+      </div>
+      <div class="reflection-item">
+        <p class="reflection-body">I was three calls late to the scope argument. The two weeks the clinicians had in their heads weren't a misunderstanding about design, they were a misunderstanding I'd let accumulate because I wanted the first meetings to go smoothly. By the time I made the real argument, it cost more to unwind the expectation than it would have cost to set it on day one. Scope fights are cheaper the earlier you pick them, and much cheaper than scope regrets. I pick them on day one now.</p>
+      </div>
+      <div class="reflection-item">
+        <p class="reflection-body">The thing I didn't see clearly until month three was that the app had to earn permission, not attention. A pregnancy companion isn't an engagement problem; it's a trust problem. The screens a woman sees in her first five minutes aren't optimizing for activation. They're answering the question "why are you on my phone." Every onboarding draft that tried to "drive completion" tested worse than the one that just said, slowly, who this was for and why. I stopped designing onboarding as a funnel after MiSIP.</p>
+      </div>
+    </div>
+    <p style="font-size: 10px; font-weight: 400; line-height: 1.7; color: rgba(239,235,229,.32); max-width: 720px; font-style: italic; margin-top: 56px; letter-spacing: .04em;">Case study published with PAHO's permission. Some product details abstracted where needed to respect ongoing work with PAHO's team post-launch.</p>
+  </section>
+
+  <!-- NEXT PROJECT -->
+  <a class="next-project reveal" href="explorations.html">
+    <div>
+      <div class="next-label">Next project</div>
+      <div class="next-title">Explorations</div>
+    </div>
+    <div class="next-arrow">→</div>
+  </a>
+
+  <!-- CONTACT OVERLAY -->
+  <div class="contact-overlay" id="contactOverlay">
+    <div class="contact-overlay-nav">
+      <a class="contact-overlay-logo" href="#" id="overlayLogo">CB</a>
+      <button class="contact-close" id="contactClose">Close</button>
+    </div>
+    <div class="contact-body">
+      <div>
+        <h2 class="contact-heading">Hi there,<br><em>say hello :)</em></h2>
+        <div class="contact-links">
+          <a href="mailto:cbalianr@gmail.com" class="contact-info-link">cbalianr@gmail.com</a>
+          <a href="https://es.linkedin.com/in/camilabalian" target="_blank" class="contact-info-link">LinkedIn</a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="hidden" name="access_key" value="1f610c8a-f0c1-4518-ac63-18b415fa3bd4">
+        <input type="hidden" name="subject" value="New message from your portfolio">
+        <div class="form-field"><label>Your name</label><input type="text" name="name" placeholder="Your name" required /></div>
+        <div class="form-field"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required /></div>
+        <div class="form-field"><label>Message</label><textarea name="message" placeholder="Say something nice…" rows="4" required></textarea></div>
+        <button class="form-submit" type="submit" id="submitBtn">Send message</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <h3 class="form-success-title">Message sent!</h3>
+        <p class="form-success-sub">Thanks for reaching out, I'll get back to you soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* CURSOR */
+    const dot = document.getElementById('cursorDot');
+    window.addEventListener('mousemove', e => { dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
+
+    /* PROGRESS */
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => { bar.style.width = (window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'; }, {passive:true});
+
+    /* MOTION - senior scroll choreography */
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* 1. Hero entrance on first paint */
+    const hero = document.getElementById('projectHero');
+    if (hero) {
+      requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('loaded')));
+    }
+
+    /* 2. Word-split any .word-reveal heading (only plain text nodes) */
+    document.querySelectorAll('.word-reveal').forEach(el => {
+      if (el.children.length > 0) return;
+      const text = el.textContent.trim();
+      if (!text) return;
+      const words = text.split(/\s+/);
+      el.textContent = '';
+      words.forEach((w, i) => {
+        const wrap = document.createElement('span');
+        wrap.className = 'word-wrap';
+        const inner = document.createElement('span');
+        inner.className = 'word-inner';
+        inner.textContent = w;
+        wrap.appendChild(inner);
+        el.appendChild(wrap);
+        if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+    });
+
+    /* 3. Unified IntersectionObserver for all motion classes */
+    const motionObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          motionObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.reveal, .stagger, .scale-in, .word-reveal').forEach(el => motionObs.observe(el));
+
+    /* 4. Subtle parallax on the hero collage, after entrance settles */
+    const heroCollage = document.querySelector('.hero-collage');
+    if (heroCollage && !reduceMotion) {
+      let ticking = false;
+      const update = () => {
+        const y = window.scrollY;
+        const translate = Math.min(y * 0.06, 60);
+        heroCollage.style.transform = `translate3d(0, ${translate}px, 0)`;
+        ticking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+
+    /* CONTACT OVERLAY */
+    const overlay = document.getElementById('contactOverlay');
+    const closeBtn = document.getElementById('contactClose');
+    const overlayLogo = document.getElementById('overlayLogo');
+    function closeOverlay(e){ e&&e.preventDefault(); overlay.classList.remove('open'); setTimeout(()=>{overlay.style.display='none';},450); document.body.style.overflow=''; }
+    if(closeBtn) closeBtn.addEventListener('click', closeOverlay);
+    if(overlayLogo) overlayLogo.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeOverlay(); });
+
+    /* CONTACT FORM */
+    const cForm = document.getElementById('contactForm');
+    const fSuccess = document.getElementById('formSuccess');
+    if(cForm) cForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = new FormData(cForm);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+        if(res.ok){ cForm.style.display='none'; fSuccess.classList.add('visible'); }
+      } catch(err){}
+    });
+  </script>
+</body>
+</html>
