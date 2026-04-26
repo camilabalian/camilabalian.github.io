@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maiwey  - Camila Balian</title>
+  <title>Apple Myriad  - Camila Balian</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #E2FFA3; --bosque: #003939; --lima: #E2FFA3; --aciano: #C3D4FF; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+    :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #0A84FF; --cyan: #70D7FF; --pink: #DA8FFF; --navy: #0D1B2A; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
     html { scroll-behavior: smooth; }
     * { cursor: none !important; }
     @media (max-width: 768px), (pointer: coarse), (hover: none) { * { cursor: auto !important; } .cursor-dot { display: none !important; } }
@@ -28,16 +28,9 @@
 
     /* HERO — full viewport, type-only */
     .project-hero { height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--bg); overflow: hidden; }
-    /* Hero line accent */
-    .hero-line { width: 0; height: 1px; background: rgba(239,235,229,.15); margin-bottom: 32px; transition: width 1s var(--ease); }
-    .project-hero.loaded .hero-line { width: clamp(60px,8vw,120px); transition-delay: .05s; }
-
-    /* Title — clip-mask reveal */
     .hero-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(100px,20vw,280px); line-height: .9; letter-spacing: -.04em; color: var(--cream); margin: 0; text-transform: uppercase; }
     .hero-title .letter { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform .8s cubic-bezier(.16,1,.3,1), opacity .01s; }
     .project-hero.loaded .hero-title .letter { transform: translateY(0); opacity: 1; }
-
-    /* Description */
     .hero-desc { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.7; color: rgba(239,235,229,.55); margin-top: 32px; max-width: 560px; }
     .hero-desc .word { display: inline-block; opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
     .project-hero.loaded .hero-desc .word { opacity: 1; transform: translateY(0); }
@@ -46,7 +39,7 @@
     .project-hero.loaded .hero-meta-item { opacity: 1; transform: translateY(0); }
     .hero-meta-k { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.35); margin-bottom: 8px; }
     .hero-meta-v { font-size: 16px; color: rgba(239,235,229,.65); font-weight: 400; }
-    .hero-scroll-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: .24em; text-transform: uppercase; color: rgba(239,235,229,.35); opacity: 0; transition: opacity 1s var(--ease); }
+    .hero-scroll-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: .24em; text-transform: uppercase; color: rgba(239,235,229,.15); opacity: 0; transition: opacity 1s var(--ease); }
     .project-hero.loaded .hero-scroll-hint { opacity: 1; transition-delay: 1.2s; }
 
     /* DIVIDER */
@@ -54,8 +47,8 @@
 
     /* SECTIONS */
     .section { padding: 80px 64px; }
-    .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 48px; }
-    .section-heading { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); line-height: 1.1; color: var(--cream); margin-bottom: 32px; overflow: visible; }
+    .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 32px; }
+    .section-heading { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); line-height: 1.1; color: var(--cream); margin-bottom: 20px; overflow: visible; }
     .section-text { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.65); margin-bottom: 22px; }
     .section-text:last-child { margin-bottom: 0; }
     .section-text strong { color: rgba(239,235,229,.9); font-weight: 500; }
@@ -72,59 +65,46 @@
     .image-pair.dark-frame img { border: 1px solid rgba(239,235,229,.06); background: var(--bg); }
 
     /* CHAPTER TINT */
-    .chapter-tinted { background: rgba(0,57,57,.04); }
+    .chapter-tinted { background: rgba(10,132,255,.02); }
 
-    /* FLOW SECTIONS */
+    /* FLOW SECTIONS  - text left, mockup right */
     .flow-section { padding: 65px 64px; }
     .flow-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: center; max-width: 1200px; margin: 0 auto; }
     .flow-number { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
     .flow-title { font-family: 'Manrope', sans-serif; font-size: clamp(24px,2.8vw,38px); font-weight: 600; line-height: 1.15; color: var(--cream); margin-bottom: 24px; }
     .flow-body { font-size: clamp(14px,1.3vw,18px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
-    .flow-body strong { color: rgba(239,235,229,.8); font-weight: 500; }
-    .flow-body em { color: rgba(239,235,229,.65); font-style: italic; }
     .flow-visual img { width: 100%; border-radius: 12px; display: block; }
 
     /* BEAUTY SHOT */
     .beauty-shot { padding: 40px 0; }
     .beauty-shot img { width: 100%; display: block; }
 
-    /* KEY DECISION CALLOUT */
-    .decision { margin-top: 20px; padding: 20px 24px; border-left: 2px solid var(--accent); background: rgba(239,235,229,.025); border-radius: 0 12px 12px 0; }
-    .decision-label { font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-    .decision-text { font-size: clamp(13px,1.2vw,15px); font-weight: 300; line-height: 1.7; color: rgba(239,235,229,.55); }
-    .decision-text strong { color: rgba(239,235,229,.8); font-weight: 500; }
-
-    /* OVERVIEW GRID */
-    .overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; max-width: 820px; }
-    .overview-label { font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 10px; }
-    .overview-value { font-size: clamp(15px,1.4vw,19px); font-weight: 400; line-height: 1.5; color: var(--cream); }
-
     /* IMPACT */
     .impact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 0 64px; }
-    .impact-cell { padding: 52px 36px; background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; transition: border-color .4s, background .4s; }
-    .impact-cell:hover { border-color: rgba(0,57,57,.35); background: rgba(0,57,57,.06); }
-    .impact-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(226,255,163,.55); }
+    .impact-cell { padding: 34px 36px; background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; transition: border-color .4s, background .4s; }
+    .impact-cell:hover { border-color: rgba(10,132,255,.22); background: rgba(10,132,255,.04); }
+    .impact-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(10,132,255,.55); }
     .impact-headline { font-family: 'Archivo Black', sans-serif; font-size: clamp(30px,3.4vw,48px); line-height: 1.1; color: var(--cream); margin-top: 32px; }
     .impact-sub { font-size: 12px; font-weight: 400; line-height: 1.6; color: rgba(239,235,229,.5); margin-top: 18px; }
 
     /* REFLECTION */
-    .reflection { padding: 91px 64px; max-width: 720px; margin: 0 auto; text-align: center; }
+    .reflection { padding: 90px 64px; max-width: 720px; margin: 0 auto; text-align: center; }
     .reflection .section-label { margin-bottom: 28px; }
-    .reflection .section-heading { font-size: clamp(30px,3.4vw,52px); margin-bottom: 48px; }
+    .reflection .section-heading { font-size: clamp(30px,3.4vw,52px); margin-bottom: 32px; }
     .reflection-item { margin-bottom: 36px; }
     .reflection-item:last-child { margin-bottom: 0; }
     .reflection-lead { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--cream); margin-bottom: 10px; line-height: 1.4; }
     .reflection-body { font-size: clamp(15px,1.4vw,19px); font-weight: 300; line-height: 1.85; color: rgba(239,235,229,.55); }
 
     /* NEXT PROJECT */
-    .next-project { padding: 65px 64px 78px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; transition: opacity .2s; }
+    .next-project { padding: 65px 64px 80px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; transition: opacity .2s; }
     .next-project:hover { opacity: .7; }
     .next-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 16px; }
     .next-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); color: var(--cream); }
     .next-arrow { font-size: 48px; color: rgba(239,235,229,.3); }
 
     /* CONTACT OVERLAY */
-    .contact-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: none; flex-direction: column; padding: 40px 64px 48px; opacity: 0; transform: translateY(32px); transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1); overflow-y: auto; }
+    .contact-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: none; flex-direction: column; padding: 40px 64px 64px; opacity: 0; transform: translateY(32px); transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1); overflow-y: auto; }
     .contact-overlay.open { opacity: 1; transform: translateY(0); }
     .contact-overlay-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 52px; }
     .contact-overlay-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
@@ -133,7 +113,7 @@
     .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; flex: 1; align-items: start; }
     .contact-heading { font-family: 'Manrope', sans-serif; font-size: clamp(64px,10vw,140px); font-weight: 500; line-height: .95; letter-spacing: -.03em; color: var(--cream); }
     .contact-heading em { font-style: italic; color: rgba(239,235,229,.22); font-weight: 300; }
-    .contact-links { margin-top: 78px; display: flex; flex-direction: column; gap: 18px; }
+    .contact-links { margin-top: 80px; display: flex; flex-direction: column; gap: 18px; }
     .contact-info-link { font-family: 'Manrope', sans-serif; font-size: clamp(16px,1.6vw,22px); font-weight: 300; color: rgba(239,235,229,.6); text-decoration: none; border-bottom: 1px solid rgba(239,235,229,.15); padding-bottom: 3px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; transition: color .2s, border-color .2s; }
     .contact-info-link:hover { color: var(--cream); border-color: rgba(239,235,229,.5); }
     .contact-form { display: flex; flex-direction: column; gap: 28px; padding-top: 8px; }
@@ -152,7 +132,7 @@
     .form-success-sub { font-size: 14px; font-weight: 300; color: rgba(239,235,229,.45); line-height: 1.7; }
 
     /* MOTION */
-    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .reveal { opacity: 0; transform: translateY(48px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .stagger > * { opacity: 0; transform: translateY(36px); transition: opacity .95s var(--ease), transform .95s var(--ease); }
     .stagger.visible > * { opacity:1; transform:translateY(0); }
@@ -176,7 +156,7 @@
     .word-reveal .word-wrap:nth-child(7) .word-inner { transition-delay: .3s; }
     .word-reveal .word-wrap:nth-child(n+8) .word-inner { transition-delay: .35s; }
 
-    /* Hero letter stagger — clip reveal */
+    /* Hero letter stagger */
     .project-hero.loaded .hero-title .letter:nth-child(1) { transition-delay: .15s; }
     .project-hero.loaded .hero-title .letter:nth-child(2) { transition-delay: .2s; }
     .project-hero.loaded .hero-title .letter:nth-child(3) { transition-delay: .25s; }
@@ -197,24 +177,20 @@
       nav { padding: 18px 24px; }
       .project-hero { height: 100svh; }
       .hero-title { font-size: clamp(60px,18vw,120px); }
-      .hero-meta-row { flex-wrap: wrap; gap: 20px 24px; bottom: 32px; padding: 0 24px; }
-      .hero-scroll-hint { bottom: 10px; }
-      .hero-desc { font-size: 14px; max-width: 90%; }
-      .overview-grid { grid-template-columns: 1fr; gap: 20px; }
-      .decision { margin-top: 16px; padding: 16px 18px; }
+      .hero-meta-row { flex-wrap: wrap; gap: 20px 32px; bottom: 32px; }
+      .hero-scroll-hint { bottom: 100px; }
       .divider { margin: 0 24px; }
       .section { padding: 52px 24px; }
       .full-image { padding: 0 24px; }
-      .flow-section { padding: 39px 24px; }
-      .product-label { padding: 32px 24px 0 !important; }
+      .flow-section { padding: 40px 24px; }
       .flow-layout { grid-template-columns: 1fr; gap: 40px; }
       .image-pair { grid-template-columns: 1fr; padding: 0 24px; }
       .impact-grid { grid-template-columns: 1fr; margin: 0 24px; }
       .reflection { padding: 52px 24px; }
       .next-project { padding: 52px 24px; }
       .contact-overlay { padding: 32px 24px 48px; }
-      .contact-body { grid-template-columns: 1fr; gap: 31px; }
-      .contact-links { margin-top: 26px; }
+      .contact-body { grid-template-columns: 1fr; gap: 48px; }
+      .contact-links { margin-top: 40px; }
     }
   </style>
 </head>
@@ -229,20 +205,20 @@
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <section class="project-hero" id="projectHero">
-    <h1 class="hero-title" id="heroTitle">Maiwey</h1>
-    <p class="hero-desc">A 30-year financial group that had never spoken to a retail customer. I built their brand and two products from zero.</p>
+    <h1 class="hero-title" id="heroTitle">Myriad</h1>
+    <p class="hero-desc">Apple's teams were exporting dashboards to slides just to share a number. I designed the tool that replaced the screenshots.</p>
     <div class="hero-meta-row">
-      <div class="hero-meta-item"><div class="hero-meta-k">Client</div><div class="hero-meta-v">A&G</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Client</div><div class="hero-meta-v">Apple</div></div>
       <div class="hero-meta-item"><div class="hero-meta-k">Role</div><div class="hero-meta-v">Product Designer</div></div>
-      <div class="hero-meta-item"><div class="hero-meta-k">Team</div><div class="hero-meta-v">3 designers · 1 PM</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Team</div><div class="hero-meta-v">6 designers · 1 PM</div></div>
       <div class="hero-meta-item"><div class="hero-meta-k">Year</div><div class="hero-meta-v">2025</div></div>
     </div>
     <div class="hero-scroll-hint">Scroll ↓</div>
   </section>
 
   <!-- ═══════════════════ HERO BEAUTY SHOT ═══════════════════ -->
-  <div class="beauty-shot reveal" style="max-width: 1280px; margin: 0 auto; padding: 40px 64px;">
-    <img src="maiwey/hero mai.png" alt="Maiwey product ecosystem - browser, mobile, and laptop">
+  <div class="beauty-shot reveal">
+    <img src="apple/9.png" alt="Myriad dashboard running on MacBook Pro">
   </div>
 
   <div class="divider"></div>
@@ -251,125 +227,115 @@
   <section class="section reveal">
     <div class="section-label">Overview</div>
     <div style="max-width: 820px;">
-      <h2 class="section-heading word-reveal">The challenge</h2>
-      <p class="section-text">A&G had decades of B2B financial experience but had never spoken to retail customers. They needed a brand, a marketing website, an investment platform, and a mobile app. My job was to design all of it.</p>
-      <div class="overview-grid">
-        <div class="overview-item">
-          <div class="overview-label">Problem</div>
-          <div class="overview-value">Zero digital presence, zero brand, competing against established fintechs</div>
-        </div>
-        <div class="overview-item">
-          <div class="overview-label">My role</div>
-          <div class="overview-value">Research, brand, product UI, and documentation across the full scope</div>
-        </div>
-        <div class="overview-item">
-          <div class="overview-label">Outcome</div>
-          <div class="overview-value">2 products shipped: a public marketing site and a private investment platform, both mobile-first</div>
-        </div>
-      </div>
+      <h2 class="section-heading word-reveal">The brief</h2>
+      <p class="section-text">Apple GBI needed a reporting tool to replace rigid dashboards that couldn't be customised or shared without exporting to slides. The tool had to feel native to Apple without copying existing products, serve both <strong>Admins</strong> who build dashboards and <strong>Users</strong> who consume data, and pass internal accessibility review at every level.</p>
+      <p class="section-text">The team was eight people: six designers and a PM. I owned the UI for four of five core flows (onboarding, dashboard editing, sharing, and collaboration), co-led the brand exploration, and built core parts of the design system.</p>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══════════════════ DISCOVERY ═══════════════════ -->
+  <!-- ═══════════════════ RESEARCH ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 32px;">
+    <div class="section-label">Research</div>
+    <h2 class="section-heading word-reveal" style="max-width: 860px;">What I heard.</h2>
+    <p class="section-text" style="max-width: 680px;">I interviewed teams across Apple GBI. Three themes kept surfacing: the need for flexibility, the demand for context behind numbers, and the desire for each team to own their data view.</p>
+  </section>
+
+  <div class="full-image dark-frame reveal" style="padding-bottom: 80px;">
+    <img src="apple/6.png" alt="Stakeholder quotes from Corporate P&A, Services, and IS&T teams">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ VISUAL SYSTEM ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 32px;">
+    <div class="section-label">Visual system</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">Brand, colour, components.</h2>
+      <p class="section-text">I explored three brand directions and co-developed the winner: a toggle-switch "M" in blue, cyan, and pink that carried through the entire system. I defined the colour palette (derived from iOS system colours), built the WCAG 2.0 accessibility matrix, and designed core components of the 40+ piece library built to survive handoff.</p>
+    </div>
+  </section>
+
+  <div class="full-image reveal" style="padding-bottom: 16px;">
+    <img src="apple/7.png" alt="Myriad brand exploration  - direction cards with blue gradients and motion">
+  </div>
+  <div class="full-image reveal" style="padding-bottom: 80px;">
+    <img src="apple/1.png" alt="Myriad design system  - widgets, charts, notifications, onboarding components">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ WHAT SHIPPED ═══════════════════ -->
   <section class="section reveal">
-    <div class="section-label">Discovery</div>
-    <div style="max-width: 820px;">
-      <h2 class="section-heading word-reveal">They didn't distrust fintech.</h2>
-      <p class="section-text">The assumption was that people distrusted fintech. They didn't. They distrusted complexity: jargon, hidden fees, interfaces that assumed financial literacy. That finding shaped every design decision.</p>
-    </div>
+    <div class="section-label">What shipped</div>
+    <h2 class="section-heading word-reveal" style="max-width: 820px;">The four flows I designed.</h2>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- PRODUCT 1: PUBLIC SITE -->
-  <div class="product-label" style="padding: 40px 64px 0;">
-    <div class="section-label reveal" style="margin-bottom: 0; color: rgba(226,255,163,.4);">Product 01 · Public marketing site</div>
-  </div>
-
-  <!-- FLOW 01: PUBLIC SITE -->
+  <!-- FLOW 01 -->
   <div class="flow-section chapter-tinted reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">01 The landing experience</div>
-        <h3 class="flow-title">The brand had to sell itself before users ever logged in.</h3>
-        <p class="flow-body">No branches, no ads at launch. The website was the only way in. I <strong>put the savings simulator above the fold</strong>, before any brand messaging. Users engaged with the calculator <em>before scrolling</em>.</p>
+        <div class="flow-number">01 First Use</div>
+        <h3 class="flow-title">Users didn't know what the tool could do.</h3>
+        <p class="flow-body">No onboarding existed. People figured it out or gave up. I designed the first-run experience that asks "How will you use Myriad?" and adapts the interface based on the answer. I tested walkthroughs and feature tours first, but both overwhelmed users with things they didn't care about yet. Self-selection won because it let people skip straight to what was relevant to them.</p>
       </div>
       <div class="flow-visual">
-        <img src="maiwey/01 landing.png" alt="Maiwey public marketing website - three-page spread showing landing page with savings simulator, product explainers, and investment fund comparison">
+        <img src="apple/2.png" alt="Onboarding flow  - Getting Started modal with use case selection">
       </div>
     </div>
   </div>
 
-  <!-- PRODUCT 2: PRIVATE PLATFORM -->
-  <div class="product-label" style="padding: 40px 64px 0;">
-    <div class="section-label reveal" style="margin-bottom: 0; color: rgba(226,255,163,.4);">Product 02 · Private investment platform</div>
+  <!-- DASHBOARD OVERVIEW BEAUTY SHOT -->
+  <div class="beauty-shot reveal">
+    <img src="apple/3.png" alt="Myriad dashboard home  - All Dashboards view on MacBook Pro">
   </div>
 
-  <!-- FLOW 02: SAVINGS + DEPOSITS -->
+  <!-- FLOW 02 -->
   <div class="flow-section reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">02 Savings + deposits</div>
-        <h3 class="flow-title">Users needed to feel their money growing.</h3>
-        <p class="flow-body">The balance doesn't change day to day. The interest does. Testing showed users kept checking the balance, seeing no change, and disengaging. I <strong>flipped the hierarchy</strong>, making interest earned the largest element on screen.</p>
+        <div class="flow-number">02 Dashboard</div>
+        <h3 class="flow-title">Building a dashboard felt like writing SQL.</h3>
+        <p class="flow-body">Stakeholders wanted a technical configuration panel. Users wanted to drag things and see what happens. I designed the sidebar panel that lets you configure a widget without leaving the canvas, because every time users lost sight of their dashboard during editing, they lost context. Four widget sizes was a deliberate constraint: enough flexibility to be useful, not enough to create visual chaos across teams.</p>
       </div>
       <div class="flow-visual">
-        <img src="maiwey/02 deposit.png" alt="Savings and deposits - mobile renewal screen, web deposit form, and iPhone deposit detail showing interest earned">
+        <img src="apple/4.png" alt="Dashboard editor  - widget grid with real-time style and data panel">
       </div>
     </div>
   </div>
 
-  <!-- FLOW 03: INVESTMENT DASHBOARD -->
+  <!-- FLOW 03 -->
   <div class="flow-section chapter-tinted reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">03 Investment dashboard</div>
-        <h3 class="flow-title">Users couldn't tell if their money was doing well or not.</h3>
-        <p class="flow-body">Testing showed users needed to <strong>compare across funds</strong>, not view them one at a time. I redesigned it as a multi-fund overview. A glance on any screen should answer <em>"am I up or down?"</em></p>
-        <div class="decision">
-          <div class="decision-label">Key decision</div>
-          <p class="decision-text"><strong>I adapted data density per breakpoint.</strong> Desktop shows the full chart with granular data points. Mobile keeps only the trend line and key numbers. <em>Same data, different depth</em>, because context changes with screen size.</p>
-        </div>
+        <div class="flow-number">03 Share</div>
+        <h3 class="flow-title">Sharing meant exporting a PDF and hoping for the best.</h3>
+        <p class="flow-body">The old workflow: export, email, wait for sign-off, repeat quarterly. I designed the in-app sharing flow that replaced this, including configurable approval schedules per person, because not every stakeholder operates at the same cadence. A VP reviewing monthly doesn't need the same notifications as a team lead checking weekly. This addressed the single most common complaint from research.</p>
       </div>
       <div class="flow-visual">
-        <img src="maiwey/03 dashboard.png" alt="Investment dashboard - mobile fund detail with performance chart alongside desktop portfolio overview with multi-fund comparison">
+        <img src="apple/10.png" alt="Share modal  - user list with approval and frequency controls">
       </div>
     </div>
   </div>
 
-  <!-- FLOW 04: RISK PROFILE -->
+  <!-- FLOW 04 -->
   <div class="flow-section reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">04 Risk profile</div>
-        <h3 class="flow-title">Regulators required a suitability test. Users hated forms.</h3>
-        <p class="flow-body">Most platforms bury this in a <strong>30-field form</strong>. I broke it into three sections, one question at a time.</p>
-        <div class="decision">
-          <div class="decision-label">Key decision</div>
-          <p class="decision-text"><strong>I added "why are we asking this?" to every question.</strong> Legal pushed back because they worried plain-language explanations might create liability. I sat with the compliance team and we wrote each explanation together, keeping it accurate but plain. <em>Drop-off fell by a third.</em></p>
-        </div>
+        <div class="flow-number">04 Collaborate</div>
+        <h3 class="flow-title">Context was always one Slack message away.</h3>
+        <p class="flow-body">Data without context creates more questions than answers. I designed the in-app comments and notifications system so that stakeholders could flag anomalies, mention teammates, and attach supporting data directly on a widget — without leaving the dashboard. Notifications tied approvals and comments into a single feed, replacing a parallel chain of emails.</p>
       </div>
       <div class="flow-visual">
-        <img src="maiwey/04 test.png" alt="Suitability test - desktop form with progressive questions and 'why are we asking this' explanations, alongside mobile risk profile result">
+        <img src="apple/5.png" alt="Notifications panel and inline comments on a dashboard widget">
       </div>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- ═══════════════════ BRAND IDENTITY ═══════════════════ -->
-  <section class="section reveal" style="padding-bottom: 48px;">
-    <div class="section-label">Brand identity</div>
-    <div style="max-width: 820px;">
-      <h2 class="section-heading word-reveal">The arrow in the "a".</h2>
-      <p class="section-text">I modified the typeface Nohemi in three places: <strong>the "a" became an upward arrow</strong>, the "m" flipped into a "w", the "i" lost its dot. That arrow became the app icon, the favicon, and the one element users recognize at any size.</p>
-    </div>
-  </section>
-
-  <div class="full-image dark-frame reveal" style="max-width: 960px; margin: 0 auto;">
-    <img src="maiwey/arrow a.png" alt="Maiwey brand identity - the arrow in the 'a' letterform, app icon, favicon, and brand mark at multiple sizes">
+  <!-- ═══════════════════ BEAUTY SHOT ═══════════════════ -->
+  <div class="beauty-shot reveal">
+    <img src="apple/8.png" alt="Myriad Services Headcount dashboard on MacBook Pro">
   </div>
 
   <div class="divider"></div>
@@ -377,23 +343,23 @@
   <!-- ═══════════════════ IMPACT ═══════════════════ -->
   <section class="section reveal" style="padding-bottom: 32px;">
     <div class="section-label">Impact</div>
-    <h2 class="section-heading word-reveal" style="max-width: 740px;">What I shipped.</h2>
+    <h2 class="section-heading word-reveal" style="max-width: 740px;">What it delivered.</h2>
   </section>
   <div class="impact-grid scale-in">
     <div class="impact-cell">
-      <div class="impact-eyebrow">Engagement</div>
-      <div class="impact-headline">85% suitability test completion</div>
-      <div class="impact-sub">Progressive disclosure and plain-language copy cut drop-off by a third.</div>
+      <div class="impact-eyebrow">Adoption</div>
+      <div class="impact-headline">12 teams onboarded</div>
+      <div class="impact-sub">Teams across Apple GBI moved from static exports and email chains to building, customising, and sharing dashboards themselves within the first quarter of launch.</div>
     </div>
     <div class="impact-cell">
-      <div class="impact-eyebrow">Delivery</div>
-      <div class="impact-headline">2 products shipped in 4 months</div>
-      <div class="impact-sub">Marketing site + investment platform, both mobile-first.</div>
+      <div class="impact-eyebrow">Efficiency</div>
+      <div class="impact-headline">Reporting time cut by 80%</div>
+      <div class="impact-sub">What used to take days (exporting, formatting slides, emailing for sign-off) now happened in minutes with in-app sharing and scheduled approvals.</div>
     </div>
     <div class="impact-cell">
-      <div class="impact-eyebrow">Autonomy</div>
-      <div class="impact-headline">Client scaling brand independently</div>
-      <div class="impact-sub">40-page brand manual built to outlast the engagement.</div>
+      <div class="impact-eyebrow">Design system</div>
+      <div class="impact-headline">40+ components shipped</div>
+      <div class="impact-sub">A documented component library with four widget sizes, full colour accessibility, and interaction guidelines, built by the team so the product could scale after handoff.</div>
     </div>
   </div>
 
@@ -405,12 +371,12 @@
     <h2 class="section-heading word-reveal">What this project taught me.</h2>
     <div class="reflection-items stagger">
       <div class="reflection-item">
-        <p class="reflection-lead">Build brand and product at the same time, not in sequence.</p>
-        <p class="reflection-body">Every visual decision had to survive a 320px screen. I now test identity work at the smallest breakpoint before presenting it at full scale.</p>
+        <p class="reflection-lead">Design familiar before you design new.</p>
+        <p class="reflection-body">The biggest unlock wasn't a novel interaction. It was making dashboard editing feel like Keynote. The hardest design work is often invisible.</p>
       </div>
       <div class="reflection-item">
-        <p class="reflection-lead">In fintech, clarity is the feature.</p>
-        <p class="reflection-body">The suitability test taught me that explaining why you're asking is more effective than simplifying the question. I now write interface copy that justifies itself.</p>
+        <p class="reflection-lead">Design for the person who inherits your file.</p>
+        <p class="reflection-body">I wouldn't maintain Myriad forever. The component library shipped with documented states and usage rules because the next designer shouldn't have to reverse-engineer my decisions.</p>
       </div>
     </div>
   </section>
@@ -418,10 +384,10 @@
   <div style="height: 1px; background: rgba(239,235,229,0.06); margin: 0 64px;"></div>
 
   <!-- NEXT PROJECT -->
-  <a class="next-project reveal" href="misip.html">
+  <a class="next-project reveal" href="maiwey.html">
     <div>
       <div class="next-label">Next project</div>
-      <div class="next-title">MiSIP</div>
+      <div class="next-title">Maiwey</div>
     </div>
     <div class="next-arrow">&rarr;</div>
   </a>
@@ -481,7 +447,7 @@
     }
 
     /* Hero — split description into words */
-    document.querySelectorAll('.hero-desc').forEach(desc => {
+    document.querySelectorAll('.project-hero .hero-desc').forEach(desc => {
       const text = desc.textContent.trim();
       desc.textContent = '';
       text.split(/\s+/).forEach((w, i) => {

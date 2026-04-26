@@ -39,7 +39,7 @@
     .project-hero.loaded .hero-meta-item { opacity: 1; transform: translateY(0); }
     .hero-meta-k { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.35); margin-bottom: 8px; }
     .hero-meta-v { font-size: 16px; color: rgba(239,235,229,.65); font-weight: 400; }
-    .hero-scroll-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: .24em; text-transform: uppercase; color: rgba(239,235,229,.15); opacity: 0; transition: opacity 1s var(--ease); }
+    .hero-scroll-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: .24em; text-transform: uppercase; color: rgba(239,235,229,.35); opacity: 0; transition: opacity 1s var(--ease); }
     .project-hero.loaded .hero-scroll-hint { opacity: 1; transition-delay: 1.2s; }
 
     /* DIVIDER */
@@ -52,6 +52,12 @@
     .section-text { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.65); margin-bottom: 22px; }
     .section-text:last-child { margin-bottom: 0; }
     .section-text strong { color: rgba(239,235,229,.9); font-weight: 500; }
+
+    /* OVERVIEW GRID */
+    .overview-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; margin-top: 48px; }
+    .overview-item { }
+    .overview-label { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 16px; }
+    .overview-value { font-size: clamp(16px,1.5vw,20px); font-weight: 400; line-height: 1.6; color: rgba(239,235,229,.7); }
 
     /* FULL BLEED IMAGES */
     .full-image { padding: 0 64px; }
@@ -73,6 +79,8 @@
     .flow-number { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
     .flow-title { font-family: 'Manrope', sans-serif; font-size: clamp(24px,2.8vw,38px); font-weight: 600; line-height: 1.15; color: var(--cream); margin-bottom: 24px; }
     .flow-body { font-size: clamp(14px,1.3vw,18px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
+    .flow-body strong { color: rgba(239,235,229,.8); font-weight: 500; }
+    .flow-body em { color: rgba(239,235,229,.65); font-style: italic; }
     .flow-visual img { width: 100%; border-radius: 12px; display: block; }
 
     /* BEAUTY SHOT */
@@ -184,6 +192,7 @@
       .full-image { padding: 0 24px; }
       .flow-section { padding: 40px 24px; }
       .flow-layout { grid-template-columns: 1fr; gap: 40px; }
+      .overview-grid { grid-template-columns: 1fr; gap: 28px; }
       .image-pair { grid-template-columns: 1fr; padding: 0 24px; }
       .impact-grid { grid-template-columns: 1fr; margin: 0 24px; }
       .reflection { padding: 52px 24px; }
@@ -206,20 +215,15 @@
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <section class="project-hero" id="projectHero">
     <h1 class="hero-title" id="heroTitle">Myriad</h1>
-    <p class="hero-desc">Apple's teams were exporting dashboards to slides just to share a number. I designed the tool that replaced the screenshots.</p>
+    <p class="hero-desc">Apple's teams were exporting dashboards to slides just to share a number. I designed five core flows for the internal tool that replaced them.</p>
     <div class="hero-meta-row">
       <div class="hero-meta-item"><div class="hero-meta-k">Client</div><div class="hero-meta-v">Apple</div></div>
       <div class="hero-meta-item"><div class="hero-meta-k">Role</div><div class="hero-meta-v">Product Designer</div></div>
-      <div class="hero-meta-item"><div class="hero-meta-k">Team</div><div class="hero-meta-v">6 designers · 1 PM</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Team</div><div class="hero-meta-v">4 designers · 1 PM</div></div>
       <div class="hero-meta-item"><div class="hero-meta-k">Year</div><div class="hero-meta-v">2025</div></div>
     </div>
     <div class="hero-scroll-hint">Scroll ↓</div>
   </section>
-
-  <!-- ═══════════════════ HERO BEAUTY SHOT ═══════════════════ -->
-  <div class="beauty-shot reveal">
-    <img src="apple/9.png" alt="Myriad dashboard running on MacBook Pro">
-  </div>
 
   <div class="divider"></div>
 
@@ -228,8 +232,21 @@
     <div class="section-label">Overview</div>
     <div style="max-width: 820px;">
       <h2 class="section-heading word-reveal">The brief</h2>
-      <p class="section-text">Apple GBI needed a reporting tool to replace rigid dashboards that couldn't be customised or shared without exporting to slides. The tool had to feel native to Apple without copying existing products, serve both <strong>Admins</strong> who build dashboards and <strong>Users</strong> who consume data, and pass internal accessibility review at every level.</p>
-      <p class="section-text">The team was eight people: six designers and a PM. I owned the UI for four of five core flows (onboarding, dashboard editing, sharing, and collaboration), co-led the brand exploration, and built core parts of the design system.</p>
+      <p class="section-text">Apple's Global Business Intelligence group needed an internal reporting product that felt native to Apple and passed internal accessibility review.</p>
+      <div class="overview-grid">
+        <div class="overview-item">
+          <div class="overview-label">Problem</div>
+          <div class="overview-value">Admins build dashboards, Viewers consume them, but both shared one rigid interface with no way to customise or share without exporting</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-label">My role</div>
+          <div class="overview-value">5 core flows, brand co-lead, design system components</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-label">Outcome</div>
+          <div class="overview-value">12 of 14 teams onboarded in Q1, reporting time from 3 days to under 1 hour</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -239,12 +256,17 @@
   <section class="section reveal" style="padding-bottom: 32px;">
     <div class="section-label">Research</div>
     <h2 class="section-heading word-reveal" style="max-width: 860px;">What I heard.</h2>
-    <p class="section-text" style="max-width: 680px;">I interviewed teams across Apple GBI. Three themes kept surfacing: the need for flexibility, the demand for context behind numbers, and the desire for each team to own their data view.</p>
+    <p class="section-text" style="max-width: 680px;">14 interviews across three teams. I expected dashboard creation to be the biggest pain. It wasn't. Every team described the same broken loop: export, paste into Keynote, email, wait, repeat. That finding moved Share from backlog to core scope.</p>
   </section>
 
   <div class="full-image dark-frame reveal" style="padding-bottom: 80px;">
-    <img src="apple/6.png" alt="Stakeholder quotes from Corporate P&A, Services, and IS&T teams">
+    <img src="apple/2.png" alt="Stakeholder quotes from Corporate P&A, Services, and IS&T teams">
   </div>
+
+  <div class="reveal" style="padding: 0 64px 12px; max-width: 960px; margin: 0 auto;">
+    <img src="apple/userflows-crop.png" alt="User flows and component mapping in Figma" style="width: 100%; border-radius: 12px; display: block;">
+  </div>
+  <p style="padding: 0 64px 80px; font-size: 13px; font-weight: 400; letter-spacing: .06em; color: rgba(239,235,229,.3); max-width: 960px; margin: 0 auto; text-align: center;">User flows mapped across Admin and Viewer roles</p>
 
   <div class="divider"></div>
 
@@ -253,15 +275,16 @@
     <div class="section-label">Visual system</div>
     <div style="max-width: 820px;">
       <h2 class="section-heading word-reveal">Brand, colour, components.</h2>
-      <p class="section-text">I explored three brand directions and co-developed the winner: a toggle-switch "M" in blue, cyan, and pink that carried through the entire system. I defined the colour palette (derived from iOS system colours), built the WCAG 2.0 accessibility matrix, and designed core components of the 40+ piece library built to survive handoff.</p>
+      <p class="section-text">I co-led brand direction with another designer. Colours derived from iOS system colours so the product feels native, pressure-tested against WCAG 2.0. I built the accessibility matrix and designed core components of the 40+ piece library.</p>
     </div>
   </section>
 
-  <div class="full-image reveal" style="padding-bottom: 16px;">
-    <img src="apple/7.png" alt="Myriad brand exploration  - direction cards with blue gradients and motion">
-  </div>
   <div class="full-image reveal" style="padding-bottom: 80px;">
-    <img src="apple/1.png" alt="Myriad design system  - widgets, charts, notifications, onboarding components">
+    <img src="apple/9.png" alt="Myriad brand exploration — identity cards, logo variations, and messaging directions">
+  </div>
+
+  <div class="full-image reveal" style="padding-bottom: 80px;">
+    <img src="apple/5.png" alt="Myriad design system — widgets, charts, notifications, onboarding components">
   </div>
 
   <div class="divider"></div>
@@ -269,7 +292,7 @@
   <!-- ═══════════════════ WHAT SHIPPED ═══════════════════ -->
   <section class="section reveal">
     <div class="section-label">What shipped</div>
-    <h2 class="section-heading word-reveal" style="max-width: 820px;">The four flows I designed.</h2>
+    <h2 class="section-heading word-reveal" style="max-width: 820px;">Five flows I owned end to end.</h2>
   </section>
 
   <!-- FLOW 01 -->
@@ -277,30 +300,25 @@
     <div class="flow-layout">
       <div>
         <div class="flow-number">01 First Use</div>
-        <h3 class="flow-title">Users didn't know what the tool could do.</h3>
-        <p class="flow-body">No onboarding existed. People figured it out or gave up. I designed the first-run experience that asks "How will you use Myriad?" and adapts the interface based on the answer. I tested walkthroughs and feature tours first, but both overwhelmed users with things they didn't care about yet. Self-selection won because it let people skip straight to what was relevant to them.</p>
+        <h3 class="flow-title">New users had no idea where to start.</h3>
+        <p class="flow-body">No onboarding existed. I tested a walkthrough and a tooltip tour, both failed. Landed on a <strong>self-selection model</strong>: one question, <em>"How will you primarily use Myriad?"</em> and the interface adapts.</p>
       </div>
       <div class="flow-visual">
-        <img src="apple/2.png" alt="Onboarding flow  - Getting Started modal with use case selection">
+        <img src="apple/10.png" alt="Getting Started modal with use case selection">
       </div>
     </div>
-  </div>
-
-  <!-- DASHBOARD OVERVIEW BEAUTY SHOT -->
-  <div class="beauty-shot reveal">
-    <img src="apple/3.png" alt="Myriad dashboard home  - All Dashboards view on MacBook Pro">
   </div>
 
   <!-- FLOW 02 -->
   <div class="flow-section reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">02 Dashboard</div>
-        <h3 class="flow-title">Building a dashboard felt like writing SQL.</h3>
-        <p class="flow-body">Stakeholders wanted a technical configuration panel. Users wanted to drag things and see what happens. I designed the sidebar panel that lets you configure a widget without leaving the canvas, because every time users lost sight of their dashboard during editing, they lost context. Four widget sizes was a deliberate constraint: enough flexibility to be useful, not enough to create visual chaos across teams.</p>
+        <div class="flow-number">02 Landing</div>
+        <h3 class="flow-title">Dashboards everywhere. No way to find them.</h3>
+        <p class="flow-body">No folders, no search, no ownership info. I designed the landing as a <strong>central hub</strong> that felt clean for <em>three dashboards</em> but scaled for a power user managing <em>thirty</em>.</p>
       </div>
       <div class="flow-visual">
-        <img src="apple/4.png" alt="Dashboard editor  - widget grid with real-time style and data panel">
+        <img src="apple/8.png" alt="All Dashboards view with folders and filters on MacBook Pro">
       </div>
     </div>
   </div>
@@ -309,12 +327,12 @@
   <div class="flow-section chapter-tinted reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">03 Share</div>
-        <h3 class="flow-title">Sharing meant exporting a PDF and hoping for the best.</h3>
-        <p class="flow-body">The old workflow: export, email, wait for sign-off, repeat quarterly. I designed the in-app sharing flow that replaced this, including configurable approval schedules per person, because not every stakeholder operates at the same cadence. A VP reviewing monthly doesn't need the same notifications as a team lead checking weekly. This addressed the single most common complaint from research.</p>
+        <div class="flow-number">03 Dashboard</div>
+        <h3 class="flow-title">Editing felt like configuring a spreadsheet.</h3>
+        <p class="flow-body">PM pushed for a full-screen modal. I prototyped both, tested with <strong>six users</strong>. <em>Five preferred the sidebar with real-time preview.</em> Four widget sizes (S, M, L, XL) over unlimited resizing. Fourteen teams needed consistency more than freedom.</p>
       </div>
       <div class="flow-visual">
-        <img src="apple/10.png" alt="Share modal  - user list with approval and frequency controls">
+        <img src="apple/7.png" alt="Dashboard editor with sidebar configuration panels">
       </div>
     </div>
   </div>
@@ -323,19 +341,28 @@
   <div class="flow-section reveal">
     <div class="flow-layout">
       <div>
-        <div class="flow-number">04 Collaborate</div>
-        <h3 class="flow-title">Context was always one Slack message away.</h3>
-        <p class="flow-body">Data without context creates more questions than answers. I designed the in-app comments and notifications system so that stakeholders could flag anomalies, mention teammates, and attach supporting data directly on a widget — without leaving the dashboard. Notifications tied approvals and comments into a single feed, replacing a parallel chain of emails.</p>
+        <div class="flow-number">04 Notifications</div>
+        <h3 class="flow-title">Feedback lived in email threads nobody could find.</h3>
+        <p class="flow-body">The workaround: screenshot a chart, paste into Slack, <em>"does this look right?"</em> I designed <strong>in-context commenting</strong> attached directly to widgets, with a slide-out panel that surfaces collaboration cues <strong>without competing with the data</strong>.</p>
       </div>
       <div class="flow-visual">
-        <img src="apple/5.png" alt="Notifications panel and inline comments on a dashboard widget">
+        <img src="apple/11.png" alt="Notifications panel with comments and dashboard view">
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════ BEAUTY SHOT ═══════════════════ -->
-  <div class="beauty-shot reveal">
-    <img src="apple/8.png" alt="Myriad Services Headcount dashboard on MacBook Pro">
+  <!-- FLOW 05 -->
+  <div class="flow-section chapter-tinted reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">05 Share</div>
+        <h3 class="flow-title">Sharing meant exporting a PDF and hoping someone opened it.</h3>
+        <p class="flow-body">The flow <strong>research pushed to the top</strong>. I designed <strong>in-app sharing</strong> with per-person approval schedules and automated reminders. Teams stopped exporting to Keynote <em>within two weeks</em>.</p>
+      </div>
+      <div class="flow-visual">
+        <img src="apple/1.png" alt="Share Dashboard modal with approval and frequency controls">
+      </div>
+    </div>
   </div>
 
   <div class="divider"></div>
@@ -348,18 +375,18 @@
   <div class="impact-grid scale-in">
     <div class="impact-cell">
       <div class="impact-eyebrow">Adoption</div>
-      <div class="impact-headline">12 teams onboarded</div>
-      <div class="impact-sub">Teams across Apple GBI moved from static exports and email chains to building, customising, and sharing dashboards themselves within the first quarter of launch.</div>
+      <div class="impact-headline">12 of 14 teams onboarded</div>
+      <div class="impact-sub">Self-serve reporting within the first quarter.</div>
     </div>
     <div class="impact-cell">
       <div class="impact-eyebrow">Efficiency</div>
-      <div class="impact-headline">Reporting time cut by 80%</div>
-      <div class="impact-sub">What used to take days (exporting, formatting slides, emailing for sign-off) now happened in minutes with in-app sharing and scheduled approvals.</div>
+      <div class="impact-headline">3 days → under 1 hour</div>
+      <div class="impact-sub">Quarterly reporting cycle, fully automated.</div>
     </div>
     <div class="impact-cell">
-      <div class="impact-eyebrow">Design system</div>
+      <div class="impact-eyebrow">Scale</div>
       <div class="impact-headline">40+ components shipped</div>
-      <div class="impact-sub">A documented component library with four widget sizes, full colour accessibility, and interaction guidelines, built by the team so the product could scale after handoff.</div>
+      <div class="impact-sub">WCAG 2.0 accessible, documented for post-engagement use.</div>
     </div>
   </div>
 
@@ -371,12 +398,12 @@
     <h2 class="section-heading word-reveal">What this project taught me.</h2>
     <div class="reflection-items stagger">
       <div class="reflection-item">
-        <p class="reflection-lead">Design familiar before you design new.</p>
-        <p class="reflection-body">The biggest unlock wasn't a novel interaction. It was making dashboard editing feel like Keynote. The hardest design work is often invisible.</p>
+        <p class="reflection-lead">Research should reorder your roadmap, not just validate it.</p>
+        <p class="reflection-body">I assumed dashboard creation was the core problem. Sharing was. I now start every project by mapping the handoff and distribution layer before the creation layer.</p>
       </div>
       <div class="reflection-item">
-        <p class="reflection-lead">Design for the person who inherits your file.</p>
-        <p class="reflection-body">I wouldn't maintain Myriad forever. The component library shipped with documented states and usage rules because the next designer shouldn't have to reverse-engineer my decisions.</p>
+        <p class="reflection-lead">Ship the constraint, not the flexibility.</p>
+        <p class="reflection-body">Unlimited resizing would have felt powerful for one team and chaotic across fourteen. I now default to designing the tightest useful system first and loosening only when real usage demands it.</p>
       </div>
     </div>
   </section>

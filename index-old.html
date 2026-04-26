@@ -48,7 +48,7 @@
     /* Corner info */
     .hero-corner-tl {
       position: absolute;
-      bottom: calc(50% + clamp(50px, 9vw, 130px) + 80px);
+      bottom: calc(50% + clamp(50px, 9vw, 130px) + 48px);
       left: 40px;
       font-size: 11px;
       font-weight: 500;
@@ -61,7 +61,7 @@
     }
     .hero-corner-tr {
       position: absolute;
-      bottom: calc(50% + clamp(50px, 9vw, 130px) + 80px);
+      bottom: calc(50% + clamp(50px, 9vw, 130px) + 48px);
       right: 40px;
       font-size: 11px;
       font-weight: 500;
@@ -90,24 +90,17 @@
     }
     .hero-tagline {
       text-align: center;
-      max-width: 660px;
-      margin: clamp(28px, 5vh, 56px) auto 0;
+      max-width: 560px;
+      margin: clamp(24px, 4vh, 48px) auto 0;
       padding: 0 40px;
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(19px, 2vw, 26px);
+      font-size: clamp(14px, 1.3vw, 17px);
       font-weight: 300;
-      line-height: 1.55;
-      color: rgba(239,235,229,0.8);
+      line-height: 1.75;
+      color: rgba(239,235,229,0.65);
       position: relative;
       z-index: 3;
       opacity: 0;
       animation: fadeC 0.4s ease 0.8s forwards;
-    }
-    .hero-tagline .hero-context {
-      display: block;
-      margin-top: clamp(14px, 2vh, 24px);
-      font-size: clamp(13px, 1.1vw, 16px);
-      color: rgba(239,235,229,0.4);
     }
     @keyframes fadeC { to { opacity: 1; } }
 
@@ -225,27 +218,41 @@
     /* Cursor image follower */
     .hero-cursor-img {
       position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
+      width: 200px;
+      height: 160px;
+      border-radius: 12px;
       pointer-events: none;
-      z-index: 9998;
+      z-index: 9999;
       opacity: 0;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.5s ease;
-      filter: blur(60px);
+      transform: translate(-50%, -50%) scale(0.85) rotate(-3deg);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+      overflow: hidden;
     }
     .hero-cursor-img.visible {
-      opacity: 0.5;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+    }
+    .hero-cursor-img::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background: black;
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: none;
     }
     .hero-cursor-img-inner {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
+      border-radius: 12px;
     }
 
     /* SHOWCASE */
-    .showcase-track { height: 260vh; }
+    .showcase-track { height: 340vh; }
     .showcase-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--bg); }
     .card { position: absolute; height: 64vh; border-radius: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; will-change: transform; box-shadow: 0 8px 40px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.1); overflow: hidden; cursor: pointer !important; }
     .card-link { position: absolute; inset: 0; z-index: 5; }
@@ -269,31 +276,31 @@
     .card-cta .arrow::before { content: '↗'; }
     .card-cta:hover .arrow::before { content: '→'; }
     .card-cta:hover .arrow { transform: translateX(4px); }
-    .card-img { border-radius: 14px; overflow: hidden; margin: 24px; margin-left: 0; align-self: stretch; display: flex; align-items: center; justify-content: center; position: relative; }
+    .card-img { border-radius: 14px; overflow: hidden; height: calc(100% - 64px); margin: 32px 32px 32px 0; align-self: stretch; }
     /* Card images */
-    .card-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; border-radius: 14px; }
-    .img-maiwey::after, .img-misip::after { content: ''; position: absolute; inset: 0; border-radius: 14px; border: 15px solid #1c1b1a; pointer-events: none; z-index: 1; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── Apple Myriad (purple) ── */
     .card-apple .ctag { color: var(--dark); border-color: rgba(28,27,26,.3); }
     .card-apple .card-title { color: var(--dark); }
     .card-apple .card-sub   { color: rgba(28,27,26,.28); }
     .card-apple .card-cta   { background: var(--dark); color: #fff; }
-    .img-apple { background: #1A1A2E; }
+    .img-apple { background: #C070F0; }
+    .img-apple img { object-fit: contain; }
 
     /* ── Maiwey (dark teal) ── */
     .card-maiwey .ctag { color: #fff; border-color: rgba(255,255,255,.3); }
     .card-maiwey .card-title { color: #E2FFA3; }
     .card-maiwey .card-sub   { color: rgba(226,255,163,.32); }
     .card-maiwey .card-cta   { background: var(--dark); color: #fff; }
-    .img-maiwey { background: #E8F4C8; }
+    .img-maiwey { background: #002929; }
 
     /* ── MiSIP (brand blue) ── */
     .card-misip .ctag { color: #fff; border-color: rgba(255,255,255,.3); }
     .card-misip .card-title { color: #FFFFFF; }
     .card-misip .card-sub   { color: #E8F0FB; opacity: .4; }
     .card-misip .card-cta   { background: var(--dark); color: #fff; }
-    .img-misip { background: #1E3A5F; }
+    .img-misip { background: #2C5A9A; }
     .card-phones { display: flex; gap: 14px; align-items: flex-start; justify-content: center; height: 100%; padding: 28px 16px; }
     .card-phone  { width: 44%; max-width: 155px; border-radius: 22px; overflow: hidden; background: #F5F7FA; box-shadow: 0 16px 48px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.1); flex-shrink: 0; }
     .card-phone img { width: 100%; height: auto; display: block; }
@@ -312,10 +319,10 @@
     .exp-card-2 { right: 8%; top: 6%; transform: rotate(5deg); z-index: 2; }
 
     /* TRANSITION */
-    .transition-space { height: 60vh; background: transparent !important; }
+    .transition-space { height: 60vh; }
 
     /* ABOUT */
-    .about { color: var(--dark); padding: 110px 64px 180px; display: grid; grid-template-columns: 180px 1fr; gap: 80px; align-items: start; background: transparent !important; }
+    .about { color: var(--dark); padding: 110px 64px; display: grid; grid-template-columns: 180px 1fr; gap: 80px; align-items: start; }
     .about > div { max-width: 520px; margin-left: auto; margin-right: 5%; }
     .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); padding-top: 12px; }
     .about-greeting { font-family: 'Manrope', sans-serif; font-size: clamp(24px,2.4vw,36px); font-weight: 400; line-height: 1.4; color: var(--dark); margin-bottom: 12px; }
@@ -329,7 +336,7 @@
     .svc.active { color: var(--dark); }
 
     /* CLIENTS */
-    .clients { padding: 120px 64px 120px 30%; display: grid; grid-template-columns: 200px 1fr; gap: 80px; align-items: start; color: var(--dark); background: transparent !important; }
+    .clients { padding: 120px 64px 120px 30%; display: grid; grid-template-columns: 200px 1fr; gap: 80px; align-items: start; color: var(--dark); }
     .clients-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); line-height: 1.8; padding-top: 6px; }
     .clients-list  { font-family: 'Manrope', sans-serif; font-size: clamp(18px,2vw,28px); font-weight: 300; line-height: 1.6; color: var(--dark); }
 
@@ -428,22 +435,13 @@
       nav { padding: 16px 20px; } .nav-logo { font-size: 18px; } .nav-center { gap: 18px; }
       .hero-letter { font-size: clamp(72px,22vw,120px); }
       .card-1 { left: 4vw; width: 92vw; top: 8vh; } .card-2 { left: 4vw; width: 92vw; top: calc(8vh + 20px); } .card-3 { left: 4vw; width: 92vw; top: calc(8vh + 40px); } .card-4 { left: 4vw; width: 92vw; top: calc(8vh + 60px); }
-      .card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: 72vh; padding: 0; gap: 0; }
-      .card-info { padding: 20px 22px 16px; }
-      .card-top { margin-bottom: 16px; }
-      .card-bottom { gap: 4px; }
-      .card-title { font-size: clamp(24px, 6vw, 36px); }
-      .card-sub { font-size: clamp(24px, 6vw, 36px); }
-      .card-cta { margin-top: 12px; padding: 10px 18px; font-size: 9px; }
-      .card-img { margin: 0 16px 16px; border-radius: 14px; overflow: hidden; order: 2; }
-      .card-img img { height: 100%; object-fit: cover; }
+      .card { grid-template-columns: 1fr; height: 64vh; padding: 20px 22px 22px; gap: 12px; }
+      .card-img { margin: 0; height: 38%; border-radius: 12px; }
       .card-phones { padding: 16px 12px; gap: 10px; }
       .card-phone { max-width: 110px; border-radius: 16px; }
       .exp-card { height: 65%; border-radius: 10px; }
-      .hero-tagline { font-size: 17px; max-width: 100%; padding: 0 24px; }
-      .hero-tagline .hero-context { font-size: 12px; }
-      .hero-corner-tl, .hero-corner-tr { display: none; }
       .about { grid-template-columns: 1fr; padding: 72px 28px; gap: 24px; }
+      .svcs-list { padding-right: 24px; }
       .clients { grid-template-columns: 1fr; padding: 80px 28px; }
       .site-footer { padding: 72px 28px 0; } .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 24px; }
       .contact-overlay { padding: 32px 28px 48px; } .contact-body { grid-template-columns: 1fr; gap: 48px; }
@@ -495,7 +493,7 @@
         <span class="hero-marquee-badge">CB</span>
       </div>
     </div>
-    <div class="hero-tagline">I design complex products that feel simple.<span class="hero-context">Based in Madrid. Worked with <a href="https://www.apple.com" target="_blank" class="tagline-link">Apple</a>, <a href="https://www.amazon.com" target="_blank" class="tagline-link">Amazon</a>, <a href="https://www.bbva.com" target="_blank" class="tagline-link">BBVA</a> and <a href="https://www.santander.com" target="_blank" class="tagline-link">Santander</a>.</span></div>
+    <div class="hero-tagline">I design complex tools that feel simple, then I ship them.<br>Based in Madrid. Worked with <a href="https://www.apple.com" target="_blank" class="tagline-link">Apple</a>, <a href="https://www.amazon.com" target="_blank" class="tagline-link">Amazon</a>, <a href="https://www.bbva.com" target="_blank" class="tagline-link">BBVA</a> and <a href="https://www.santander.com" target="_blank" class="tagline-link">Santander</a>.</div>
 
     <div class="scroll-hint">
       <span class="scroll-hint-text">Scroll</span>
@@ -509,35 +507,46 @@
       <div class="card card-1 card-apple">
         <div class="card-info">
           <div class="card-top"><span class="ctag">2025</span></div>
-          <div class="card-bottom"><a class="card-link" href="apple-myriad.html"></a><div class="card-title">Apple Myriad</div><div class="card-sub">Enterprise reporting<br>platform</div><a href="apple-myriad.html" class="card-cta">See Project <span class="arrow"></span></a></div>
+          <div class="card-bottom"><a class="card-link" href="apple-myriad.html"></a><div class="card-title">Apple Myriad</div><div class="card-sub">Reporting tools<br>for Apple GBI</div><a href="apple-myriad.html" class="card-cta">See Project <span class="arrow"></span></a></div>
         </div>
         <div class="card-img img-apple">
-          <img src="card-myriad.svg" alt="Apple Myriad - reporting dashboard">
+          <img src="apple/beauty-crop.png" alt="Apple Myriad - reporting dashboard on MacBook Pro">
         </div>
       </div>
       <div class="card card-2 card-maiwey">
         <div class="card-info">
           <div class="card-top"><span class="ctag">2025</span></div>
-          <div class="card-bottom"><a class="card-link" href="maiwey.html"></a><div class="card-title">Maiwey</div><div class="card-sub">Investing made simple<br>for everyone</div><a href="maiwey.html" class="card-cta">See Project <span class="arrow"></span></a></div>
+          <div class="card-bottom"><a class="card-link" href="maiwey.html"></a><div class="card-title">Maiwey</div><div class="card-sub">Financial freedom<br>made simple</div><a href="maiwey.html" class="card-cta">See Project <span class="arrow"></span></a></div>
         </div>
         <div class="card-img img-maiwey">
-          <img src="maiwey card.png" alt="Maiwey product - multi-device investment platform">
+          <img src="maiwey/product-multidevice.png" alt="Maiwey product - multi-device dashboard, investments and risk profile screens">
         </div>
       </div>
       <div class="card card-3 card-misip">
         <div class="card-info">
           <div class="card-top"><span class="ctag">2022</span></div>
-          <div class="card-bottom"><a class="card-link" href="misip.html"></a><div class="card-title">MiSIP</div><div class="card-sub">Maternal health app<br>for PAHO</div><a href="misip.html" class="card-cta">See Project <span class="arrow"></span></a></div>
+          <div class="card-bottom"><a class="card-link" href="misip.html"></a><div class="card-title">MiSIP</div><div class="card-sub">Maternal care<br>for PAHO</div><a href="misip.html" class="card-cta">See Project <span class="arrow"></span></a></div>
         </div>
         <div class="card-img img-misip">
-          <img src="misip card.png" alt="MiSIP - maternal health app screens">
+          <div class="card-phones">
+            <div class="card-phone"><img src="misip-screens/Home.svg" alt="MiSIP home screen"></div>
+            <div class="card-phone"><img src="misip-screens/checklist.svg" alt="MiSIP checklist screen"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-4 card-exp">
+        <div class="card-info">
+          <div class="card-top"><span class="ctag">2026</span></div>
+          <div class="card-bottom"><a class="card-link" href="explorations.html"></a><div class="card-title">Explorations</div><div class="card-sub">Experiments &<br>visual play</div><a href="explorations.html" class="card-cta">See Project <span class="arrow"></span></a></div>
+        </div>
+        <div class="card-img img-exp">
+          <div class="exp-stack">
+            <img src="entertainment-phone1.svg" class="exp-card exp-card-1" alt="">
+            <img src="finance-6.svg" class="exp-card exp-card-2" alt="">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div style="text-align: center; padding: 80px 40px 56px;">
-    <a href="explorations.html" style="font-family: 'Manrope', sans-serif; display: inline-flex; align-items: center; gap: 12px; padding: 18px 36px; border: 1px solid rgba(239,235,229,.12); border-radius: 999px; font-size: clamp(14px, 1.3vw, 17px); font-weight: 400; color: rgba(239,235,229,.5); text-decoration: none; transition: border-color .35s, color .35s, background .35s, transform .35s;" onmouseover="this.style.borderColor='rgba(239,235,229,.35)';this.style.color='var(--cream)';this.style.background='rgba(239,235,229,.06)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(239,235,229,.12)';this.style.color='rgba(239,235,229,.5)';this.style.background='transparent';this.style.transform='translateY(0)'">Explorations & side projects <span style="font-size: 18px; opacity: .6;">→</span></a>
   </div>
 
   <div id="transition-space" class="transition-space"></div>
@@ -546,8 +555,19 @@
     <div class="section-label reveal-left">About</div>
     <div>
     <p class="about-greeting reveal">Holi :) I'm Cami,</p>
-    <p class="about-text reveal" style="margin-left:0;max-width:100%">a product designer with 6+ years designing products for companies like <em>Apple, BBVA</em> and <em>Amazon</em>. I bring structure to ambiguity, turning complex business and user needs into experiences that are <em>simple, scalable</em>, and ship.</p>
-    <p class="about-text reveal" style="margin-left:0;max-width:100%;margin-top:24px">Constraints make better products than unlimited flexibility. And if the person using it can't understand it without help, the design isn't done yet.</p>
+    <p class="about-text reveal" style="margin-left:0;max-width:100%">a product designer with 6+ years designing tools for companies like <em>Apple, BBVA</em> and <em>Amazon</em>. I bring structure to ambiguity, turning complex business and user needs into experiences that are <em>simple, scalable</em>, and ship.</p>
+    </div>
+  </section>
+
+  <section id="services" class="what-i-do">
+    <div class="svcs-list stagger">
+      <span class="what-label">What I do ↓</span>
+      <div class="svc">Product Design</div>
+      <div class="svc">UX Strategy &amp; Research</div>
+      <div class="svc">Interaction Design</div>
+      <div class="svc">UI &amp; Design Systems</div>
+      <div class="svc">Prototyping</div>
+      <div class="svc">Brand Integration</div>
     </div>
   </section>
 
@@ -563,13 +583,14 @@
       <div class="footer-location-label">Madrid</div>
       <div class="footer-location-details">
         Madrid, Spain 28010<br>
+        <a href="tel:+34658091368">+34 658 09 13 68</a><br>
         <a href="mailto:cbalianr@gmail.com">cbalianr@gmail.com</a>
       </div>
     </div>
     <div class="footer-name">Camila</div>
     <div class="footer-bottom">
       <div class="footer-socials"><a href="https://es.linkedin.com/in/camilabalian" target="_blank">LinkedIn ↗</a></div>
-      <div class="footer-copy" style="opacity:.5">Designed & built by Cami with love ♥</div>
+      <div class="footer-copy" style="opacity:.5">Designed & built by Cami ♥</div>
       <div class="footer-copy">© 2026 Camila · Product Designer</div>
     </div>
   </footer>
@@ -641,17 +662,18 @@
 
       /* HERO — MARQUEE + CURSOR IMAGE */
       var heroEl = document.querySelector('.hero');
-      var glowColors = [
-        'radial-gradient(circle, #E2FFA3 0%, #003939 70%)',
-        'radial-gradient(circle, #6B9BE8 0%, #3566AE 70%)',
-        'radial-gradient(circle, #A78BFA 0%, #1B3A5C 70%)',
+      var projects = [
+        { bg: 'linear-gradient(135deg,#003939,#006060)', label: 'Maiwey' },
+        { bg: 'linear-gradient(135deg,#3566AE,#2C5A9A)', label: 'MiSIP' },
+        { bg: 'linear-gradient(135deg,#0D1B2A,#1B3A5C)', label: 'Apple Myriad' },
+        { bg: 'linear-gradient(135deg,#2D1B55,#0F3460)', label: 'Explorations' },
       ];
-      var colorIdx = 0;
-      if (cursorImgInner) cursorImgInner.style.background = glowColors[0];
+      var projectIdx = 0;
       setInterval(function() {
-        colorIdx = (colorIdx + 1) % glowColors.length;
-        if (cursorImgInner) cursorImgInner.style.background = glowColors[colorIdx];
-      }, 2000);
+        projectIdx = (projectIdx + 1) % projects.length;
+        if (cursorImgInner) cursorImgInner.style.background = projects[projectIdx].bg;
+      }, 600);
+      if (cursorImgInner) cursorImgInner.style.background = projects[0].bg;
 
       var imgX = 0, imgY = 0, targetX = 0, targetY = 0;
       document.addEventListener('mousemove', function(e) { targetX = e.clientX; targetY = e.clientY; });
@@ -663,8 +685,8 @@
       })();
 
       if (heroEl) {
-        heroEl.addEventListener('mouseenter', function() { if (cursorImg) { cursorImg.classList.add('visible'); cursorDot.style.opacity = '0'; } });
-        heroEl.addEventListener('mouseleave', function() { if (cursorImg) { cursorImg.classList.remove('visible'); cursorDot.style.opacity = '1'; } });
+        heroEl.addEventListener('mouseenter', function() { cursorImg.classList.add('visible'); cursorDot.style.opacity = '0'; });
+        heroEl.addEventListener('mouseleave', function() { cursorImg.classList.remove('visible'); cursorDot.style.opacity = '1'; });
       }
     }
 
@@ -725,7 +747,7 @@
     function updateShowcase() {
       var scrolled = Math.max(0, window.scrollY - showTrack.offsetTop);
       var T = window.innerHeight * 0.74, G = 100;
-      ['.card-1','.card-2','.card-3'].forEach(function(sel, i) {
+      ['.card-1','.card-2','.card-3','.card-4'].forEach(function(sel, i) {
         var card = document.querySelector(sel); if (!card) return;
         var aS = (i-1)*T, gS = aS-G, ty;
         if (i === 0) ty = 0;
@@ -753,15 +775,12 @@
     var clientsProgress = 0;
 
     function updateClients() {
-      var start = clientsSection.offsetTop + clientsSection.offsetHeight * 0.5;
-      var end = siteFooter.offsetTop + siteFooter.offsetHeight * 0.3;
-      var range = end - start;
-      var raw = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * 0.5 - start) / range));
-      clientsProgress = 1 - Math.pow(1 - raw, 2);
+      var rect = clientsSection.getBoundingClientRect();
+      clientsProgress = Math.max(0, Math.min(1, (window.innerHeight-rect.top)/(window.innerHeight+clientsSection.offsetHeight)));
       var c = lerpColor(gStops[0], gStops[1], clientsProgress);
       var color = 'rgb('+c[0]+','+c[1]+','+c[2]+')';
-      document.body.style.background = color;
-      siteFooter.style.background = color;
+      clientsSection.style.background = color; siteFooter.style.background = color;
+      if (clientsProgress > 0) whatSection.style.background = color;
     }
 
     var transitionSpace = document.getElementById('transition-space');
@@ -777,8 +796,10 @@
       var c = lerpColor([12,12,12],[239,235,229],ease);
       var color = 'rgb('+c[0]+','+c[1]+','+c[2]+')';
       navEl.style.background = 'rgba('+c[0]+','+c[1]+','+c[2]+',0.55)';
-      if (clientsProgress === 0) document.body.style.background = color;
+      document.body.style.background = color;
       showTrack.style.background = color; showSticky.style.background = color;
+      transitionSpace.style.background = color; aboutSection.style.background = color;
+      if (clientsProgress === 0) whatSection.style.background = color;
     }
 
     var raf = null;
