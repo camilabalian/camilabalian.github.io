@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maiwey  - Camila Balian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #0C0C0C; --cream: #EFEBE5; --dark: #1C1B1A; --accent: #E2FFA3; --bosque: #003939; --lima: #E2FFA3; --aciano: #C3D4FF; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+    html { scroll-behavior: smooth; }
+    * { cursor: none !important; }
+    @media (max-width: 768px), (pointer: coarse), (hover: none) { * { cursor: auto !important; } .cursor-dot { display: none !important; } }
+    body { background: var(--bg); color: var(--cream); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
+
+    /* CURSOR */
+    .cursor-dot { position: fixed; width: 10px; height: 10px; background: white; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, opacity .3s; mix-blend-mode: difference; }
+
+    /* PROGRESS */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 300; width: 0%; opacity: .6; transition: width .1s linear; }
+
+    /* NAV */
+    nav { position: fixed; inset: 0 0 auto 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 22px 40px; background: rgba(12,12,12,0.55); backdrop-filter: blur(18px); }
+    .nav-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .nav-back { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color .25s; }
+    .nav-back:hover { color: var(--cream); }
+
+    /* HERO — full viewport, type-only */
+    .project-hero { height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--bg); overflow: hidden; }
+    /* Hero line accent */
+    .hero-line { width: 0; height: 1px; background: rgba(239,235,229,.15); margin-bottom: 32px; transition: width 1s var(--ease); }
+    .project-hero.loaded .hero-line { width: clamp(60px,8vw,120px); transition-delay: .05s; }
+
+    /* Title — clip-mask reveal */
+    .hero-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(100px,20vw,280px); line-height: .9; letter-spacing: -.04em; color: var(--cream); margin: 0; text-transform: uppercase; }
+    .hero-title .letter { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform .8s cubic-bezier(.16,1,.3,1), opacity .01s; }
+    .project-hero.loaded .hero-title .letter { transform: translateY(0); opacity: 1; }
+
+    /* Description */
+    .hero-desc { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.7; color: rgba(239,235,229,.55); margin-top: 32px; max-width: 560px; }
+    .hero-desc .word { display: inline-block; opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+    .project-hero.loaded .hero-desc .word { opacity: 1; transform: translateY(0); }
+    .hero-meta-row { position: absolute; bottom: 72px; left: 0; right: 0; display: flex; justify-content: center; gap: clamp(36px,6vw,72px); z-index: 1; }
+    .hero-meta-item { text-align: center; opacity: 0; transform: translateY(16px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .project-hero.loaded .hero-meta-item { opacity: 1; transform: translateY(0); }
+    .hero-meta-k { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.35); margin-bottom: 8px; }
+    .hero-meta-v { font-size: 16px; color: rgba(239,235,229,.65); font-weight: 400; }
+    .hero-scroll-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: .24em; text-transform: uppercase; color: rgba(239,235,229,.35); opacity: 0; transition: opacity 1s var(--ease); }
+    .project-hero.loaded .hero-scroll-hint { opacity: 1; transition-delay: 1.2s; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: rgba(239,235,229,0.08); margin: 0 64px; }
+
+    /* SECTIONS */
+    .section { padding: 80px 64px; }
+    .section-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 48px; }
+    .section-heading { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); line-height: 1.1; color: var(--cream); margin-bottom: 32px; overflow: visible; }
+    .section-text { font-size: clamp(15px,1.4vw,20px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.65); margin-bottom: 22px; }
+    .section-text:last-child { margin-bottom: 0; }
+    .section-text strong { color: rgba(239,235,229,.9); font-weight: 500; }
+
+    /* FULL BLEED IMAGES */
+    .full-image { padding: 0 64px; }
+    .full-image img { width: 100%; border-radius: 16px; display: block; }
+    .full-image.dark-frame { background: transparent; }
+    .full-image.dark-frame img { border: 1px solid rgba(239,235,229,.06); background: var(--bg); }
+
+    /* SIDE-BY-SIDE IMAGE GRID */
+    .image-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 64px; }
+    .image-pair img { width: 100%; border-radius: 16px; display: block; }
+    .image-pair.dark-frame img { border: 1px solid rgba(239,235,229,.06); background: var(--bg); }
+
+    /* CHAPTER TINT */
+    .chapter-tinted { background: rgba(0,57,57,.04); }
+
+    /* FLOW SECTIONS */
+    .flow-section { padding: 65px 64px; }
+    .flow-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .flow-number { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+    .flow-title { font-family: 'Manrope', sans-serif; font-size: clamp(24px,2.8vw,38px); font-weight: 600; line-height: 1.15; color: var(--cream); margin-bottom: 24px; }
+    .flow-body { font-size: clamp(14px,1.3vw,18px); font-weight: 300; line-height: 1.8; color: rgba(239,235,229,.55); }
+    .flow-body strong { color: rgba(239,235,229,.8); font-weight: 500; }
+    .flow-body em { color: rgba(239,235,229,.65); font-style: italic; }
+    .flow-visual img { width: 100%; border-radius: 12px; display: block; }
+
+    /* BEAUTY SHOT */
+    .beauty-shot { padding: 40px 0; }
+    .beauty-shot img { width: 100%; display: block; }
+
+    /* KEY DECISION CALLOUT */
+    .decision { margin-top: 20px; padding: 20px 24px; border-left: 2px solid var(--accent); background: rgba(239,235,229,.025); border-radius: 0 12px 12px 0; }
+    .decision-label { font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .decision-text { font-size: clamp(13px,1.2vw,15px); font-weight: 300; line-height: 1.7; color: rgba(239,235,229,.55); }
+    .decision-text strong { color: rgba(239,235,229,.8); font-weight: 500; }
+
+    /* OVERVIEW GRID */
+    .overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; max-width: 820px; }
+    .overview-label { font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 10px; }
+    .overview-value { font-size: clamp(15px,1.4vw,19px); font-weight: 400; line-height: 1.5; color: var(--cream); }
+
+    /* IMPACT */
+    .impact-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 0 64px; }
+    .impact-cell { padding: 52px 36px; background: rgba(239,235,229,.025); border: 1px solid rgba(239,235,229,.06); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; transition: border-color .4s, background .4s; }
+    .impact-cell:hover { border-color: rgba(0,57,57,.35); background: rgba(0,57,57,.06); }
+    .impact-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(226,255,163,.55); }
+    .impact-headline { font-family: 'Archivo Black', sans-serif; font-size: clamp(30px,3.4vw,48px); line-height: 1.1; color: var(--cream); margin-top: 32px; }
+    .impact-sub { font-size: 12px; font-weight: 400; line-height: 1.6; color: rgba(239,235,229,.5); margin-top: 18px; }
+
+    /* REFLECTION */
+    .reflection { padding: 91px 64px; max-width: 720px; margin: 0 auto; text-align: center; }
+    .reflection .section-label { margin-bottom: 28px; }
+    .reflection .section-heading { font-size: clamp(30px,3.4vw,52px); margin-bottom: 48px; }
+    .reflection-item { margin-bottom: 36px; }
+    .reflection-item:last-child { margin-bottom: 0; }
+    .reflection-lead { font-family: 'Manrope', sans-serif; font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--cream); margin-bottom: 10px; line-height: 1.4; }
+    .reflection-body { font-size: clamp(15px,1.4vw,19px); font-weight: 300; line-height: 1.85; color: rgba(239,235,229,.55); }
+
+    /* NEXT PROJECT */
+    .next-project { padding: 65px 64px 78px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; transition: opacity .2s; }
+    .next-project:hover { opacity: .7; }
+    .next-label { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(239,235,229,.3); margin-bottom: 16px; }
+    .next-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(36px,5vw,72px); color: var(--cream); }
+    .next-arrow { font-size: 48px; color: rgba(239,235,229,.3); }
+
+    /* CONTACT OVERLAY */
+    .contact-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 500; display: none; flex-direction: column; padding: 40px 64px 48px; opacity: 0; transform: translateY(32px); transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1); overflow-y: auto; }
+    .contact-overlay.open { opacity: 1; transform: translateY(0); }
+    .contact-overlay-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 52px; }
+    .contact-overlay-logo { font-family: 'Archivo Black', sans-serif; font-size: 28px; letter-spacing: .04em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+    .contact-close { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(239,235,229,.5); background: none; border: none; padding: 0; transition: color .25s; }
+    .contact-close:hover { color: var(--cream); }
+    .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; flex: 1; align-items: start; }
+    .contact-heading { font-family: 'Manrope', sans-serif; font-size: clamp(64px,10vw,140px); font-weight: 500; line-height: .95; letter-spacing: -.03em; color: var(--cream); }
+    .contact-heading em { font-style: italic; color: rgba(239,235,229,.22); font-weight: 300; }
+    .contact-links { margin-top: 78px; display: flex; flex-direction: column; gap: 18px; }
+    .contact-info-link { font-family: 'Manrope', sans-serif; font-size: clamp(16px,1.6vw,22px); font-weight: 300; color: rgba(239,235,229,.6); text-decoration: none; border-bottom: 1px solid rgba(239,235,229,.15); padding-bottom: 3px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; transition: color .2s, border-color .2s; }
+    .contact-info-link:hover { color: var(--cream); border-color: rgba(239,235,229,.5); }
+    .contact-form { display: flex; flex-direction: column; gap: 28px; padding-top: 8px; }
+    .form-field { display: flex; flex-direction: column; gap: 10px; }
+    .form-field label { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(239,235,229,.35); }
+    .form-field input, .form-field textarea { background: none; border: none; border-bottom: 1px solid rgba(239,235,229,.15); padding: 12px 0; font-family: 'Manrope', sans-serif; font-size: clamp(18px,2vw,26px); font-weight: 300; color: var(--cream); outline: none; resize: none; transition: border-color .25s; width: 100%; }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(239,235,229,.18); }
+    .form-field input:focus, .form-field textarea:focus { border-color: rgba(239,235,229,.5); }
+    .form-field textarea { min-height: 100px; }
+    .form-submit { display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 15px 40px; background: var(--cream); color: var(--dark); border: none; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; transition: background .2s; margin-top: 8px; }
+    .form-submit:hover { background: rgba(239,235,229,.88); }
+    .form-success { display: none; flex-direction: column; gap: 20px; padding-top: 8px; }
+    .form-success.visible { display: flex; }
+    .form-success-icon { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(239,235,229,.3); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--cream); }
+    .form-success-title { font-family: 'Manrope', sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 500; color: var(--cream); line-height: 1.1; }
+    .form-success-sub { font-size: 14px; font-weight: 300; color: rgba(239,235,229,.45); line-height: 1.7; }
+
+    /* MOTION */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger > * { opacity: 0; transform: translateY(36px); transition: opacity .95s var(--ease), transform .95s var(--ease); }
+    .stagger.visible > * { opacity:1; transform:translateY(0); }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: .08s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: .16s; }
+    .scale-in > * { opacity: 0; transform: translateY(24px) scale(.97); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .scale-in.visible > * { opacity: 1; transform: translateY(0) scale(1); }
+    .scale-in.visible > *:nth-child(1) { transition-delay: 0s; }
+    .scale-in.visible > *:nth-child(2) { transition-delay: .09s; }
+    .scale-in.visible > *:nth-child(3) { transition-delay: .18s; }
+    .word-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; padding-right: .08em; padding-bottom: .1em; }
+    .word-inner { display: inline-block; transform: translateY(110%); transition: transform 1s var(--ease); }
+    .word-reveal.visible .word-inner { transform: translateY(0); }
+    .word-reveal .word-wrap:nth-child(1) .word-inner { transition-delay: 0s; }
+    .word-reveal .word-wrap:nth-child(2) .word-inner { transition-delay: .05s; }
+    .word-reveal .word-wrap:nth-child(3) .word-inner { transition-delay: .1s; }
+    .word-reveal .word-wrap:nth-child(4) .word-inner { transition-delay: .15s; }
+    .word-reveal .word-wrap:nth-child(5) .word-inner { transition-delay: .2s; }
+    .word-reveal .word-wrap:nth-child(6) .word-inner { transition-delay: .25s; }
+    .word-reveal .word-wrap:nth-child(7) .word-inner { transition-delay: .3s; }
+    .word-reveal .word-wrap:nth-child(n+8) .word-inner { transition-delay: .35s; }
+
+    /* Hero letter stagger — clip reveal */
+    .project-hero.loaded .hero-title .letter:nth-child(1) { transition-delay: .15s; }
+    .project-hero.loaded .hero-title .letter:nth-child(2) { transition-delay: .2s; }
+    .project-hero.loaded .hero-title .letter:nth-child(3) { transition-delay: .25s; }
+    .project-hero.loaded .hero-title .letter:nth-child(4) { transition-delay: .3s; }
+    .project-hero.loaded .hero-title .letter:nth-child(5) { transition-delay: .35s; }
+    .project-hero.loaded .hero-title .letter:nth-child(6) { transition-delay: .4s; }
+    /* Meta item stagger */
+    .project-hero.loaded .hero-meta-item:nth-child(1) { transition-delay: .9s; }
+    .project-hero.loaded .hero-meta-item:nth-child(2) { transition-delay: .97s; }
+    .project-hero.loaded .hero-meta-item:nth-child(3) { transition-delay: 1.04s; }
+    .project-hero.loaded .hero-meta-item:nth-child(4) { transition-delay: 1.11s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .project-hero { height: 100svh; }
+      .hero-title { font-size: clamp(60px,18vw,120px); }
+      .hero-meta-row { flex-wrap: wrap; gap: 20px 24px; bottom: 32px; padding: 0 24px; }
+      .hero-scroll-hint { bottom: 10px; }
+      .hero-desc { font-size: 14px; max-width: 90%; }
+      .overview-grid { grid-template-columns: 1fr; gap: 20px; }
+      .decision { margin-top: 16px; padding: 16px 18px; }
+      .divider { margin: 0 24px; }
+      .section { padding: 52px 24px; }
+      .full-image { padding: 0 24px; }
+      .flow-section { padding: 39px 24px; }
+      .product-label { padding: 32px 24px 0 !important; }
+      .flow-layout { grid-template-columns: 1fr; gap: 40px; }
+      .image-pair { grid-template-columns: 1fr; padding: 0 24px; }
+      .impact-grid { grid-template-columns: 1fr; margin: 0 24px; }
+      .reflection { padding: 52px 24px; }
+      .next-project { padding: 52px 24px; }
+      .contact-overlay { padding: 32px 24px 48px; }
+      .contact-body { grid-template-columns: 1fr; gap: 31px; }
+      .contact-links { margin-top: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="progress-bar" id="progressBar"></div>
+
+  <nav>
+    <a class="nav-logo" href="/">CB</a>
+    <a class="nav-back" href="/">&larr; Back</a>
+  </nav>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="project-hero" id="projectHero">
+    <h1 class="hero-title" id="heroTitle">Maiwey</h1>
+    <p class="hero-desc">A 30-year financial group that had never spoken to a retail customer. I built their brand and two products from zero.</p>
+    <div class="hero-meta-row">
+      <div class="hero-meta-item"><div class="hero-meta-k">Client</div><div class="hero-meta-v">A&G</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Role</div><div class="hero-meta-v">Product Designer</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Team</div><div class="hero-meta-v">3 designers · 1 PM</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-k">Year</div><div class="hero-meta-v">2025</div></div>
+    </div>
+    <div class="hero-scroll-hint">Scroll ↓</div>
+  </section>
+
+  <!-- ═══════════════════ HERO BEAUTY SHOT ═══════════════════ -->
+  <div class="beauty-shot reveal" style="max-width: 1280px; margin: 0 auto; padding: 40px 64px;">
+    <img src="hero mai.png" alt="Maiwey product ecosystem - browser, mobile, and laptop">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+  <section class="section reveal">
+    <div class="section-label">Overview</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">The challenge</h2>
+      <p class="section-text">A&G had decades of B2B financial experience but had never spoken to retail customers. They needed a brand, a marketing website, an investment platform, and a mobile app. My job was to design all of it.</p>
+      <div class="overview-grid">
+        <div class="overview-item">
+          <div class="overview-label">Problem</div>
+          <div class="overview-value">Zero digital presence, zero brand, competing against established fintechs</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-label">My role</div>
+          <div class="overview-value">Research, brand, product UI, and documentation across the full scope</div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-label">Outcome</div>
+          <div class="overview-value">2 products shipped: a public marketing site and a private investment platform, both mobile-first</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ DISCOVERY ═══════════════════ -->
+  <section class="section reveal">
+    <div class="section-label">Discovery</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">They didn't distrust fintech.</h2>
+      <p class="section-text">The assumption was that people distrusted fintech. They didn't. They distrusted complexity: jargon, hidden fees, interfaces that assumed financial literacy. That finding shaped every design decision.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PRODUCT 1: PUBLIC SITE -->
+  <div class="product-label" style="padding: 40px 64px 0;">
+    <div class="section-label reveal" style="margin-bottom: 0; color: rgba(226,255,163,.4);">Product 01 · Public marketing site</div>
+  </div>
+
+  <!-- FLOW 01: PUBLIC SITE -->
+  <div class="flow-section chapter-tinted reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">01 The landing experience</div>
+        <h3 class="flow-title">The brand had to sell itself before users ever logged in.</h3>
+        <p class="flow-body">No branches, no ads at launch. The website was the only way in. I <strong>put the savings simulator above the fold</strong>, before any brand messaging. Users engaged with the calculator <em>before scrolling</em>.</p>
+      </div>
+      <div class="flow-visual">
+        <img src="01 landing.png" alt="Maiwey public marketing website - three-page spread showing landing page with savings simulator, product explainers, and investment fund comparison">
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 2: PRIVATE PLATFORM -->
+  <div class="product-label" style="padding: 40px 64px 0;">
+    <div class="section-label reveal" style="margin-bottom: 0; color: rgba(226,255,163,.4);">Product 02 · Private investment platform</div>
+  </div>
+
+  <!-- FLOW 02: SAVINGS + DEPOSITS -->
+  <div class="flow-section reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">02 Savings + deposits</div>
+        <h3 class="flow-title">Users needed to feel their money growing.</h3>
+        <p class="flow-body">The balance doesn't change day to day. The interest does. Testing showed users kept checking the balance, seeing no change, and disengaging. I <strong>flipped the hierarchy</strong>, making interest earned the largest element on screen.</p>
+      </div>
+      <div class="flow-visual">
+        <img src="02 deposit.png" alt="Savings and deposits - mobile renewal screen, web deposit form, and iPhone deposit detail showing interest earned">
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 03: INVESTMENT DASHBOARD -->
+  <div class="flow-section chapter-tinted reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">03 Investment dashboard</div>
+        <h3 class="flow-title">Users couldn't tell if their money was doing well or not.</h3>
+        <p class="flow-body">Testing showed users needed to <strong>compare across funds</strong>, not view them one at a time. I redesigned it as a multi-fund overview. A glance on any screen should answer <em>"am I up or down?"</em></p>
+        <div class="decision">
+          <div class="decision-label">Key decision</div>
+          <p class="decision-text"><strong>I adapted data density per breakpoint.</strong> Desktop shows the full chart with granular data points. Mobile keeps only the trend line and key numbers. <em>Same data, different depth</em>, because context changes with screen size.</p>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <img src="03 dashboard.png" alt="Investment dashboard - mobile fund detail with performance chart alongside desktop portfolio overview with multi-fund comparison">
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 04: RISK PROFILE -->
+  <div class="flow-section reveal">
+    <div class="flow-layout">
+      <div>
+        <div class="flow-number">04 Risk profile</div>
+        <h3 class="flow-title">Regulators required a suitability test. Users hated forms.</h3>
+        <p class="flow-body">Most platforms bury this in a <strong>30-field form</strong>. I broke it into three sections, one question at a time.</p>
+        <div class="decision">
+          <div class="decision-label">Key decision</div>
+          <p class="decision-text"><strong>I added "why are we asking this?" to every question.</strong> Legal pushed back because they worried plain-language explanations might create liability. I sat with the compliance team and we wrote each explanation together, keeping it accurate but plain. <em>Drop-off fell by a third.</em></p>
+        </div>
+      </div>
+      <div class="flow-visual">
+        <img src="04 test.png" alt="Suitability test - desktop form with progressive questions and 'why are we asking this' explanations, alongside mobile risk profile result">
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ BRAND IDENTITY ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 48px;">
+    <div class="section-label">Brand identity</div>
+    <div style="max-width: 820px;">
+      <h2 class="section-heading word-reveal">The arrow in the "a".</h2>
+      <p class="section-text">I modified the typeface Nohemi in three places: <strong>the "a" became an upward arrow</strong>, the "m" flipped into a "w", the "i" lost its dot. That arrow became the app icon, the favicon, and the one element users recognize at any size.</p>
+    </div>
+  </section>
+
+  <div class="full-image dark-frame reveal" style="max-width: 960px; margin: 0 auto;">
+    <img src="arrow a.png" alt="Maiwey brand identity - the arrow in the 'a' letterform, app icon, favicon, and brand mark at multiple sizes">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ IMPACT ═══════════════════ -->
+  <section class="section reveal" style="padding-bottom: 32px;">
+    <div class="section-label">Impact</div>
+    <h2 class="section-heading word-reveal" style="max-width: 740px;">What I shipped.</h2>
+  </section>
+  <div class="impact-grid scale-in">
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Engagement</div>
+      <div class="impact-headline">85% suitability test completion</div>
+      <div class="impact-sub">Progressive disclosure and plain-language copy cut drop-off by a third.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Delivery</div>
+      <div class="impact-headline">2 products shipped in 4 months</div>
+      <div class="impact-sub">Marketing site + investment platform, both mobile-first.</div>
+    </div>
+    <div class="impact-cell">
+      <div class="impact-eyebrow">Autonomy</div>
+      <div class="impact-headline">Client scaling brand independently</div>
+      <div class="impact-sub">40-page brand manual built to outlast the engagement.</div>
+    </div>
+  </div>
+
+  <div style="height: 80px;"></div>
+
+  <!-- ═══════════════════ TAKEAWAYS ═══════════════════ -->
+  <section class="reflection reveal">
+    <div class="section-label">Takeaways</div>
+    <h2 class="section-heading word-reveal">What this project taught me.</h2>
+    <div class="reflection-items stagger">
+      <div class="reflection-item">
+        <p class="reflection-lead">Build brand and product at the same time, not in sequence.</p>
+        <p class="reflection-body">Every visual decision had to survive a 320px screen. I now test identity work at the smallest breakpoint before presenting it at full scale.</p>
+      </div>
+      <div class="reflection-item">
+        <p class="reflection-lead">In fintech, clarity is the feature.</p>
+        <p class="reflection-body">The suitability test taught me that explaining why you're asking is more effective than simplifying the question. I now write interface copy that justifies itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="height: 1px; background: rgba(239,235,229,0.06); margin: 0 64px;"></div>
+
+  <!-- NEXT PROJECT -->
+  <a class="next-project reveal" href="/misip/">
+    <div>
+      <div class="next-label">Next project</div>
+      <div class="next-title">MiSIP</div>
+    </div>
+    <div class="next-arrow">&rarr;</div>
+  </a>
+
+  <!-- CONTACT OVERLAY -->
+  <div class="contact-overlay" id="contactOverlay">
+    <div class="contact-overlay-nav">
+      <a class="contact-overlay-logo" href="#" id="overlayLogo">CB</a>
+      <button class="contact-close" id="contactClose">Close</button>
+    </div>
+    <div class="contact-body">
+      <div>
+        <h2 class="contact-heading">Hi there,<br><em>say hello :)</em></h2>
+        <div class="contact-links">
+          <a href="mailto:cbalianr@gmail.com" class="contact-info-link">cbalianr@gmail.com</a>
+          <a href="https://es.linkedin.com/in/camilabalian" target="_blank" class="contact-info-link">LinkedIn</a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="hidden" name="access_key" value="1f610c8a-f0c1-4518-ac63-18b415fa3bd4">
+        <input type="hidden" name="subject" value="New message from your portfolio">
+        <div class="form-field"><label>Your name</label><input type="text" name="name" placeholder="Your name" required></div>
+        <div class="form-field"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-field"><label>Message</label><textarea name="message" placeholder="Say something nice…" rows="4" required></textarea></div>
+        <button class="form-submit" type="submit">Send message</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <h3 class="form-success-title">Message sent!</h3>
+        <p class="form-success-sub">Thanks for reaching out, I'll get back to you soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Cursor — skip on mobile/touch */
+    var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse), (hover: none)').matches;
+    const dot = document.getElementById('cursorDot');
+    if (isMobile && dot) dot.style.display = 'none';
+    if (!isMobile) window.addEventListener('mousemove', e => { dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
+
+    /* Progress */
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => { bar.style.width = (window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%'; }, {passive:true});
+
+    /* Hero — split title into letters */
+    const heroTitle = document.getElementById('heroTitle');
+    if (heroTitle) {
+      const text = heroTitle.textContent;
+      heroTitle.textContent = '';
+      text.split('').forEach(ch => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = ch;
+        heroTitle.appendChild(span);
+      });
+    }
+
+    /* Hero — split description into words */
+    document.querySelectorAll('.hero-desc').forEach(desc => {
+      const text = desc.textContent.trim();
+      desc.textContent = '';
+      text.split(/\s+/).forEach((w, i) => {
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.textContent = w;
+        span.style.transitionDelay = (0.5 + i * 0.03) + 's';
+        desc.appendChild(span);
+        desc.appendChild(document.createTextNode(' '));
+      });
+    });
+
+    /* Hero entrance */
+    const hero = document.getElementById('projectHero');
+    if (hero) requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('loaded')));
+
+    /* Word-split .word-reveal headings */
+    document.querySelectorAll('.word-reveal').forEach(el => {
+      if (el.children.length > 0) return;
+      const text = el.textContent.trim();
+      if (!text) return;
+      const words = text.split(/\s+/);
+      el.textContent = '';
+      words.forEach((w, i) => {
+        const wrap = document.createElement('span');
+        wrap.className = 'word-wrap';
+        const inner = document.createElement('span');
+        inner.className = 'word-inner';
+        inner.textContent = w;
+        wrap.appendChild(inner);
+        el.appendChild(wrap);
+        if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+    });
+
+    /* IntersectionObserver */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.reveal, .stagger, .scale-in, .word-reveal').forEach(el => obs.observe(el));
+
+    /* Contact overlay */
+    const overlay = document.getElementById('contactOverlay');
+    const closeBtn = document.getElementById('contactClose');
+    const overlayLogo = document.getElementById('overlayLogo');
+    function closeOverlay(e){ e&&e.preventDefault(); overlay.classList.remove('open'); setTimeout(()=>{overlay.style.display='none';},450); document.body.style.overflow=''; }
+    if(closeBtn) closeBtn.addEventListener('click', closeOverlay);
+    if(overlayLogo) overlayLogo.addEventListener('click', closeOverlay);
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeOverlay(); });
+    /* Contact form */
+    const cForm = document.getElementById('contactForm');
+    const fSuccess = document.getElementById('formSuccess');
+    if(cForm) cForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(cForm) });
+        if(res.ok){ cForm.style.display='none'; fSuccess.classList.add('visible'); }
+      } catch(err){}
+    });
+  </script>
+</body>
+</html>
