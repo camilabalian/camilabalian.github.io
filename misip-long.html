@@ -1107,9 +1107,11 @@
   </div>
 
   <script>
-    /* CURSOR */
+    /* CURSOR — skip on mobile/touch */
+    var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse), (hover: none)').matches;
     const dot = document.getElementById('cursorDot');
-    window.addEventListener('mousemove', e => { dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
+    if (isMobile && dot) dot.style.display = 'none';
+    if (!isMobile) window.addEventListener('mousemove', e => { dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
 
     /* PROGRESS */
     const bar = document.getElementById('progressBar');

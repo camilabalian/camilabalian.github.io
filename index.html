@@ -493,7 +493,7 @@
         <span class="hero-marquee-badge">CB</span>
       </div>
     </div>
-    <div class="hero-tagline">I design complex tools that feel simple, then I ship them.<br>Currently in Madrid. Previously at <a href="https://www.apple.com" target="_blank" class="tagline-link">Apple</a>, <a href="https://www.amazon.com" target="_blank" class="tagline-link">Amazon</a>, <a href="https://www.bbva.com" target="_blank" class="tagline-link">BBVA</a> and <a href="https://www.santander.com" target="_blank" class="tagline-link">Santander</a>.</div>
+    <div class="hero-tagline">I design complex tools that feel simple, then I ship them.<br>Based in Madrid. Worked with <a href="https://www.apple.com" target="_blank" class="tagline-link">Apple</a>, <a href="https://www.amazon.com" target="_blank" class="tagline-link">Amazon</a>, <a href="https://www.bbva.com" target="_blank" class="tagline-link">BBVA</a> and <a href="https://www.santander.com" target="_blank" class="tagline-link">Santander</a>.</div>
 
     <div class="scroll-hint">
       <span class="scroll-hint-text">Scroll</span>
@@ -626,82 +626,68 @@
   </div>
 
   <script>
-    /* CURSOR */
+    /* CURSOR — skip on mobile/touch */
+    var isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse), (hover: none)').matches;
     const cursorDot = document.getElementById('cursorDot');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    window.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursorDot.style.left = mx + 'px'; cursorDot.style.top = my + 'px';
-    });
-    
-    document.querySelectorAll('.tagline-link').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursorDot.classList.add('hovering');
-        cursorDot.style.opacity = '1';
-        var ci = document.getElementById('heroCursorImg');
-        if (ci) ci.classList.remove('visible');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursorDot.classList.remove('hovering');
-        var heroHovered = document.querySelector('.hero:hover');
-        if (heroHovered) {
-          cursorDot.style.opacity = '0';
-          var ci = document.getElementById('heroCursorImg');
-          if (ci) ci.classList.add('visible');
-        }
-      });
-    });
-
-    /* HERO — MARQUEE + CURSOR IMAGE */
     var cursorImg      = document.getElementById('heroCursorImg');
     var cursorImgInner = document.getElementById('heroCursorImgInner');
-    var heroEl         = document.querySelector('.hero');
 
-    // Project previews (card colors + titles)
-    var projects = [
-      { bg: 'linear-gradient(135deg,#003939,#006060)', label: 'Maiwey' },
-      { bg: 'linear-gradient(135deg,#3566AE,#2C5A9A)', label: 'MiSIP' },
-      { bg: 'linear-gradient(135deg,#0D1B2A,#1B3A5C)', label: 'Apple Myriad' },
-      { bg: 'linear-gradient(135deg,#2D1B55,#0F3460)', label: 'Explorations' },
-    ];
-    var projectIdx = 0;
+    if (isMobile) {
+      if (cursorDot) cursorDot.style.display = 'none';
+      if (cursorImg) cursorImg.style.display = 'none';
+    }
 
-    // Rotate project on interval
-    setInterval(function() {
-      projectIdx = (projectIdx + 1) % projects.length;
-      cursorImgInner.style.background = projects[projectIdx].bg;
-    }, 600);
+    if (!isMobile) {
+      let mx = 0, my = 0;
+      window.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursorDot.style.left = mx + 'px'; cursorDot.style.top = my + 'px';
+      });
 
-    // Set initial project
-    cursorImgInner.style.background = projects[0].bg;
+      document.querySelectorAll('.tagline-link').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursorDot.classList.add('hovering');
+          cursorDot.style.opacity = '1';
+          if (cursorImg) cursorImg.classList.remove('visible');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorDot.classList.remove('hovering');
+          var heroHovered = document.querySelector('.hero:hover');
+          if (heroHovered) {
+            cursorDot.style.opacity = '0';
+            if (cursorImg) cursorImg.classList.add('visible');
+          }
+        });
+      });
 
-    // Follow cursor
-    var imgX = 0, imgY = 0, targetX = 0, targetY = 0;
-    document.addEventListener('mousemove', function(e) {
-      targetX = e.clientX;
-      targetY = e.clientY;
-    });
+      /* HERO — MARQUEE + CURSOR IMAGE */
+      var heroEl = document.querySelector('.hero');
+      var projects = [
+        { bg: 'linear-gradient(135deg,#003939,#006060)', label: 'Maiwey' },
+        { bg: 'linear-gradient(135deg,#3566AE,#2C5A9A)', label: 'MiSIP' },
+        { bg: 'linear-gradient(135deg,#0D1B2A,#1B3A5C)', label: 'Apple Myriad' },
+        { bg: 'linear-gradient(135deg,#2D1B55,#0F3460)', label: 'Explorations' },
+      ];
+      var projectIdx = 0;
+      setInterval(function() {
+        projectIdx = (projectIdx + 1) % projects.length;
+        if (cursorImgInner) cursorImgInner.style.background = projects[projectIdx].bg;
+      }, 600);
+      if (cursorImgInner) cursorImgInner.style.background = projects[0].bg;
 
-    (function followCursor() {
-      imgX += (targetX - imgX) * 0.1;
-      imgY += (targetY - imgY) * 0.1;
-      if (cursorImg) {
-        cursorImg.style.left = imgX + 'px';
-        cursorImg.style.top  = imgY + 'px';
+      var imgX = 0, imgY = 0, targetX = 0, targetY = 0;
+      document.addEventListener('mousemove', function(e) { targetX = e.clientX; targetY = e.clientY; });
+      (function followCursor() {
+        imgX += (targetX - imgX) * 0.1;
+        imgY += (targetY - imgY) * 0.1;
+        if (cursorImg) { cursorImg.style.left = imgX + 'px'; cursorImg.style.top = imgY + 'px'; }
+        requestAnimationFrame(followCursor);
+      })();
+
+      if (heroEl) {
+        heroEl.addEventListener('mouseenter', function() { cursorImg.classList.add('visible'); cursorDot.style.opacity = '0'; });
+        heroEl.addEventListener('mouseleave', function() { cursorImg.classList.remove('visible'); cursorDot.style.opacity = '1'; });
       }
-      requestAnimationFrame(followCursor);
-    })();
-
-    // Show on hero hover
-    if (heroEl) {
-      heroEl.addEventListener('mouseenter', function() {
-        cursorImg.classList.add('visible');
-        cursorDot.style.opacity  = '0';
-      });
-      heroEl.addEventListener('mouseleave', function() {
-        cursorImg.classList.remove('visible');
-        cursorDot.style.opacity  = '1';
-      });
     }
 
     /* CONTACT OVERLAY */

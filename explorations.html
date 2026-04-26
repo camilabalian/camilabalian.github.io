@@ -23,18 +23,17 @@
     .nav-back:hover { color:var(--cream); }
     .nav-year { font-size:11px; letter-spacing:.14em; color:rgba(239,235,229,.35); }
 
-    /* FIXED HERO - always stays */
+    /* HERO - static, scrolls normally */
     .hero-fixed {
-      position: fixed;
-      inset: 0;
+      position: relative;
       z-index: 1;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 0 40px;
-      pointer-events: none;
     }
     .hero-kicker {
       font-size: 10px;
@@ -65,7 +64,7 @@
       animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .45s forwards;
     }
     .scroll-hint {
-      position: fixed;
+      position: absolute;
       bottom: 36px;
       left: 50%;
       transform: translateX(-50%);
@@ -80,33 +79,29 @@
     }
     @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 
-    /* SCROLL SPACE - first 100vh is just the hero */
-    .scroll-space { height: 100vh; position: relative; z-index: 0; pointer-events: none; }
+    .scroll-space { display: none; }
 
-    /* IMAGES LAYER - scrolls on top of fixed hero */
+    /* IMAGES LAYER - masonry grid */
     .images-layer {
       position: relative;
       z-index: 100;
+      background: var(--bg);
+      padding: 40px clamp(20px, 4vw, 48px);
+      columns: 2;
+      column-gap: clamp(16px, 2.5vw, 32px);
     }
 
-    /* Each item is one full viewport moment */
+    /* Each item flows naturally in masonry */
     .moment {
-      height: 120vh;
-      display: flex;
-      align-items: center;
+      break-inside: avoid;
+      margin-bottom: clamp(16px, 2.5vw, 32px);
+      display: block;
       position: relative;
     }
 
-    /* Horizontal positions */
-    .pos-left   { justify-content: flex-start; padding-left: 8vw; }
-    .pos-center { justify-content: center; }
-    .pos-right  { justify-content: flex-end; padding-right: 8vw; }
-    .pos-left-far  { justify-content: flex-start; padding-left: 1vw; }
-    .pos-right-far { justify-content: flex-end; padding-right: 3vw; }
-
-    /* Vertical nudges */
-    .nudge-up   { align-items: flex-start; padding-top: 15vh; }
-    .nudge-down { align-items: flex-end; padding-bottom: 15vh; }
+    /* Remove old positioning */
+    .pos-left, .pos-center, .pos-right, .pos-left-far, .pos-right-far { }
+    .nudge-up, .nudge-down { }
 
     /* Image card */
     .img-card {
@@ -125,11 +120,11 @@
       position: relative;
       box-shadow: none;
     }
-    .img-wrap.phone   { width: 160px; aspect-ratio: 9/19.5; }
-    .img-wrap.phone-l { width: 200px; aspect-ratio: 9/19.5; }
-    .img-wrap.tablet  { width: 420px; aspect-ratio: 4/3; max-width: 70vw; }
-    .img-wrap.wide    { width: 560px; aspect-ratio: 16/9; max-width: 78vw; }
-    .img-wrap.square  { width: 300px; aspect-ratio: 1/1; max-width: 60vw; }
+    .img-wrap.phone   { width: 100%; max-width: 200px; aspect-ratio: 9/19.5; margin: 0 auto; }
+    .img-wrap.phone-l { width: 100%; max-width: 240px; aspect-ratio: 9/19.5; margin: 0 auto; }
+    .img-wrap.tablet  { width: 100%; aspect-ratio: 4/3; }
+    .img-wrap.wide    { width: 100%; aspect-ratio: 16/9; }
+    .img-wrap.square  { width: 100%; aspect-ratio: 1/1; }
 
     /* Embedded demo frames */
     .demo-frame {
@@ -139,9 +134,9 @@
       pointer-events: none;
       box-shadow: none;
     }
-    .demo-frame.finance { width: min(540px, 88vw); height: 740px; opacity: 1; }
-    .demo-frame.tasks   { width: min(920px, 96vw); height: 680px; opacity: 1; transform: scale(0.72); transform-origin: center; }
-    .demo-frame.entertainment { width: min(620px, 90vw); height: 520px; opacity: 1; }
+    .demo-frame.finance { width: 100%; aspect-ratio: 9/16; max-height: 700px; opacity: 1; }
+    .demo-frame.tasks   { width: 100%; aspect-ratio: 4/3; max-height: 600px; opacity: 1; transform: none; }
+    .demo-frame.entertainment { width: 100%; aspect-ratio: 16/10; max-height: 500px; opacity: 1; }
 
     /* Phone screen pairs */
     .phone-pair {
@@ -190,7 +185,7 @@
     /* MAGAZINE STAGE */
     .mag-stage {
       position: relative;
-      width: min(420px, 85vw);
+      width: 100%;
       aspect-ratio: 3/4;
       border-radius: 10px;
       overflow: hidden;
@@ -236,12 +231,8 @@
 
     @media (max-width:768px) {
       nav { padding:16px 20px; } .nav-logo { font-size:20px; }
-      .moment { height:100vh; }
-      .pos-left, .pos-right, .pos-left-far, .pos-right-far { justify-content:center; padding:0 20px; }
-      .nudge-up, .nudge-down { align-items:center; padding:0 20px; }
-      .img-wrap.tablet,.img-wrap.wide { width:90vw; }
-      .img-wrap.phone,.img-wrap.phone-l { width:55vw; }
-      .img-wrap.square { width:75vw; }
+      .images-layer { columns: 1; padding: 24px 20px; }
+      .moment { margin-bottom: 20px; }
       .page-footer { padding:60px 20px; flex-direction:column; gap:32px; align-items:flex-start; }
     }
   </style>
@@ -250,8 +241,8 @@
   <div class="cursor-dot" id="cursorDot"></div>
 
   <nav>
-    <a class="nav-logo" href="index.html">CB</a>
-    <a class="nav-back" href="index.html">← Back</a>
+    <a class="nav-logo" href="index-v2.html">CB</a>
+    <a class="nav-back" href="index-v2.html">← Back</a>
   </nav>
 
   <!-- FIXED HERO - never moves -->
@@ -280,7 +271,7 @@
 
     <!-- FINANCE ANIMATION -->
     <!-- FINANCE APP -->
-    <div class="moment pos-right" style="margin-top:60vh;">
+    <div class="moment">
       <div class="img-card" style="position:relative;z-index:200;">
         <iframe src="finance-demo.html" class="demo-frame finance" scrolling="no"></iframe>
       </div>
@@ -295,6 +286,21 @@
       </div>
     </div>
 
+    <!-- WORDIA APP -->
+    <div class="moment" style="break-inside:avoid;">
+      <div class="img-card" style="position:relative;z-index:200;">
+        <div style="background:rgba(0,210,180,.2); border-radius:20px; padding:clamp(24px,3.5vw,44px); overflow:hidden; border:1px solid rgba(0,210,180,.15); position:relative;">
+          <div style="position:absolute;inset:0;border-radius:20px;opacity:.15;mix-blend-mode:overlay;pointer-events:none;background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E');background-size:128px 128px;"></div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <img src="wordia-1.png" style="flex:1; min-width:0; border-radius:10px; display:block;" alt="Wordia">
+            <img src="wordia-2.png" style="flex:1; min-width:0; border-radius:10px; display:block;" alt="Wordia">
+            <img src="wordia-3.png" style="flex:1; min-width:0; border-radius:10px; display:block;" alt="Wordia">
+            <img src="wordia-4.png" style="flex:1; min-width:0; border-radius:10px; display:block;" alt="Wordia">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ENTERTAINMENT APP -->
     <div class="moment pos-center">
       <div class="img-card" style="position:relative;z-index:200;">
@@ -303,7 +309,7 @@
     </div>
 
     <!-- PROJECT TASKS -->
-    <div class="moment pos-left-far" style="margin-top:10vh; padding-left:0; margin-left:-4vw;">
+    <div class="moment">
       <div class="img-card" style="position:relative;z-index:200;">
         <iframe src="tasks-demo.html" class="demo-frame tasks" scrolling="no"></iframe>
       </div>
@@ -379,7 +385,7 @@
 
   <!-- FOOTER -->
   <div class="page-footer">
-    <a class="footer-back" href="index.html">← All projects</a>
+    <a class="footer-back" href="index-v2.html">← All projects</a>
     <div>
       <div class="footer-next-label">Next project</div>
       <a class="footer-next-link" href="apple-myriad.html">Apple Myriad →</a>
@@ -387,9 +393,11 @@
   </div>
 
   <script>
-    /* CURSOR */
+    /* CURSOR — skip on mobile/touch */
+    var isMobile = window.matchMedia("(max-width: 768px), (pointer: coarse), (hover: none)").matches;
     const dot = document.getElementById("cursorDot");
-    window.addEventListener("mousemove", e => {
+    if (isMobile && dot) dot.style.display = "none";
+    if (!isMobile) window.addEventListener("mousemove", e => {
       dot.style.left = e.clientX + "px";
       dot.style.top  = e.clientY + "px";
     });
